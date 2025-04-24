@@ -55,9 +55,13 @@ const TradeMaster = () => {
       levels.push(
         <div 
           key={i}
-          className={${isCompleted ? `${worlds[world].color} text-white : isActive ? 'bg-gray-800 border border-blue-400 text-white' : 'bg-gray-800 text-gray-400'} 
-                     w-16 h-16 rounded-full flex items-center justify-center font-bold text-xl
-                     shadow-lg hover:scale-105 transition-transform cursor-pointer relative`}
+          className={`${
+    isCompleted
+    ? ${worlds[world].color} text-white
+    : isActive
+    ? 'bg-gray-800 border border-blue-400 text-white'
+    : 'bg-gray-800 text-gray-400'
+} w-16 h-16 rounded-full flex items-center justify-center font-bold text-xl shadow-lg hover:scale-105 transition-transform cursor-pointer relative`}
         >
           {i}
           {isCompleted && (
