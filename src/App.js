@@ -1,11 +1,11 @@
 import React from 'react';
 import './App.css';
-import TradeMaster from './components/TradeMaster';
+import tradelingo from './components/tradelingo';
 
 function App() {
   return (
     <div className="App">
-      <TradeMaster />
+      <tradelingo />
     </div>
   );
 }
