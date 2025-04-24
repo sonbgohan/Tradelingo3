@@ -56,12 +56,12 @@ const TradeMaster = () => {
         <div 
           key={i}
           className={`${
-    isCompleted
-    ? ${worlds[world].color} text-white
-    : isActive
-    ? 'bg-gray-800 border border-blue-400 text-white'
-    : 'bg-gray-800 text-gray-400'
-} w-16 h-16 rounded-full flex items-center justify-center font-bold text-xl shadow-lg hover:scale-105 transition-transform cursor-pointer relative`}
+            isCompleted
+              ? ${worlds[world].color} text-white
+              : isActive
+              ? 'bg-gray-800 border border-blue-400 text-white'
+              : 'bg-gray-800 text-gray-400'
+          } w-16 h-16 rounded-full flex items-center justify-center font-bold text-xl shadow-lg hover:scale-105 transition-transform cursor-pointer relative`}
         >
           {i}
           {isCompleted && (
@@ -193,7 +193,7 @@ const TradeMaster = () => {
     };
     
     const handleQuizAnswer = (correct) => {
-      // In a real app, you would track the user's performance
+      // In a real app, je zou hier de performance kunnen bijhouden.
       setTimeout(handleNextStep, 500);
     };
     
@@ -245,7 +245,7 @@ const TradeMaster = () => {
               <button 
                 onClick={() => {
                   setCurrentScreen('worldMap');
-                  // In a real app, you would update the user's progress here
+                  // Hier update je in een echte app de voortgang van de gebruiker.
                 }}
                 className={${worlds[selectedWorld].color} px-6 py-3 rounded-lg font-bold w-full}
               >
@@ -341,9 +341,7 @@ const TradeMaster = () => {
                 <div 
                   key={worldKey}
                   onClick={() => setSelectedWorld(worldKey)}
-                  className={${selectedWorld === worldKey ? `${worlds[worldKey].color} text-white : 'bg-gray-800 text-gray-300'} 
-                          p-4 rounded-xl flex flex-col items-center justify-center w-32 h-32 cursor-pointer
-                          hover:scale-105 transition-transform shadow-lg`}
+                  className={${selectedWorld === worldKey ? `${worlds[worldKey].color} text-white : 'bg-gray-800 text-gray-300'} p-4 rounded-xl flex flex-col items-center justify-center w-32 h-32 cursor-pointer hover:scale-105 transition-transform shadow-lg`}
                 >
                   <div className={rounded-full p-3 ${selectedWorld === worldKey ? 'bg-opacity-20 bg-white' : 'bg-gray-700'}}>
                     {worlds[worldKey].icon}
@@ -400,7 +398,7 @@ const TradeMaster = () => {
         ) : null}
       </main>
 
-      {/* Bottom Navigation - only show on world map screen */}
+      {/* Bottom Navigation - alleen zichtbaar op world map */}
       {currentScreen === 'worldMap' && (
         <footer className="fixed bottom-0 left-0 right-0 bg-gray-800 border-t border-gray-700">
           <div className="flex justify-around p-4">
