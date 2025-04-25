@@ -66,14 +66,14 @@ const TradeMaster = () => {
         'w-16 h-16 rounded-full flex items-center justify-center font-bold text-xl shadow-lg hover:scale-105 transition-transform cursor-pointer relative';
       let levelStyle = '';
       if (isCompleted) {
-        levelStyle = ${worlds[world].color} text-white;
+        levelStyle = worlds[world].color + ' text-white';
       } else if (isActive) {
         levelStyle = 'bg-gray-800 border border-blue-400 text-white';
       } else {
         levelStyle = 'bg-gray-800 text-gray-400';
       }
       levels.push(
-        <div key={i} className={${levelStyle} ${baseStyle}}>
+        <div key={i} className={levelStyle + ' ' + baseStyle}>
           {i}
           {isCompleted && (
             <div className="absolute -bottom-1 -right-1 bg-white rounded-full p-1">
@@ -148,11 +148,14 @@ const TradeMaster = () => {
       };
     } else {
       return {
-        intro: Welcome to the ${worlds[selectedWorld].name} module!,
+        intro: 'Welcome to the ' + worlds[selectedWorld].name + ' module!',
         steps: [
           {
             type: 'text',
-            content: This is a placeholder lesson for the ${worlds[selectedWorld].name} world. More content will be added soon!,
+            content:
+              'This is a placeholder lesson for the ' +
+              worlds[selectedWorld].name +
+              ' world. More content will be added soon!',
           },
         ],
         summary: 'This is just a preview. Full lessons will be available in the complete app.',
@@ -180,20 +183,22 @@ const TradeMaster = () => {
             <div
               key={index}
               onClick={() => !answered && handleAnswer(index)}
-              className={`
-                p-3 rounded-lg border cursor-pointer transition-all
-                ${!answered
+              className={
+                'p-3 rounded-lg border cursor-pointer transition-all ' +
+                (!answered
                   ? 'border-gray-600 hover:border-blue-400'
                   : index === correctAnswer
                   ? 'border-green-500 bg-green-500 bg-opacity-20'
                   : index === selectedAnswer
                   ? 'border-red-500 bg-red-500 bg-opacity-20'
-                  : 'border-gray-600'}
-              `}
+                  : 'border-gray-600')
+              }
             >
               <div className="flex items-center justify-between">
                 <span>{option}</span>
-                {answered && index === correctAnswer && <Check className="h-5 w-5 text-green-500" />}
+                {answered && index === correctAnswer && (
+                  <Check className="h-5 w-5 text-green-500" />
+                )}
                 {answered && index === selectedAnswer && index !== correctAnswer && (
                   <X className="h-5 w-5 text-red-500" />
                 )}
@@ -232,16 +237,16 @@ const TradeMaster = () => {
             <ChevronLeft className="h-5 w-5" />
           </button>
           <h2 className="text-xl font-bold">
-            {currentLesson.title} - {lessonComplete ? 'Complete!' : Step ${currentStep + 1} of ${content.steps.length + 1}}
+            {currentLesson.title} - {lessonComplete ? 'Complete!' : 'Step ' + (currentStep + 1) + ' of ' + (content.steps.length + 1)}
           </h2>
         </div>
         <div className="w-full bg-gray-800 h-2 rounded-full mb-8">
           <div
-            className={${worlds[selectedWorld].color} h-2 rounded-full transition-all}
+            className={worlds[selectedWorld].color + ' h-2 rounded-full transition-all'}
             style={{
               width: lessonComplete
                 ? '100%'
-                : ${((currentStep + 1) / (content.steps.length + 1)) * 100}%,
+                : (((currentStep + 1) / (content.steps.length + 1)) * 100) + '%',
             }}
           ></div>
         </div>
@@ -252,7 +257,7 @@ const TradeMaster = () => {
               <p className="text-gray-300 mb-6">{content.intro}</p>
               <button
                 onClick={handleNextStep}
-                className={${worlds[selectedWorld].color} px-6 py-3 rounded-lg font-bold w-full}
+                className={worlds[selectedWorld].color + ' px-6 py-3 rounded-lg font-bold w-full'}
               >
                 Begin Lesson
               </button>
@@ -260,13 +265,13 @@ const TradeMaster = () => {
           ) : lessonComplete ? (
             <>
               <h3 className="text-xl font-bold mb-4">Lesson Complete!</h3>
-              <div className={${worlds[selectedWorld].color} w-24 h-24 rounded-full flex items-center justify-center my-8}>
+              <div className={worlds[selectedWorld].color + ' w-24 h-24 rounded-full flex items-center justify-center my-8'}>
                 <Award className="h-12 w-12" />
               </div>
               <p className="text-gray-300 mb-6">{content.summary}</p>
               <button
                 onClick={() => setCurrentScreen('worldMap')}
-                className={${worlds[selectedWorld].color} px-6 py-3 rounded-lg font-bold w-full}
+                className={worlds[selectedWorld].color + ' px-6 py-3 rounded-lg font-bold w-full'}
               >
                 Return to Map
               </button>
@@ -280,7 +285,7 @@ const TradeMaster = () => {
                   </div>
                   <button
                     onClick={handleNextStep}
-                    className={${worlds[selectedWorld].color} px-6 py-3 rounded-lg font-bold w-full}
+                    className={worlds[selectedWorld].color + ' px-6 py-3 rounded-lg font-bold w-full'}
                   >
                     Continue
                   </button>
@@ -302,7 +307,7 @@ const TradeMaster = () => {
                   </div>
                   <button
                     onClick={handleNextStep}
-                    className={${worlds[selectedWorld].color} px-6 py-3 rounded-lg font-bold w-full}
+                    className={worlds[selectedWorld].color + ' px-6 py-3 rounded-lg font-bold w-full'}
                   >
                     Continue
                   </button>
@@ -355,9 +360,15 @@ const TradeMaster = () => {
                 <div
                   key={worldKey}
                   onClick={() => setSelectedWorld(worldKey)}
-                  className={${selectedWorld === worldKey ? `${worlds[worldKey].color} text-white : 'bg-gray-800 text-gray-300'} p-4 rounded-xl flex flex-col items-center justify-center w-32 h-32 cursor-pointer hover:scale-105 transition-transform shadow-lg`}
+                  className={
+                    (selectedWorld === worldKey
+                      ? worlds[worldKey].color + ' text-white'
+                      : 'bg-gray-800 text-gray-300'
+                    ) +
+                    ' p-4 rounded-xl flex flex-col items-center justify-center w-32 h-32 cursor-pointer hover:scale-105 transition-transform shadow-lg'
+                  }
                 >
-                  <div className={rounded-full p-3 ${selectedWorld === worldKey ? 'bg-opacity-20 bg-white' : 'bg-gray-700'}}>
+                  <div className={'rounded-full p-3 ' + (selectedWorld === worldKey ? 'bg-opacity-20 bg-white' : 'bg-gray-700')}>
                     {worlds[worldKey].icon}
                   </div>
                   <span className="mt-2 font-medium text-center">{worlds[worldKey].name}</span>
@@ -369,7 +380,7 @@ const TradeMaster = () => {
             </div>
             <div className="bg-gray-800 rounded-xl p-8 border border-gray-700 shadow-xl">
               <h2 className="text-xl font-bold mb-6 flex items-center">
-                <span className={inline-block w-4 h-4 rounded-full ${worlds[selectedWorld].color} mr-2}></span>
+                <span className={'inline-block w-4 h-4 rounded-full ' + worlds[selectedWorld].color + ' mr-2'}></span>
                 {worlds[selectedWorld].name} - Learning Path
               </h2>
               <div className="flex flex-wrap gap-6 justify-center items-center">
@@ -378,7 +389,7 @@ const TradeMaster = () => {
               {worlds[selectedWorld].completed < worlds[selectedWorld].levels && (
                 <div className="mt-12 bg-gray-900 rounded-lg p-6 border border-gray-700">
                   <h3 className="text-lg font-semibold mb-4 flex items-center">
-                    <span className={inline-block w-3 h-3 rounded-full ${worlds[selectedWorld].color} mr-2}></span>
+                    <span className={'inline-block w-3 h-3 rounded-full ' + worlds[selectedWorld].color + ' mr-2'}></span>
                     Next Lesson: Introduction to {worlds[selectedWorld].name}
                   </h3>
                   <p className="text-gray-400 mb-4">
@@ -389,11 +400,11 @@ const TradeMaster = () => {
                       setCurrentLesson({
                         world: selectedWorld,
                         level: worlds[selectedWorld].completed + 1,
-                        title: Introduction to ${worlds[selectedWorld].name},
+                        title: 'Introduction to ' + worlds[selectedWorld].name,
                       });
                       setCurrentScreen('lesson');
                     }}
-                    className={${worlds[selectedWorld].color} hover:opacity-90 px-6 py-3 rounded-lg font-bold flex items-center justify-center transition-all}
+                    className={worlds[selectedWorld].color + ' hover:opacity-90 px-6 py-3 rounded-lg font-bold flex items-center justify-center transition-all'}
                   >
                     Start Lesson <ChevronRight className="ml-2 h-5 w-5" />
                   </button>
