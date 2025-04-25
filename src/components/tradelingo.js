@@ -235,16 +235,16 @@ const TradeMaster = () => {
             {currentLesson.title} - {lessonComplete ? 'Complete!' : Step ${currentStep + 1} of ${content.steps.length + 1}}
           </h2>
         </div>
-
         <div className="w-full bg-gray-800 h-2 rounded-full mb-8">
           <div
             className={${worlds[selectedWorld].color} h-2 rounded-full transition-all}
             style={{
-              width: lessonComplete ? '100%' : ${((currentStep + 1) / (content.steps.length + 1)) * 100}%,
+              width: lessonComplete
+                ? '100%'
+                : ${((currentStep + 1) / (content.steps.length + 1)) * 100}%,
             }}
           ></div>
         </div>
-
         <div className="bg-gray-800 rounded-xl p-6 border border-gray-700 shadow-lg mb-8">
           {currentStep === 0 ? (
             <>
@@ -260,10 +260,8 @@ const TradeMaster = () => {
           ) : lessonComplete ? (
             <>
               <h3 className="text-xl font-bold mb-4">Lesson Complete!</h3>
-              <div className="flex justify-center my-8">
-                <div className={${worlds[selectedWorld].color} w-24 h-24 rounded-full flex items-center justify-center}>
-                  <Award className="h-12 w-12" />
-                </div>
+              <div className={${worlds[selectedWorld].color} w-24 h-24 rounded-full flex items-center justify-center my-8}>
+                <Award className="h-12 w-12" />
               </div>
               <p className="text-gray-300 mb-6">{content.summary}</p>
               <button
@@ -313,7 +311,6 @@ const TradeMaster = () => {
             </>
           )}
         </div>
-
         <div className="flex justify-center">
           <button className="flex items-center text-gray-400 hover:text-blue-400">
             <HelpCircle className="h-5 w-5 mr-2" />
@@ -350,7 +347,6 @@ const TradeMaster = () => {
           <Settings className="h-6 w-6 text-gray-400 cursor-pointer hover:text-blue-400" />
         </div>
       </header>
-
       <main className="container mx-auto py-8 px-4">
         {currentScreen === 'worldMap' ? (
           <>
@@ -361,9 +357,7 @@ const TradeMaster = () => {
                   onClick={() => setSelectedWorld(worldKey)}
                   className={${selectedWorld === worldKey ? `${worlds[worldKey].color} text-white : 'bg-gray-800 text-gray-300'} p-4 rounded-xl flex flex-col items-center justify-center w-32 h-32 cursor-pointer hover:scale-105 transition-transform shadow-lg`}
                 >
-                  <div
-                    className={rounded-full p-3 ${selectedWorld === worldKey ? 'bg-opacity-20 bg-white' : 'bg-gray-700'}}
-                  >
+                  <div className={rounded-full p-3 ${selectedWorld === worldKey ? 'bg-opacity-20 bg-white' : 'bg-gray-700'}}>
                     {worlds[worldKey].icon}
                   </div>
                   <span className="mt-2 font-medium text-center">{worlds[worldKey].name}</span>
@@ -373,7 +367,6 @@ const TradeMaster = () => {
                 </div>
               ))}
             </div>
-
             <div className="bg-gray-800 rounded-xl p-8 border border-gray-700 shadow-xl">
               <h2 className="text-xl font-bold mb-6 flex items-center">
                 <span className={inline-block w-4 h-4 rounded-full ${worlds[selectedWorld].color} mr-2}></span>
@@ -412,7 +405,6 @@ const TradeMaster = () => {
           <LessonScreen />
         ) : null}
       </main>
-
       {currentScreen === 'worldMap' && (
         <footer className="fixed bottom-0 left-0 right-0 bg-gray-800 border-t border-gray-700">
           <div className="flex justify-around p-4">
