@@ -1,162 +1,301 @@
 import React, { useState } from 'react';
-import { Sparkles, ChevronRight, ChevronLeft, Award, BarChart2, BookOpen, Users, Settings, Bell, Check, X, HelpCircle } from 'lucide-react';
+import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from 'react-router-dom';
+import './App.css';
 
-const TradeMaster = () => {
-  const [selectedWorld, setSelectedWorld] = useState('basics');
-  const [currentScreen, setCurrentScreen] = useState('worldMap');
-  const [currentLesson, setCurrentLesson] = useState(null);
-
-  const worlds = {
-    basics: {
-      name: "Trading Basics",
-      color: "bg-blue-500",
-      levels: 5,
-      completed: 3,
-      icon: <BookOpen className="h-8 w-8 text-blue-200" />
-    },
-    technical: {
-      name: "Technical Analysis",
-      color: "bg-purple-500",
-      levels: 8,
-      completed: 0,
-      icon: <BarChart2 className="h-8 w-8 text-purple-200" />
-    },
-    fundamental: {
-      name: "Fundamental Analysis",
-      color: "bg-green-500",
-      levels: 6,
-      completed: 0,
-      icon: <BookOpen className="h-8 w-8 text-green-200" />
-    },
-    strategies: {
-      name: "Trading Strategies",
-      color: "bg-yellow-500",
-      levels: 10,
-      completed: 0,
-      icon: <Award className="h-8 w-8 text-yellow-200" />
-    },
-    advanced: {
-      name: "Advanced Concepts",
-      color: "bg-red-500",
-      levels: 12,
-      completed: 0,
-      icon: <Sparkles className="h-8 w-8 text-red-200" />
-    }
-  };
-
-  const generateLevelNodes = (world) => {
-    const levels = [];
-    for (let i = 1; i <= worlds[world].levels; i++) {
-      const isCompleted = i <= worlds[world].completed;
-      const isActive = i === worlds[world].completed + 1;
-
-      const classes = isCompleted
-        ? `${worlds[world].color} text-white`
-        : isActive
-        ? 'bg-gray-800 border border-blue-400 text-white'
-        : 'bg-gray-800 text-gray-400';
-
-      levels.push(
-        <div
-          key={i}
-          className={`${classes} w-16 h-16 rounded-full flex items-center justify-center font-bold text-xl shadow-lg hover:scale-105 transition-transform cursor-pointer relative`}
-        >
-          {i}
-          {isCompleted && (
-            <div className="absolute -bottom-1 -right-1 bg-white rounded-full p-1">
-              <Sparkles className="h-4 w-4 text-yellow-500" />
-            </div>
-          )}
-        </div>
-      );
-    }
-    return levels;
+// Homepage component
+const Home = () => {
+  const navigate = useNavigate();
+  
+  const handleNavigation = (path) => {
+    navigate(path);
   };
 
   return (
-    <div className="min-h-screen bg-white text-gray-900 font-sans">
-      {/* Header */}
-      <header className="bg-gray-800 p-4 flex justify-between items-center border-b border-gray-700">
-        <div className="flex items-center">
-          <Sparkles className="h-6 w-6 text-blue-400 mr-2" />
-          <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 text-transparent bg-clip-text">
-            TradeMaster
-          </h1>
-        </div>
-        <div className="flex items-center space-x-6">
-          <div className="flex items-center">
-            <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-sm font-bold">42</div>
-            <div className="ml-1 text-blue-400 font-semibold">XP</div>
-          </div>
-          <div className="flex items-center">
-            <div className="w-8 h-8 rounded-full bg-yellow-500 flex items-center justify-center">
-              <Award className="h-5 w-5 text-gray-900" />
-            </div>
-            <div className="ml-1 text-yellow-400 font-semibold">3</div>
-          </div>
-          <Bell className="h-6 w-6 text-gray-400 cursor-pointer hover:text-blue-400" />
-          <Settings className="h-6 w-6 text-gray-400 cursor-pointer hover:text-blue-400" />
-        </div>
+    <div className="home-container">
+      <header>
+        <h1>TradeLingo</h1>
+        <p>Learn trading step by step</p>
       </header>
-
-      {/* Main Content */}
-      <main className="container mx-auto py-8 px-4">
-        <div className="flex flex-wrap justify-center gap-4 mb-12">
-          {Object.keys(worlds).map((worldKey) => (
-            <div
-              key={worldKey}
-              onClick={() => setSelectedWorld(worldKey)}
-              className={`${selectedWorld === worldKey ? `${worlds[worldKey].color} text-white` : 'bg-gray-800 text-gray-300'} 
-                p-4 rounded-xl flex flex-col items-center justify-center w-32 h-32 cursor-pointer
-                hover:scale-105 transition-transform shadow-lg`}
-            >
-              <div className={`rounded-full p-3 ${selectedWorld === worldKey ? 'bg-opacity-20 bg-white' : 'bg-gray-700'}`}>
-                {worlds[worldKey].icon}
-              </div>
-              <span className="mt-2 font-medium text-center">{worlds[worldKey].name}</span>
-              <div className="mt-1 text-xs">
-                {worlds[worldKey].completed}/{worlds[worldKey].levels}
-              </div>
+      
+      <div className="course-grid">
+        <div className="course-card" onClick={() => handleNavigation('/master')}>
+          <div className="course-icon">
+            <i className="fas fa-crown"></i>
+          </div>
+          <div className="course-info">
+            <h2>TradeMaster</h2>
+            <div className="progress-bar">
+              <div className="progress" style={{ width: '20%' }}></div>
             </div>
-          ))}
-        </div>
-
-        {/* Level Progression */}
-        <div className="bg-gray-800 rounded-xl p-8 border border-gray-700 shadow-xl">
-          <h2 className="text-xl font-bold mb-6 flex items-center">
-            <span className={`inline-block w-4 h-4 rounded-full ${worlds[selectedWorld].color} mr-2`}></span>
-            {worlds[selectedWorld].name} - Learning Path
-          </h2>
-
-          <div className="flex flex-wrap gap-6 justify-center items-center">
-            {generateLevelNodes(selectedWorld)}
+            <p>1/5</p>
           </div>
         </div>
-      </main>
-
-      {/* Bottom Navigation */}
-      <footer className="fixed bottom-0 left-0 right-0 bg-gray-800 border-t border-gray-700">
-        <div className="flex justify-around p-4">
-          <div className="flex flex-col items-center text-blue-400">
-            <BookOpen className="h-6 w-6" />
-            <span className="text-xs mt-1">Learn</span>
+        
+        <div className="course-card" onClick={() => handleNavigation('/basics')}>
+          <div className="course-icon">
+            <i className="fas fa-book"></i>
           </div>
-          <div className="flex flex-col items-center text-gray-400">
-            <BarChart2 className="h-6 w-6" />
-            <span className="text-xs mt-1">Practice</span>
-          </div>
-          <div className="flex flex-col items-center text-gray-400">
-            <Users className="h-6 w-6" />
-            <span className="text-xs mt-1">Community</span>
-          </div>
-          <div className="flex flex-col items-center text-gray-400">
-            <Award className="h-6 w-6" />
-            <span className="text-xs mt-1">Profile</span>
+          <div className="course-info">
+            <h2>Trading Basics</h2>
+            <div className="progress-bar">
+              <div className="progress" style={{ width: '60%' }}></div>
+            </div>
+            <p>3/5</p>
           </div>
         </div>
-      </footer>
+        
+        <div className="course-card" onClick={() => handleNavigation('/technical')}>
+          <div className="course-icon">
+            <i className="fas fa-chart-line"></i>
+          </div>
+          <div className="course-info">
+            <h2>Technical Analysis</h2>
+            <div className="progress-bar">
+              <div className="progress" style={{ width: '0%' }}></div>
+            </div>
+            <p>0/8</p>
+          </div>
+        </div>
+        
+        <div className="course-card" onClick={() => handleNavigation('/fundamental')}>
+          <div className="course-icon">
+            <i className="fas fa-building"></i>
+          </div>
+          <div className="course-info">
+            <h2>Fundamental Analysis</h2>
+            <div className="progress-bar">
+              <div className="progress" style={{ width: '0%' }}></div>
+            </div>
+            <p>0/6</p>
+          </div>
+        </div>
+        
+        <div className="course-card" onClick={() => handleNavigation('/strategies')}>
+          <div className="course-icon">
+            <i className="fas fa-chess"></i>
+          </div>
+          <div className="course-info">
+            <h2>Trading Strategies</h2>
+            <div className="progress-bar">
+              <div className="progress" style={{ width: '0%' }}></div>
+            </div>
+            <p>0/10</p>
+          </div>
+        </div>
+        
+        <div className="course-card" onClick={() => handleNavigation('/advanced')}>
+          <div className="course-icon">
+            <i className="fas fa-brain"></i>
+          </div>
+          <div className="course-info">
+            <h2>Advanced Concepts</h2>
+            <div className="progress-bar">
+              <div className="progress" style={{ width: '0%' }}></div>
+            </div>
+            <p>0/12</p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
 
-export default TradeMaster;
+// Course pages components
+const CourseTemplate = ({ title, lessons, icon }) => {
+  const [showPopup, setShowPopup] = useState(false);
+  const [activeLesson, setActiveLesson] = useState(null);
+  
+  const openLesson = (lesson) => {
+    setActiveLesson(lesson);
+    setShowPopup(true);
+  };
+  
+  const closePopup = () => {
+    setShowPopup(false);
+  };
+  
+  return (
+    <div className="course-page">
+      <header>
+        <Link to="/" className="back-button">
+          <i className="fas fa-arrow-left"></i>
+        </Link>
+        <h1>{title} <i className={`fas ${icon}`}></i></h1>
+      </header>
+      
+      <div className="lesson-list">
+        {lessons.map((lesson, index) => (
+          <div 
+            key={index} 
+            className={`lesson-card ${lesson.completed ? 'completed' : ''}`}
+            onClick={() => openLesson(lesson)}
+          >
+            <div className="lesson-number">{index + 1}</div>
+            <div className="lesson-details">
+              <h3>{lesson.title}</h3>
+              <p>{lesson.description}</p>
+            </div>
+            <div className="lesson-status">
+              {lesson.completed ? (
+                <i className="fas fa-check-circle"></i>
+              ) : (
+                <i className="fas fa-lock"></i>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+      
+      {showPopup && activeLesson && (
+        <div className="lesson-popup">
+          <div className="popup-content">
+            <div className="popup-header">
+              <h2>{activeLesson.title}</h2>
+              <button className="close-button" onClick={closePopup}>
+                <i className="fas fa-times"></i>
+              </button>
+            </div>
+            <div className="popup-body">
+              <p>{activeLesson.content}</p>
+              {activeLesson.completed ? (
+                <div className="completion-badge">
+                  <i className="fas fa-trophy"></i>
+                  <p>Completed</p>
+                </div>
+              ) : (
+                <button className="mark-complete-button">
+                  Mark as Complete
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+// Sample data for each course
+const tradeMasterLessons = [
+  { 
+    title: "Introduction to Trading", 
+    description: "Learn the basics of financial markets",
+    completed: true,
+    content: "Trading is the act of buying and selling assets in financial markets. In this lesson, we'll introduce you to the concepts of trading, different markets, and basic terminology."
+  },
+  { 
+    title: "Risk Management", 
+    description: "How to protect your capital",
+    completed: false,
+    content: "Risk management is crucial for long-term success in trading. This lesson covers stop losses, position sizing, and portfolio diversity."
+  },
+  // More lessons...
+];
+
+const basicLessons = [
+  { 
+    title: "What are Financial Markets?", 
+    description: "Understanding different market types",
+    completed: true,
+    content: "Financial markets are places where traders buy and sell assets like stocks, bonds, currencies, and commodities. Each market has its own characteristics and trading hours."
+  },
+  { 
+    title: "Assets and Instruments", 
+    description: "Stocks, Forex, Crypto, and more",
+    completed: true,
+    content: "Different trading instruments include stocks, bonds, forex pairs, cryptocurrencies, and derivatives. Each has unique properties and trading requirements."
+  },
+  { 
+    title: "Understanding Charts", 
+    description: "How to read price data",
+    completed: true,
+    content: "Charts display price movements over time. This lesson covers candlestick charts, line charts, time frames, and basic chart reading."
+  },
+  // More lessons...
+];
+
+const technicalLessons = [
+  { 
+    title: "Support and Resistance", 
+    description: "Finding key price levels",
+    completed: false,
+    content: "Support and resistance are price levels where markets tend to reverse. Learning to identify these levels is essential for timing entries and exits."
+  },
+  // More lessons...
+];
+
+const fundamentalLessons = [
+  { 
+    title: "Economic Indicators", 
+    description: "GDP, inflation, employment data",
+    completed: false,
+    content: "Economic indicators give insight into a country's economic health. Understanding how these affect markets is crucial for fundamental analysis."
+  },
+  // More lessons...
+];
+
+const strategyLessons = [
+  { 
+    title: "Trend Following", 
+    description: "Trading with the trend",
+    completed: false,
+    content: "Trend following strategies aim to identify and ride market trends. This lesson covers trend identification, entries, and exits."
+  },
+  // More lessons...
+];
+
+const advancedLessons = [
+  { 
+    title: "Market Psychology", 
+    description: "Understanding fear and greed",
+    completed: false,
+    content: "Market psychology plays a huge role in price movements. This lesson explores how emotions affect markets and how to use this knowledge in your trading."
+  },
+  // More lessons...
+];
+
+// Course page components
+const TradeMaster = () => {
+  return <CourseTemplate title="TradeMaster" lessons={tradeMasterLessons} icon="fa-crown" />;
+};
+
+const Basics = () => {
+  return <CourseTemplate title="Trading Basics" lessons={basicLessons} icon="fa-book" />;
+};
+
+const Technical = () => {
+  return <CourseTemplate title="Technical Analysis" lessons={technicalLessons} icon="fa-chart-line" />;
+};
+
+const Fundamental = () => {
+  return <CourseTemplate title="Fundamental Analysis" lessons={fundamentalLessons} icon="fa-building" />;
+};
+
+const Strategies = () => {
+  return <CourseTemplate title="Trading Strategies" lessons={strategyLessons} icon="fa-chess" />;
+};
+
+const Advanced = () => {
+  return <CourseTemplate title="Advanced Concepts" lessons={advancedLessons} icon="fa-brain" />;
+};
+
+// Main App component
+function App() {
+  return (
+    <Router>
+      <div className="app">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/master" element={<TradeMaster />} />
+          <Route path="/basics" element={<Basics />} />
+          <Route path="/technical" element={<Technical />} />
+          <Route path="/fundamental" element={<Fundamental />} />
+          <Route path="/strategies" element={<Strategies />} />
+          <Route path="/advanced" element={<Advanced />} />
+        </Routes>
+      </div>
+    </Router>
+  );
+}
+
+export default App;
