@@ -72,6 +72,79 @@ const levelConnections = [
   { from: 'level1', to: 'level2' }
 ];
 
+// Generate space background elements
+const generateStars = (count) => {
+  const stars = [];
+  for (let i = 0; i < count; i++) {
+    const size = Math.random() < 0.6 ? 'small' : Math.random() < 0.9 ? 'medium' : 'large';
+    const twinkle = Math.random() < 0.7;
+    const speed = Math.random() < 0.33 ? 'slow' : Math.random() < 0.66 ? '' : 'fast';
+    
+    stars.push({
+      id: `star-${i}`,
+      top: `${Math.random() * 100}%`,
+      left: `${Math.random() * 100}%`,
+      size,
+      twinkle,
+      speed
+    });
+  }
+  return stars;
+};
+
+const generateParticles = (count) => {
+  const particles = [];
+  for (let i = 0; i < count; i++) {
+    const size = Math.floor(Math.random() * 150) + 50;
+    const speed = Math.random() < 0.33 ? 'float-slow' : Math.random() < 0.66 ? 'float' : 'float-fast';
+    
+    particles.push({
+      id: `particle-${i}`,
+      top: `${Math.random() * 100}%`,
+      left: `${Math.random() * 100}%`,
+      size,
+      speed,
+      delay: Math.random() * 5
+    });
+  }
+  return particles;
+};
+
+// Space background components
+const SpaceBackground = () => {
+  const [stars] = useState(() => generateStars(150));
+  const [particles] = useState(() => generateParticles(10));
+  
+  return (
+    <>
+      <div className="stars">
+        {stars.map(star => (
+          <div
+            key={star.id}
+            className={`star ${star.size} ${star.twinkle ? 'twinkle' : ''} ${star.speed}`}
+            style={{ top: star.top, left: star.left }}
+          />
+        ))}
+      </div>
+      <div className="particles">
+        {particles.map(particle => (
+          <div
+            key={particle.id}
+            className={`particle ${particle.speed}`}
+            style={{ 
+              top: particle.top, 
+              left: particle.left,
+              width: `${particle.size}px`,
+              height: `${particle.size}px`,
+              animationDelay: `${particle.delay}s`
+            }}
+          />
+        ))}
+      </div>
+    </>
+  );
+};
+
 // Homepage component
 const Home = () => {
   const navigate = useNavigate();
@@ -119,7 +192,7 @@ const Home = () => {
       
       <div className="world-map">
         {/* Path connections between levels */}
-        <svg className="level-paths" width="100%" height="100%">
+        <svg className="level-paths" width="100%" height="100%" viewBox="0 0 800 500" preserveAspectRatio="none">
           {levelConnections.map((connection, index) => {
             const isPathUnlocked = progress.unlockedLevels.includes(connection.to);
             return (
@@ -320,6 +393,7 @@ function App() {
   return (
     <Router>
       <div className="app">
+        <SpaceBackground />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/level/:levelId" element={<LevelPage />} />
