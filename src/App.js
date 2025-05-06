@@ -7,6 +7,7 @@ const getUserProgress = () => {
   const savedProgress = localStorage.getItem('tradeLingo_progress');
   return savedProgress ? JSON.parse(savedProgress) : {
     completedLessons: [],
+    quizScores: {},
     unlockedLevels: ['level1']
   };
 };
@@ -20,48 +21,225 @@ const courseStructure = {
   level1: {
     id: 'level1',
     title: 'Trading Basics',
-    icon: 'book',
+    icon: 'chart-line',
     nextLevel: 'level2',
     position: { top: 100, left: 100 },
     lessons: [
       { 
         id: 'basics1',
-        title: "What are Financial Markets?", 
-        description: "Understanding different market types",
-        content: "Financial markets are places where traders buy and sell assets like stocks, bonds, currencies, and commodities. Each market has its own characteristics and trading hours."
+        title: "What is Trading?", 
+        description: "Introduction to financial markets and trading",
+        content: [
+          {
+            type: "text",
+            value: "Trading is the process of buying and selling financial assets with the goal of making a profit. Traders participate in various markets like stocks, forex, cryptocurrencies, and commodities, analyzing price movements to make informed decisions."
+          },
+          {
+            type: "text",
+            value: "Unlike long-term investors who might hold assets for years, traders often operate on shorter timeframes, from minutes to months, trying to capitalize on price fluctuations."
+          },
+          {
+            type: "image",
+            src: "/api/placeholder/600/400",
+            alt: "Trading chart showing buy and sell points",
+            caption: "Example of trading decisions on a price chart"
+          },
+          {
+            type: "text",
+            value: "Trading involves different strategies including day trading (completing all trades within a single day), swing trading (holding positions for several days or weeks), and position trading (holding for weeks or months)."
+          }
+        ],
+        quiz: {
+          title: "Test Your Understanding",
+          questions: [
+            {
+              id: "q1",
+              question: "What is the main goal of trading?",
+              options: [
+                "To own a part of a company long-term",
+                "To make a profit from price movements",
+                "To support businesses you believe in",
+                "To diversify your portfolio"
+              ],
+              correctAnswer: 1
+            },
+            {
+              id: "q2",
+              question: "How does trading differ from long-term investing?",
+              options: [
+                "Trading involves only stocks, while investing involves all assets",
+                "Trading requires more capital than investing",
+                "Trading typically uses shorter timeframes to capitalize on price movements",
+                "Trading is risk-free compared to investing"
+              ],
+              correctAnswer: 2
+            },
+            {
+              id: "q3",
+              question: "Which of the following is NOT a common trading timeframe?",
+              options: [
+                "Day trading",
+                "Swing trading",
+                "Position trading",
+                "Decade trading"
+              ],
+              correctAnswer: 3
+            }
+          ]
+        }
       },
       { 
         id: 'basics2',
-        title: "Assets and Instruments", 
-        description: "Stocks, Forex, Crypto, and more",
-        content: "Different trading instruments include stocks, bonds, forex pairs, cryptocurrencies, and derivatives. Each has unique properties and trading requirements."
-      },
-      { 
-        id: 'basics3',
-        title: "Understanding Charts", 
-        description: "How to read price data",
-        content: "Charts display price movements over time. This lesson covers candlestick charts, line charts, time frames, and basic chart reading."
+        title: "Financial Markets", 
+        description: "Understanding different market types",
+        content: [
+          {
+            type: "text",
+            value: "Financial markets are platforms where traders buy and sell various assets. Each market has its own characteristics, trading hours, and regulations."
+          },
+          {
+            type: "text",
+            value: "The stock market involves trading shares of publicly listed companies. When you buy a stock, you're purchasing a small ownership stake in that company."
+          },
+          {
+            type: "image",
+            src: "/api/placeholder/600/400",
+            alt: "Different financial markets comparison",
+            caption: "Comparison of major financial markets"
+          },
+          {
+            type: "text",
+            value: "The forex (foreign exchange) market is where currencies are traded in pairs, like EUR/USD or GBP/JPY. It's the largest and most liquid financial market in the world."
+          },
+          {
+            type: "text",
+            value: "Cryptocurrency markets operate 24/7 and allow trading of digital currencies like Bitcoin and Ethereum. These markets are relatively new and can be highly volatile."
+          },
+          {
+            type: "text",
+            value: "Commodity markets involve trading raw materials like gold, oil, natural gas, and agricultural products. These are often traded through futures contracts."
+          }
+        ],
+        quiz: {
+          title: "Financial Markets Quiz",
+          questions: [
+            {
+              id: "q1",
+              question: "What are you purchasing when you buy a stock?",
+              options: [
+                "A loan agreement with the company",
+                "A small ownership stake in the company",
+                "The right to manage the company",
+                "A guaranteed dividend payment"
+              ],
+              correctAnswer: 1
+            },
+            {
+              id: "q2",
+              question: "Which financial market is the largest and most liquid in the world?",
+              options: [
+                "Stock market",
+                "Cryptocurrency market",
+                "Forex market",
+                "Commodities market"
+              ],
+              correctAnswer: 2
+            },
+            {
+              id: "q3",
+              question: "Which of the following is true about cryptocurrency markets?",
+              options: [
+                "They operate only during business hours",
+                "They are regulated by central banks",
+                "They are the oldest financial markets",
+                "They operate 24 hours a day, 7 days a week"
+              ],
+              correctAnswer: 3
+            }
+          ]
+        }
       }
     ]
   },
   level2: {
     id: 'level2',
     title: 'Technical Analysis',
-    icon: 'chart-line',
+    icon: 'analytics',
     nextLevel: null, // Last level for now
     position: { top: 250, left: 450 },
     lessons: [
       { 
         id: 'tech1',
-        title: "Support and Resistance", 
-        description: "Finding key price levels",
-        content: "Support and resistance are price levels where markets tend to reverse. Learning to identify these levels is essential for timing entries and exits."
-      },
-      { 
-        id: 'tech2',
-        title: "Trend Lines", 
-        description: "Drawing and using trend lines",
-        content: "Trend lines connect price points and help identify the direction of the market. They can be used to spot potential breakouts or reversals."
+        title: "Chart Types", 
+        description: "Understanding different chart representations",
+        content: [
+          {
+            type: "text",
+            value: "Charts are visual representations of price movements over time. There are several types of charts traders use to analyze markets."
+          },
+          {
+            type: "text",
+            value: "Line charts are the simplest form, showing a single line connecting closing prices. They provide a clean overview of price movement but lack detail about price action within each period."
+          },
+          {
+            type: "image",
+            src: "/api/placeholder/600/400",
+            alt: "Line chart example",
+            caption: "Example of a simple line chart showing price movement"
+          },
+          {
+            type: "text",
+            value: "Candlestick charts show opening, closing, high, and low prices for each time period. They form patterns that traders use to predict future price movements."
+          },
+          {
+            type: "image",
+            src: "/api/placeholder/600/400",
+            alt: "Candlestick chart explained",
+            caption: "Anatomy of a candlestick chart with bullish and bearish candles"
+          },
+          {
+            type: "text",
+            value: "Bar charts (OHLC charts) also display opening, high, low, and closing prices, but in a different format than candlesticks. They use vertical bars with small horizontal lines."
+          }
+        ],
+        quiz: {
+          title: "Chart Types Quiz",
+          questions: [
+            {
+              id: "q1",
+              question: "What information does a line chart typically show?",
+              options: [
+                "Opening, high, low, and closing prices",
+                "Only opening and closing prices",
+                "Only closing prices connected by a line",
+                "Trading volume and price averages"
+              ],
+              correctAnswer: 2
+            },
+            {
+              id: "q2",
+              question: "Which chart type shows opening, closing, high, and low prices in a format that makes patterns easier to identify?",
+              options: [
+                "Point and figure charts",
+                "Candlestick charts",
+                "Line charts",
+                "Scatter plots"
+              ],
+              correctAnswer: 1
+            },
+            {
+              id: "q3",
+              question: "What is a limitation of line charts compared to candlestick charts?",
+              options: [
+                "Line charts cannot show long time periods",
+                "Line charts are more complex to read",
+                "Line charts lack detail about price action within each period",
+                "Line charts cannot be used for technical analysis"
+              ],
+              correctAnswer: 2
+            }
+          ]
+        }
       }
     ]
   }
@@ -241,12 +419,110 @@ const Home = () => {
   );
 };
 
+// Quiz component
+const Quiz = ({ questions, onComplete }) => {
+  const [answers, setAnswers] = useState({});
+  const [submitted, setSubmitted] = useState(false);
+  const [score, setScore] = useState(0);
+
+  const handleAnswerSelect = (questionId, optionIndex) => {
+    if (!submitted) {
+      setAnswers({
+        ...answers,
+        [questionId]: optionIndex
+      });
+    }
+  };
+
+  const handleSubmit = () => {
+    if (Object.keys(answers).length !== questions.length) {
+      alert("Please answer all questions before submitting.");
+      return;
+    }
+
+    let correctCount = 0;
+    questions.forEach(question => {
+      if (answers[question.id] === question.correctAnswer) {
+        correctCount++;
+      }
+    });
+
+    const finalScore = Math.round((correctCount / questions.length) * 100);
+    setScore(finalScore);
+    setSubmitted(true);
+    
+    // Pass score back to parent
+    onComplete(finalScore);
+  };
+
+  const handleTryAgain = () => {
+    setAnswers({});
+    setSubmitted(false);
+    setScore(0);
+  };
+
+  return (
+    <div className="quiz-container">
+      <h3>{submitted ? `Your Score: ${score}%` : "Quiz"}</h3>
+      
+      {questions.map((question, index) => (
+        <div key={question.id} className="quiz-question">
+          <p className="question-text">{`${index + 1}. ${question.question}`}</p>
+          <div className="options-container">
+            {question.options.map((option, optionIndex) => (
+              <div 
+                key={optionIndex}
+                className={`option ${
+                  submitted 
+                    ? optionIndex === question.correctAnswer 
+                      ? "correct" 
+                      : answers[question.id] === optionIndex 
+                        ? "incorrect" 
+                        : "" 
+                    : answers[question.id] === optionIndex 
+                      ? "selected" 
+                      : ""
+                }`}
+                onClick={() => handleAnswerSelect(question.id, optionIndex)}
+              >
+                {option}
+                {submitted && optionIndex === question.correctAnswer && (
+                  <span className="check-icon"><i className="fas fa-check"></i></span>
+                )}
+                {submitted && answers[question.id] === optionIndex && optionIndex !== question.correctAnswer && (
+                  <span className="cross-icon"><i className="fas fa-times"></i></span>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+      
+      <div className="quiz-actions">
+        {!submitted ? (
+          <button className="submit-button" onClick={handleSubmit}>Submit Answers</button>
+        ) : (
+          <div className="post-submit-actions">
+            <button className="try-again-button" onClick={handleTryAgain}>Try Again</button>
+            {score >= 70 && (
+              <button className="continue-button" onClick={() => onComplete(score, true)}>
+                Continue to Next Lesson
+              </button>
+            )}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
 // Level page component
 const LevelPage = () => {
   const navigate = useNavigate();
   const [progress, setProgress] = useState(getUserProgress());
   const [showPopup, setShowPopup] = useState(false);
   const [activeLesson, setActiveLesson] = useState(null);
+  const [showQuiz, setShowQuiz] = useState(false);
   
   // Get level ID from URL
   const pathParts = window.location.pathname.split('/');
@@ -267,18 +543,32 @@ const LevelPage = () => {
     if (previousLessonsCompleted || progress.completedLessons.includes(lesson.id)) {
       setActiveLesson({...lesson, index});
       setShowPopup(true);
+      setShowQuiz(false);
     }
   };
   
   const closePopup = () => {
     setShowPopup(false);
+    setShowQuiz(false);
   };
 
-  const completeLesson = (lessonId) => {
+  const startQuiz = () => {
+    setShowQuiz(true);
+  };
+
+  const handleQuizComplete = (score, continueToNext = false) => {
     const newProgress = { ...progress };
     
-    if (!newProgress.completedLessons.includes(lessonId)) {
-      newProgress.completedLessons.push(lessonId);
+    // Save the quiz score
+    if (!newProgress.quizScores) {
+      newProgress.quizScores = {};
+    }
+    
+    newProgress.quizScores[activeLesson.id] = score;
+    
+    // Mark lesson as completed if score is above 70%
+    if (score >= 70 && !newProgress.completedLessons.includes(activeLesson.id)) {
+      newProgress.completedLessons.push(activeLesson.id);
       
       // Check if all lessons in this level are completed
       const allCompleted = level.lessons.every(lesson => 
@@ -289,12 +579,17 @@ const LevelPage = () => {
       if (allCompleted && level.nextLevel && !newProgress.unlockedLevels.includes(level.nextLevel)) {
         newProgress.unlockedLevels.push(level.nextLevel);
       }
-      
-      setProgress(newProgress);
-      saveUserProgress(newProgress);
     }
     
-    closePopup();
+    setProgress(newProgress);
+    saveUserProgress(newProgress);
+    
+    if (continueToNext && activeLesson.index < level.lessons.length - 1) {
+      // Move to the next lesson
+      const nextLesson = level.lessons[activeLesson.index + 1];
+      setActiveLesson({...nextLesson, index: activeLesson.index + 1});
+      setShowQuiz(false);
+    }
   };
   
   const isLessonAvailable = (index) => {
@@ -319,6 +614,7 @@ const LevelPage = () => {
         {level.lessons.map((lesson, index) => {
           const isCompleted = progress.completedLessons.includes(lesson.id);
           const isAvailable = isLessonAvailable(index);
+          const quizScore = progress.quizScores && progress.quizScores[lesson.id];
           
           return (
             <div 
@@ -330,6 +626,11 @@ const LevelPage = () => {
               <div className="lesson-details">
                 <h3>{lesson.title}</h3>
                 <p>{lesson.description}</p>
+                {quizScore !== undefined && (
+                  <div className="quiz-score">
+                    Quiz Score: {quizScore}%
+                  </div>
+                )}
               </div>
               <div className="lesson-status">
                 {isCompleted ? (
@@ -355,19 +656,48 @@ const LevelPage = () => {
               </button>
             </div>
             <div className="popup-body">
-              <p>{activeLesson.content}</p>
-              {progress.completedLessons.includes(activeLesson.id) ? (
-                <div className="completion-badge">
-                  <i className="fas fa-trophy"></i>
-                  <p>Completed</p>
-                </div>
+              {!showQuiz ? (
+                <>
+                  {activeLesson.content.map((item, index) => {
+                    if (item.type === "text") {
+                      return <p key={index}>{item.value}</p>;
+                    } else if (item.type === "image") {
+                      return (
+                        <div key={index} className="lesson-image-container">
+                          <img 
+                            src={item.src} 
+                            alt={item.alt} 
+                            className="lesson-image" 
+                          />
+                          {item.caption && (
+                            <p className="image-caption">{item.caption}</p>
+                          )}
+                        </div>
+                      );
+                    }
+                    return null;
+                  })}
+                  <div className="lesson-actions">
+                    {progress.completedLessons.includes(activeLesson.id) ? (
+                      <div className="completion-badge">
+                        <i className="fas fa-trophy"></i>
+                        <p>Completed</p>
+                      </div>
+                    ) : (
+                      <button 
+                        className="start-quiz-button"
+                        onClick={startQuiz}
+                      >
+                        Start Quiz
+                      </button>
+                    )}
+                  </div>
+                </>
               ) : (
-                <button 
-                  className="mark-complete-button"
-                  onClick={() => completeLesson(activeLesson.id)}
-                >
-                  Mark as Complete
-                </button>
+                <Quiz 
+                  questions={activeLesson.quiz.questions} 
+                  onComplete={handleQuizComplete} 
+                />
               )}
             </div>
           </div>
@@ -384,6 +714,7 @@ function App() {
     if (!localStorage.getItem('tradeLingo_progress')) {
       const initialProgress = {
         completedLessons: [],
+        quizScores: {},
         unlockedLevels: ['level1']
       };
       localStorage.setItem('tradeLingo_progress', JSON.stringify(initialProgress));
