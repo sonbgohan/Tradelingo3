@@ -22,6 +22,7 @@ const courseStructure = {
     title: 'Trading Basics',
     icon: 'book',
     nextLevel: 'level2',
+    position: { top: 100, left: 100 },
     lessons: [
       { 
         id: 'basics1',
@@ -48,6 +49,7 @@ const courseStructure = {
     title: 'Technical Analysis',
     icon: 'chart-line',
     nextLevel: null, // Last level for now
+    position: { top: 250, left: 450 },
     lessons: [
       { 
         id: 'tech1',
@@ -64,6 +66,11 @@ const courseStructure = {
     ]
   }
 };
+
+// Define the connections between levels
+const levelConnections = [
+  { from: 'level1', to: 'level2' }
+];
 
 // Homepage component
 const Home = () => {
@@ -89,6 +96,20 @@ const Home = () => {
     };
   };
 
+  const getLevelConnectionPath = (from, to) => {
+    const fromLevel = courseStructure[from];
+    const toLevel = courseStructure[to];
+    
+    // Calculate the center points of each level node
+    const fromCenterX = fromLevel.position.left + 125; // Half of the width
+    const fromCenterY = fromLevel.position.top + 50;  // Half of the height
+    
+    const toCenterX = toLevel.position.left + 125;
+    const toCenterY = toLevel.position.top + 50;
+    
+    return `M${fromCenterX},${fromCenterY} Q${(fromCenterX + toCenterX) / 2},${(fromCenterY + toCenterY) / 2 - 50} ${toCenterX},${toCenterY}`;
+  };
+
   return (
     <div className="home-container">
       <header>
@@ -97,7 +118,26 @@ const Home = () => {
       </header>
       
       <div className="world-map">
-        {Object.keys(courseStructure).map((levelId, index) => {
+        {/* Path connections between levels */}
+        <svg className="level-paths" width="100%" height="100%">
+          {levelConnections.map((connection, index) => {
+            const isPathUnlocked = progress.unlockedLevels.includes(connection.to);
+            return (
+              <path 
+                key={index} 
+                d={getLevelConnectionPath(connection.from, connection.to)} 
+                className="level-path" 
+                style={{ 
+                  opacity: isPathUnlocked ? 1 : 0.4,
+                  strokeDasharray: isPathUnlocked ? "8" : "8",
+                  animation: isPathUnlocked ? "dash 30s linear infinite" : "none"
+                }}
+              />
+            );
+          })}
+        </svg>
+        
+        {Object.keys(courseStructure).map((levelId) => {
           const level = courseStructure[levelId];
           const isUnlocked = progress.unlockedLevels.includes(levelId);
           const levelProgress = getLevelProgress(levelId);
@@ -107,7 +147,7 @@ const Home = () => {
               key={levelId} 
               className={`level-node ${isUnlocked ? 'unlocked' : 'locked'}`}
               onClick={() => isUnlocked && handleNavigation(levelId)}
-              style={{ top: `${100 + (index * 100)}px`, left: `${150 + (index * 100)}px` }}
+              style={{ top: `${level.position.top}px`, left: `${level.position.left}px` }}
             >
               <div className="level-icon">
                 <i className={`fas fa-${level.icon}`}></i>
@@ -123,11 +163,6 @@ const Home = () => {
             </div>
           );
         })}
-        
-        {/* Path connections between levels */}
-        <svg className="level-paths">
-          <path d="M250,150 L350,250" className="level-path" />
-        </svg>
       </div>
     </div>
   );
