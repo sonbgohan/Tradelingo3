@@ -676,6 +676,200 @@ const levelConnections = [
   { from: 'level1', to: 'level2' }
 ];
 
+// Functie voor het transformeren van levels naar planeten
+const transformLevelsToPlanets = () => {
+  const levelNodes = document.querySelectorAll('.level-node');
+  
+  levelNodes.forEach(node => {
+    // Controleer of de node al is getransformeerd
+    if (node.querySelector('.planet-container')) return;
+    
+    // Haal bestaande elementen op
+    const levelIcon = node.querySelector('.level-icon');
+    const levelInfo = node.querySelector('.level-info');
+    
+    if (!levelIcon) return; // Skip als icon niet bestaat
+    
+    // Haal voortgangspercentage op
+    const progressBar = node.querySelector('.progress-bar .progress');
+    const progressStyle = progressBar ? progressBar.style.width : '0%';
+    const progressPercentage = parseInt(progressStyle) || 0;
+    
+    // Maak planeet container
+    const planetContainer = document.createElement('div');
+    planetContainer.className = 'planet-container';
+    
+    // Maak planeet
+    const planet = document.createElement('div');
+    planet.className = 'planet';
+    
+    // Voeg voortgangsindicator toe in het midden van de planeet
+    const planetProgress = document.createElement('div');
+    planetProgress.className = 'planet-progress';
+    
+    const progressText = document.createElement('div');
+    progressText.className = 'progress-text';
+    progressText.textContent = `${progressPercentage}%`;
+    
+    planetProgress.appendChild(progressText);
+    planet.appendChild(planetProgress);
+    
+    // Voeg willekeurige planeetkenmerken toe (kraters)
+    for (let i = 0; i < 8; i++) {
+      const feature = document.createElement('div');
+      feature.className = 'planet-feature';
+      
+      // Willekeurige positie binnen de planeet
+      feature.style.left = `${15 + Math.random() * 70}%`;
+      feature.style.top = `${15 + Math.random() * 70}%`;
+      
+      // Willekeurige grootte
+      const featureSize = 3 + Math.random() * 12;
+      feature.style.width = `${featureSize}px`;
+      feature.style.height = `${featureSize}px`;
+      
+      // Willekeurige transparantie
+      feature.style.opacity = 0.1 + Math.random() * 0.3;
+      
+      planet.appendChild(feature);
+    }
+    
+    // Voeg gloed-effect toe
+    const planetGlow = document.createElement('div');
+    planetGlow.className = 'planet-glow';
+    
+    // Plaats alles samen
+    planetContainer.appendChild(planet);
+    planetContainer.appendChild(planetGlow);
+    
+    // Vervang level icon met planeet
+    node.replaceChild(planetContainer, levelIcon);
+    
+    // Pas de layout aan naar verticaal
+    node.style.flexDirection = 'column';
+    node.style.alignItems = 'center';
+    
+    // Pas text alignment aan
+    if (levelInfo) {
+      levelInfo.style.textAlign = 'center';
+    }
+  });
+};
+
+// Functie om raket toe te voegen op pad tussen levels
+const addRocketToPath = () => {
+  // Controleer of de raket al bestaat
+  if (document.querySelector('.rocket')) return;
+  
+  const paths = document.querySelectorAll('.level-path');
+  paths.forEach((path, index) => {
+    // Controleer of pad actief is (niet uitgegrijsd)
+    const isPathActive = path.style.opacity !== '0.4';
+    if (!isPathActive) return;
+    
+    // Maak raket element
+    const rocket = document.createElement('div');
+    rocket.className = 'rocket';
+    rocket.id = `rocket-${index}`;
+    
+    const rocketBody = document.createElement('div');
+    rocketBody.className = 'rocket-body';
+    
+    const rocketShape = document.createElement('div');
+    rocketShape.className = 'rocket-shape';
+    
+    const rocketWindow = document.createElement('div');
+    rocketWindow.className = 'rocket-window';
+    
+    const rocketFlame = document.createElement('div');
+    rocketFlame.className = 'rocket-flame';
+    
+    rocketBody.appendChild(rocketShape);
+    rocketBody.appendChild(rocketWindow);
+    rocketBody.appendChild(rocketFlame);
+    rocket.appendChild(rocketBody);
+    
+    // Voeg raket toe aan de DOM
+    document.querySelector('.world-map').appendChild(rocket);
+    
+    // Beweeg raket langs pad
+    animateRocketAlongPath(rocket, path, index);
+  });
+};
+
+// Functie voor raket animatie langs het pad
+const animateRocketAlongPath = (rocket, path, pathIndex) => {
+  let progress = 0;
+  const speed = 0.5; // percentage per frame
+  
+  // Bereken pad positie
+  const pathRect = path.getBoundingClientRect();
+  const mapRect = document.querySelector('.world-map').getBoundingClientRect();
+  
+  // Start en eindpunten van het pad
+  const startPoint = {
+    x: pathRect.left - mapRect.left,
+    y: pathRect.top - mapRect.top
+  };
+  
+  const endPoint = {
+    x: pathRect.right - mapRect.left,
+    y: pathRect.bottom - mapRect.top
+  };
+  
+  // Controlpunt voor de kromming (voor quadratische bezier curve)
+  const controlPoint = {
+    x: (startPoint.x + endPoint.x) / 2,
+    y: (startPoint.y + endPoint.y) / 2 - 50
+  };
+  
+  // Functie om een punt op een quadratische bezier curve te berekenen
+  const getPointOnQuadraticCurve = (t, p0, p1, p2) => {
+    const x = (1 - t) * (1 - t) * p0.x + 2 * (1 - t) * t * p1.x + t * t * p2.x;
+    const y = (1 - t) * (1 - t) * p0.y + 2 * (1 - t) * t * p1.y + t * t * p2.y;
+    return { x, y };
+  };
+  
+  // Functie om hoek te berekenen voor raket rotatie
+  const getAngle = (p1, p2) => {
+    return Math.atan2(p2.y - p1.y, p2.x - p1.x) * 180 / Math.PI;
+  };
+  
+  // Animatie functie
+  function animate() {
+    // Update voortgang
+    progress += speed;
+    if (progress > 100) progress = 0;
+    
+    const t = progress / 100;
+    const position = getPointOnQuadraticCurve(t, startPoint, controlPoint, endPoint);
+    
+    // Bereken positie iets verder op het pad voor de rotatie
+    const nextT = Math.min(t + 0.01, 1);
+    const nextPosition = getPointOnQuadraticCurve(nextT, startPoint, controlPoint, endPoint);
+    
+    // Bereken rotatie hoek
+    const angle = getAngle(position, nextPosition);
+    
+    // Pas positie en rotatie toe
+    rocket.style.transform = `translate(${position.x}px, ${position.y}px) rotate(${angle + 90}deg)`;
+    
+    // Vervolg animatie
+    requestAnimationFrame(animate);
+  }
+  
+  // Start animatie
+  requestAnimationFrame(animate);
+};
+
+// Functie om kosmische elementen toe te passen
+const applyCosmicElements = () => {
+  setTimeout(() => {
+    transformLevelsToPlanets();
+    setTimeout(addRocketToPath, 500);
+  }, 500);
+};
+
 // Generate space background elements
 const generateStars = (count) => {
   const stars = [];
@@ -754,6 +948,11 @@ const Home = () => {
   const navigate = useNavigate();
   const [progress, setProgress] = useState(getUserProgress());
   
+  // Voeg kosmische elementen toe na render
+  useEffect(() => {
+    applyCosmicElements();
+  }, []);
+  
   const handleNavigation = (levelId) => {
     if (progress.unlockedLevels.includes(levelId)) {
       navigate(`/level/${levelId}`);
@@ -790,8 +989,8 @@ const Home = () => {
   return (
     <div className="home-container">
       <header>
-        <h1>TradeLingo</h1>
-        <p>Learn trading step by step</p>
+        <h1>TRADELINGO</h1>
+        <p>Master trading in a cosmic journey through space</p>
       </header>
       
       <div className="world-map">
@@ -949,6 +1148,11 @@ const LevelPage = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [activeLesson, setActiveLesson] = useState(null);
   const [showQuiz, setShowQuiz] = useState(false);
+  
+  // Voeg kosmische elementen toe na render
+  useEffect(() => {
+    applyCosmicElements();
+  }, []);
   
   // Get level ID from URL
   const pathParts = window.location.pathname.split('/');
