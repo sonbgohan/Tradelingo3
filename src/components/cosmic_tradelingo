@@ -2,7 +2,7 @@
 import React from 'react';
 
 // TradeLingo logo component - kan in de header worden gebruikt
-export const TradeLingoLogo = () => {
+const TradeLingoLogo = () => {
   return (
     <svg 
       viewBox="0 0 500 120" 
@@ -464,7 +464,7 @@ const replaceTitleWithLogo = () => {
 };
 
 // Functie om kosmische elementen toe te passen
-export const applyCosmicElements = () => {
+const applyCosmicElements = () => {
   console.log('Toepassen van kosmische elementen...');
   
   // Stapsgewijs uitvoeren met geschikte vertragingen
@@ -485,7 +485,7 @@ export const applyCosmicElements = () => {
 };
 
 // Functie om kosmische elementen te initialiseren (wordt geëxporteerd voor gebruik in App.js)
-export const initCosmicElements = () => {
+const initCosmicElements = () => {
   console.log('Initialiseren van kosmische elementen...');
   
   // Controleer eerst of de DOM volledig is geladen
@@ -503,3 +503,13 @@ export const initCosmicElements = () => {
     setTimeout(applyCosmicElements, 1000);
   });
 };
+
+// BELANGRIJKE WIJZIGING: Maak een object met alle functies en exporteer dat als default
+const cosmicModule = {
+  TradeLingoLogo,
+  initCosmicElements,
+  applyCosmicElements
+};
+
+// Exporteer het gehele object als default export
+export default cosmicModule;
