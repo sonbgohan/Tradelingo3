@@ -1,6 +1,353 @@
-import React, { useState, useEffect } from 'react';
+<div className="level-icon">
+                <i className={`fas fa-${level.icon}`}></i>
+              </div>
+              <div className="level-info">
+                <h2>{level.title}</h2>
+                <div className="progress-bar">
+                  <div className="progress" style={{ width: `${levelProgress.percentage}%` }}></div>
+                </div>
+                <p>{levelProgress.completed}/{levelProgress.total}</p>
+              </div>
+              {!isUnlocked && <div className="lock-overlay"><i className="fas fa-lock"></i></div>}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
+// Quiz component
+const Quiz = ({ questions, onComplete }) => {
+  const [answers, setAnswers] = useState({});
+  const [submitted, setSubmitted] = useState(false);
+  const [score, setScore] = useState(0);
+
+  const handleAnswerSelect = (questionId, optionIndex) => {
+    if (!submitted) {
+      setAnswers({
+        ...answers,
+        [questionId]: optionIndex
+      });
+    }
+  };
+
+  const handleSubmit = () => {
+    if (Object.keys(answers).length !== questions.length) {
+      alert("Please answer all questions before submitting.");
+      return;
+    }
+
+    let correctCount = 0;
+    questions.forEach(question => {
+      if (answers[question.id] === question.correctAnswer) {
+        correctCount++;
+      }
+    });
+
+    const finalScore = Math.round((correctCount / questions.length) * 100);
+    setScore(finalScore);
+    setSubmitted(true);
+    
+    // Pass score back to parent
+    onComplete(finalScore);
+  };
+
+  const handleTryAgain = () => {
+    setAnswers({});
+    setSubmitted(false);
+    setScore(0);
+  };
+
+  return (
+    <div className="quiz-container">
+      <h3>{submitted ? `Your Score: ${score}%` : "Quiz"}</h3>
+      
+      {questions.map((question, index) => (
+        <div key={question.id} className="quiz-question">
+          <p className="question-text">{`${index + 1}. ${question.question}`}</p>
+          <div className="options-container">
+            {question.options.map((option, optionIndex) => (
+              <div 
+                key={optionIndex}
+                className={`option ${
+                  submitted 
+                    ? optionIndex === question.correctAnswer 
+                      ? "correct" 
+                      : answers[question.id] === optionIndex 
+                        ? "incorrect" 
+                        : "" 
+                    : answers[question.id] === optionIndex 
+                      ? "selected" 
+                      : ""
+                }`}
+                onClick={() => handleAnswerSelect(question.id, optionIndex)}
+              >
+                {option}
+                {submitted && optionIndex === question.correctAnswer && (
+                  <span className="check-icon"><i className="fas fa-check"></i></span>
+                )}
+                {submitted && answers[question.id] === optionIndex && optionIndex !== question.correctAnswer && (
+                  <span className="cross-icon"><i className="fas fa-times"></i></span>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+      
+      <div className="quiz-actions">
+        {!submitted ? (
+          <button className="submit-button" onClick={handleSubmit}>Submit Answers</button>
+        ) : (
+          <div className="post-submit-actions">
+            <button className="try-again-button" onClick={handleTryAgain}>Try Again</button>
+            {score >= 70 && (
+              <button className="continue-button" onClick={() => onComplete(score, true)}>
+                Continue to Next Lesson
+              </button>
+            )}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+// Level page component
+const LevelPage = () => {
+  const navigate = useNavigate();
+  const [progress, setProgress] = useState(getUserProgress());
+  const [showPopup, setShowPopup] = useState(false);
+  const [activeLesson, setActiveLesson] = useState(null);
+  const [showQuiz, setShowQuiz] = useState(false);
+  
+  // Effect voor het toepassen van kosmische elementen
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      initCosmicElements();
+    }, 300);
+    
+    return () => clearTimeout(timeoutId);
+  }, []);
+  
+  // Get level ID from URL
+  const pathParts = window.location.pathname.split('/');
+  const levelId = pathParts[pathParts.length - 1];
+  const level = courseStructure[levelId];
+  
+  // Redirect if level doesn't exist or is not unlocked
+  if (!level || !progress.unlockedLevels.includes(levelId)) {
+    return <Navigate to="/" />;
+  }
+  
+  const openLesson = (lesson, index) => {
+    // Check if previous lessons are completed
+    const previousLessonsCompleted = level.lessons
+      .slice(0, index)
+      .every(prevLesson => progress.completedLessons.includes(prevLesson.id));
+      
+    if (previousLessonsCompleted || progress.completedLessons.includes(lesson.id)) {
+      setActiveLesson({...lesson, index});
+      setShowPopup(true);
+      setShowQuiz(false);
+    }
+  };
+  
+  const closePopup = () => {
+    setShowPopup(false);
+    setShowQuiz(false);
+  };
+
+  const startQuiz = () => {
+    setShowQuiz(true);
+  };
+
+  const handleQuizComplete = (score, continueToNext = false) => {
+    const newProgress = { ...progress };
+    
+    // Save the quiz score
+    if (!newProgress.quizScores) {
+      newProgress.quizScores = {};
+    }
+    
+    newProgress.quizScores[activeLesson.id] = score;
+    
+    // Mark lesson as completed if score is above 70%
+    if (score >= 70 && !newProgress.completedLessons.includes(activeLesson.id)) {
+      newProgress.completedLessons.push(activeLesson.id);
+      
+      // Check if all lessons in this level are completed
+      const allCompleted = level.lessons.every(lesson => 
+        newProgress.completedLessons.includes(lesson.id)
+      );
+      
+      // Unlock next level if exists
+      if (allCompleted && level.nextLevel && !newProgress.unlockedLevels.includes(level.nextLevel)) {
+        newProgress.unlockedLevels.push(level.nextLevel);
+      }
+    }
+    
+    setProgress(newProgress);
+    saveUserProgress(newProgress);
+    
+    if (continueToNext && activeLesson.index < level.lessons.length - 1) {
+      // Move to the next lesson
+      const nextLesson = level.lessons[activeLesson.index + 1];
+      setActiveLesson({...nextLesson, index: activeLesson.index + 1});
+      setShowQuiz(false);
+    }
+  };
+  
+  const isLessonAvailable = (index) => {
+    if (index === 0) return true;
+    
+    // Check if all previous lessons are completed
+    return level.lessons
+      .slice(0, index)
+      .every(lesson => progress.completedLessons.includes(lesson.id));
+  };
+  
+  return (
+    <div className="level-page">
+      <header>
+        <Link to="/" className="back-button">
+          <i className="fas fa-arrow-left"></i>
+        </Link>
+        <h1>{level.title} <i className={`fas fa-${level.icon}`}></i></h1>
+      </header>
+      
+      <div className="lesson-list">
+        {level.lessons.map((lesson, index) => {
+          const isCompleted = progress.completedLessons.includes(lesson.id);
+          const isAvailable = isLessonAvailable(index);
+          const quizScore = progress.quizScores && progress.quizScores[lesson.id];
+          
+          return (
+            <div 
+              key={lesson.id} 
+              className={`lesson-card ${isCompleted ? 'completed' : ''} ${!isAvailable ? 'locked' : ''}`}
+              onClick={() => isAvailable && openLesson(lesson, index)}
+            >
+              <div className="lesson-number">{index + 1}</div>
+              <div className="lesson-details">
+                <h3>{lesson.title}</h3>
+                <p>{lesson.description}</p>
+                {quizScore !== undefined && (
+                  <div className="quiz-score">
+                    Quiz Score: {quizScore}%
+                  </div>
+                )}
+              </div>
+              <div className="lesson-status">
+                {isCompleted ? (
+                  <i className="fas fa-check-circle"></i>
+                ) : !isAvailable ? (
+                  <i className="fas fa-lock"></i>
+                ) : (
+                  <i className="fas fa-circle-notch"></i>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      
+      {showPopup && activeLesson && (
+        <div className="lesson-popup">
+          <div className="popup-content">
+            <div className="popup-header">
+              <h2>{activeLesson.title}</h2>
+              <button className="close-button" onClick={closePopup}>
+                <i className="fas fa-times"></i>
+              </button>
+            </div>
+            <div className="popup-body">
+              {!showQuiz ? (
+                <>
+                  {activeLesson.content.map((item, index) => {
+                    if (item.type === "text") {
+                      return <p key={index}>{item.value}</p>;
+                    } else if (item.type === "image") {
+                      return (
+                        <div key={index} className="lesson-image-container">
+                          <img 
+                            src={item.src} 
+                            alt={item.alt} 
+                            className="lesson-image" 
+                          />
+                          {item.caption && (
+                            <p className="image-caption">{item.caption}</p>
+                          )}
+                        </div>
+                      );
+                    }
+                    return null;
+                  })}
+                  <div className="lesson-actions">
+                    {progress.completedLessons.includes(activeLesson.id) ? (
+                      <div className="completion-badge">
+                        <i className="fas fa-trophy"></i>
+                        <p>Completed</p>
+                      </div>
+                    ) : (
+                      <button 
+                        className="start-quiz-button"
+                        onClick={startQuiz}
+                      >
+                        Start Quiz
+                      </button>
+                    )}
+                  </div>
+                </>
+              ) : (
+                <Quiz 
+                  questions={activeLesson.quiz.questions} 
+                  onComplete={handleQuizComplete} 
+                />
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+// Main App component
+function App() {
+  // Initialize progress if not already in localStorage
+  useEffect(() => {
+    if (!localStorage.getItem('tradeLingo_progress')) {
+      const initialProgress = {
+        completedLessons: [],
+        quizScores: {},
+        unlockedLevels: ['level1']
+      };
+      localStorage.setItem('tradeLingo_progress', JSON.stringify(initialProgress));
+    }
+  }, []);
+
+  return (
+    <Router>
+      <div className="app">
+        <SpaceBackground />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/level/:levelId" element={<LevelPage />} />
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
+      </div>
+    </Router>
+  );
+}
+
+export default App;import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate, Navigate } from 'react-router-dom';
 import './App.css';
+
+// Import de kosmische elementen
+import { initCosmicElements } from './components/cosmic-tradelingo';
 
 // Track user progress in localStorage
 const getUserProgress = () => {
@@ -676,200 +1023,6 @@ const levelConnections = [
   { from: 'level1', to: 'level2' }
 ];
 
-// Functie voor het transformeren van levels naar planeten
-const transformLevelsToPlanets = () => {
-  const levelNodes = document.querySelectorAll('.level-node');
-  
-  levelNodes.forEach(node => {
-    // Controleer of de node al is getransformeerd
-    if (node.querySelector('.planet-container')) return;
-    
-    // Haal bestaande elementen op
-    const levelIcon = node.querySelector('.level-icon');
-    const levelInfo = node.querySelector('.level-info');
-    
-    if (!levelIcon) return; // Skip als icon niet bestaat
-    
-    // Haal voortgangspercentage op
-    const progressBar = node.querySelector('.progress-bar .progress');
-    const progressStyle = progressBar ? progressBar.style.width : '0%';
-    const progressPercentage = parseInt(progressStyle) || 0;
-    
-    // Maak planeet container
-    const planetContainer = document.createElement('div');
-    planetContainer.className = 'planet-container';
-    
-    // Maak planeet
-    const planet = document.createElement('div');
-    planet.className = 'planet';
-    
-    // Voeg voortgangsindicator toe in het midden van de planeet
-    const planetProgress = document.createElement('div');
-    planetProgress.className = 'planet-progress';
-    
-    const progressText = document.createElement('div');
-    progressText.className = 'progress-text';
-    progressText.textContent = `${progressPercentage}%`;
-    
-    planetProgress.appendChild(progressText);
-    planet.appendChild(planetProgress);
-    
-    // Voeg willekeurige planeetkenmerken toe (kraters)
-    for (let i = 0; i < 8; i++) {
-      const feature = document.createElement('div');
-      feature.className = 'planet-feature';
-      
-      // Willekeurige positie binnen de planeet
-      feature.style.left = `${15 + Math.random() * 70}%`;
-      feature.style.top = `${15 + Math.random() * 70}%`;
-      
-      // Willekeurige grootte
-      const featureSize = 3 + Math.random() * 12;
-      feature.style.width = `${featureSize}px`;
-      feature.style.height = `${featureSize}px`;
-      
-      // Willekeurige transparantie
-      feature.style.opacity = 0.1 + Math.random() * 0.3;
-      
-      planet.appendChild(feature);
-    }
-    
-    // Voeg gloed-effect toe
-    const planetGlow = document.createElement('div');
-    planetGlow.className = 'planet-glow';
-    
-    // Plaats alles samen
-    planetContainer.appendChild(planet);
-    planetContainer.appendChild(planetGlow);
-    
-    // Vervang level icon met planeet
-    node.replaceChild(planetContainer, levelIcon);
-    
-    // Pas de layout aan naar verticaal
-    node.style.flexDirection = 'column';
-    node.style.alignItems = 'center';
-    
-    // Pas text alignment aan
-    if (levelInfo) {
-      levelInfo.style.textAlign = 'center';
-    }
-  });
-};
-
-// Functie om raket toe te voegen op pad tussen levels
-const addRocketToPath = () => {
-  // Controleer of de raket al bestaat
-  if (document.querySelector('.rocket')) return;
-  
-  const paths = document.querySelectorAll('.level-path');
-  paths.forEach((path, index) => {
-    // Controleer of pad actief is (niet uitgegrijsd)
-    const isPathActive = path.style.opacity !== '0.4';
-    if (!isPathActive) return;
-    
-    // Maak raket element
-    const rocket = document.createElement('div');
-    rocket.className = 'rocket';
-    rocket.id = `rocket-${index}`;
-    
-    const rocketBody = document.createElement('div');
-    rocketBody.className = 'rocket-body';
-    
-    const rocketShape = document.createElement('div');
-    rocketShape.className = 'rocket-shape';
-    
-    const rocketWindow = document.createElement('div');
-    rocketWindow.className = 'rocket-window';
-    
-    const rocketFlame = document.createElement('div');
-    rocketFlame.className = 'rocket-flame';
-    
-    rocketBody.appendChild(rocketShape);
-    rocketBody.appendChild(rocketWindow);
-    rocketBody.appendChild(rocketFlame);
-    rocket.appendChild(rocketBody);
-    
-    // Voeg raket toe aan de DOM
-    document.querySelector('.world-map').appendChild(rocket);
-    
-    // Beweeg raket langs pad
-    animateRocketAlongPath(rocket, path, index);
-  });
-};
-
-// Functie voor raket animatie langs het pad
-const animateRocketAlongPath = (rocket, path, pathIndex) => {
-  let progress = 0;
-  const speed = 0.5; // percentage per frame
-  
-  // Bereken pad positie
-  const pathRect = path.getBoundingClientRect();
-  const mapRect = document.querySelector('.world-map').getBoundingClientRect();
-  
-  // Start en eindpunten van het pad
-  const startPoint = {
-    x: pathRect.left - mapRect.left,
-    y: pathRect.top - mapRect.top
-  };
-  
-  const endPoint = {
-    x: pathRect.right - mapRect.left,
-    y: pathRect.bottom - mapRect.top
-  };
-  
-  // Controlpunt voor de kromming (voor quadratische bezier curve)
-  const controlPoint = {
-    x: (startPoint.x + endPoint.x) / 2,
-    y: (startPoint.y + endPoint.y) / 2 - 50
-  };
-  
-  // Functie om een punt op een quadratische bezier curve te berekenen
-  const getPointOnQuadraticCurve = (t, p0, p1, p2) => {
-    const x = (1 - t) * (1 - t) * p0.x + 2 * (1 - t) * t * p1.x + t * t * p2.x;
-    const y = (1 - t) * (1 - t) * p0.y + 2 * (1 - t) * t * p1.y + t * t * p2.y;
-    return { x, y };
-  };
-  
-  // Functie om hoek te berekenen voor raket rotatie
-  const getAngle = (p1, p2) => {
-    return Math.atan2(p2.y - p1.y, p2.x - p1.x) * 180 / Math.PI;
-  };
-  
-  // Animatie functie
-  function animate() {
-    // Update voortgang
-    progress += speed;
-    if (progress > 100) progress = 0;
-    
-    const t = progress / 100;
-    const position = getPointOnQuadraticCurve(t, startPoint, controlPoint, endPoint);
-    
-    // Bereken positie iets verder op het pad voor de rotatie
-    const nextT = Math.min(t + 0.01, 1);
-    const nextPosition = getPointOnQuadraticCurve(nextT, startPoint, controlPoint, endPoint);
-    
-    // Bereken rotatie hoek
-    const angle = getAngle(position, nextPosition);
-    
-    // Pas positie en rotatie toe
-    rocket.style.transform = `translate(${position.x}px, ${position.y}px) rotate(${angle + 90}deg)`;
-    
-    // Vervolg animatie
-    requestAnimationFrame(animate);
-  }
-  
-  // Start animatie
-  requestAnimationFrame(animate);
-};
-
-// Functie om kosmische elementen toe te passen
-const applyCosmicElements = () => {
-  setTimeout(() => {
-    transformLevelsToPlanets();
-    setTimeout(addRocketToPath, 500);
-  }, 500);
-};
-
 // Generate space background elements
 const generateStars = (count) => {
   const stars = [];
@@ -948,9 +1101,14 @@ const Home = () => {
   const navigate = useNavigate();
   const [progress, setProgress] = useState(getUserProgress());
   
-  // Voeg kosmische elementen toe na render
+  // Effect voor het toepassen van kosmische elementen
   useEffect(() => {
-    applyCosmicElements();
+    // Initialiseer kosmische elementen na eerste render
+    const timeoutId = setTimeout(() => {
+      initCosmicElements();
+    }, 300);
+    
+    return () => clearTimeout(timeoutId);
   }, []);
   
   const handleNavigation = (levelId) => {
@@ -1025,344 +1183,3 @@ const Home = () => {
               onClick={() => isUnlocked && handleNavigation(levelId)}
               style={{ top: `${level.position.top}px`, left: `${level.position.left}px` }}
             >
-              <div className="level-icon">
-                <i className={`fas fa-${level.icon}`}></i>
-              </div>
-              <div className="level-info">
-                <h2>{level.title}</h2>
-                <div className="progress-bar">
-                  <div className="progress" style={{ width: `${levelProgress.percentage}%` }}></div>
-                </div>
-                <p>{levelProgress.completed}/{levelProgress.total}</p>
-              </div>
-              {!isUnlocked && <div className="lock-overlay"><i className="fas fa-lock"></i></div>}
-            </div>
-          );
-        })}
-      </div>
-    </div>
-  );
-};
-
-// Quiz component
-const Quiz = ({ questions, onComplete }) => {
-  const [answers, setAnswers] = useState({});
-  const [submitted, setSubmitted] = useState(false);
-  const [score, setScore] = useState(0);
-
-  const handleAnswerSelect = (questionId, optionIndex) => {
-    if (!submitted) {
-      setAnswers({
-        ...answers,
-        [questionId]: optionIndex
-      });
-    }
-  };
-
-  const handleSubmit = () => {
-    if (Object.keys(answers).length !== questions.length) {
-      alert("Please answer all questions before submitting.");
-      return;
-    }
-
-    let correctCount = 0;
-    questions.forEach(question => {
-      if (answers[question.id] === question.correctAnswer) {
-        correctCount++;
-      }
-    });
-
-    const finalScore = Math.round((correctCount / questions.length) * 100);
-    setScore(finalScore);
-    setSubmitted(true);
-    
-    // Pass score back to parent
-    onComplete(finalScore);
-  };
-
-  const handleTryAgain = () => {
-    setAnswers({});
-    setSubmitted(false);
-    setScore(0);
-  };
-
-  return (
-    <div className="quiz-container">
-      <h3>{submitted ? `Your Score: ${score}%` : "Quiz"}</h3>
-      
-      {questions.map((question, index) => (
-        <div key={question.id} className="quiz-question">
-          <p className="question-text">{`${index + 1}. ${question.question}`}</p>
-          <div className="options-container">
-            {question.options.map((option, optionIndex) => (
-              <div 
-                key={optionIndex}
-                className={`option ${
-                  submitted 
-                    ? optionIndex === question.correctAnswer 
-                      ? "correct" 
-                      : answers[question.id] === optionIndex 
-                        ? "incorrect" 
-                        : "" 
-                    : answers[question.id] === optionIndex 
-                      ? "selected" 
-                      : ""
-                }`}
-                onClick={() => handleAnswerSelect(question.id, optionIndex)}
-              >
-                {option}
-                {submitted && optionIndex === question.correctAnswer && (
-                  <span className="check-icon"><i className="fas fa-check"></i></span>
-                )}
-                {submitted && answers[question.id] === optionIndex && optionIndex !== question.correctAnswer && (
-                  <span className="cross-icon"><i className="fas fa-times"></i></span>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      ))}
-      
-      <div className="quiz-actions">
-        {!submitted ? (
-          <button className="submit-button" onClick={handleSubmit}>Submit Answers</button>
-        ) : (
-          <div className="post-submit-actions">
-            <button className="try-again-button" onClick={handleTryAgain}>Try Again</button>
-            {score >= 70 && (
-              <button className="continue-button" onClick={() => onComplete(score, true)}>
-                Continue to Next Lesson
-              </button>
-            )}
-          </div>
-        )}
-      </div>
-    </div>
-  );
-};
-
-// Level page component
-const LevelPage = () => {
-  const navigate = useNavigate();
-  const [progress, setProgress] = useState(getUserProgress());
-  const [showPopup, setShowPopup] = useState(false);
-  const [activeLesson, setActiveLesson] = useState(null);
-  const [showQuiz, setShowQuiz] = useState(false);
-  
-  // Voeg kosmische elementen toe na render
-  useEffect(() => {
-    applyCosmicElements();
-  }, []);
-  
-  // Get level ID from URL
-  const pathParts = window.location.pathname.split('/');
-  const levelId = pathParts[pathParts.length - 1];
-  const level = courseStructure[levelId];
-  
-  // Redirect if level doesn't exist or is not unlocked
-  if (!level || !progress.unlockedLevels.includes(levelId)) {
-    return <Navigate to="/" />;
-  }
-  
-  const openLesson = (lesson, index) => {
-    // Check if previous lessons are completed
-    const previousLessonsCompleted = level.lessons
-      .slice(0, index)
-      .every(prevLesson => progress.completedLessons.includes(prevLesson.id));
-      
-    if (previousLessonsCompleted || progress.completedLessons.includes(lesson.id)) {
-      setActiveLesson({...lesson, index});
-      setShowPopup(true);
-      setShowQuiz(false);
-    }
-  };
-  
-  const closePopup = () => {
-    setShowPopup(false);
-    setShowQuiz(false);
-  };
-
-  const startQuiz = () => {
-    setShowQuiz(true);
-  };
-
-  const handleQuizComplete = (score, continueToNext = false) => {
-    const newProgress = { ...progress };
-    
-    // Save the quiz score
-    if (!newProgress.quizScores) {
-      newProgress.quizScores = {};
-    }
-    
-    newProgress.quizScores[activeLesson.id] = score;
-    
-    // Mark lesson as completed if score is above 70%
-    if (score >= 70 && !newProgress.completedLessons.includes(activeLesson.id)) {
-      newProgress.completedLessons.push(activeLesson.id);
-      
-      // Check if all lessons in this level are completed
-      const allCompleted = level.lessons.every(lesson => 
-        newProgress.completedLessons.includes(lesson.id)
-      );
-      
-      // Unlock next level if exists
-      if (allCompleted && level.nextLevel && !newProgress.unlockedLevels.includes(level.nextLevel)) {
-        newProgress.unlockedLevels.push(level.nextLevel);
-      }
-    }
-    
-    setProgress(newProgress);
-    saveUserProgress(newProgress);
-    
-    if (continueToNext && activeLesson.index < level.lessons.length - 1) {
-      // Move to the next lesson
-      const nextLesson = level.lessons[activeLesson.index + 1];
-      setActiveLesson({...nextLesson, index: activeLesson.index + 1});
-      setShowQuiz(false);
-    }
-  };
-  
-  const isLessonAvailable = (index) => {
-    if (index === 0) return true;
-    
-    // Check if all previous lessons are completed
-    return level.lessons
-      .slice(0, index)
-      .every(lesson => progress.completedLessons.includes(lesson.id));
-  };
-  
-  return (
-    <div className="level-page">
-      <header>
-        <Link to="/" className="back-button">
-          <i className="fas fa-arrow-left"></i>
-        </Link>
-        <h1>{level.title} <i className={`fas fa-${level.icon}`}></i></h1>
-      </header>
-      
-      <div className="lesson-list">
-        {level.lessons.map((lesson, index) => {
-          const isCompleted = progress.completedLessons.includes(lesson.id);
-          const isAvailable = isLessonAvailable(index);
-          const quizScore = progress.quizScores && progress.quizScores[lesson.id];
-          
-          return (
-            <div 
-              key={lesson.id} 
-              className={`lesson-card ${isCompleted ? 'completed' : ''} ${!isAvailable ? 'locked' : ''}`}
-              onClick={() => isAvailable && openLesson(lesson, index)}
-            >
-              <div className="lesson-number">{index + 1}</div>
-              <div className="lesson-details">
-                <h3>{lesson.title}</h3>
-                <p>{lesson.description}</p>
-                {quizScore !== undefined && (
-                  <div className="quiz-score">
-                    Quiz Score: {quizScore}%
-                  </div>
-                )}
-              </div>
-              <div className="lesson-status">
-                {isCompleted ? (
-                  <i className="fas fa-check-circle"></i>
-                ) : !isAvailable ? (
-                  <i className="fas fa-lock"></i>
-                ) : (
-                  <i className="fas fa-circle-notch"></i>
-                )}
-              </div>
-            </div>
-          );
-        })}
-      </div>
-      
-      {showPopup && activeLesson && (
-        <div className="lesson-popup">
-          <div className="popup-content">
-            <div className="popup-header">
-              <h2>{activeLesson.title}</h2>
-              <button className="close-button" onClick={closePopup}>
-                <i className="fas fa-times"></i>
-              </button>
-            </div>
-            <div className="popup-body">
-              {!showQuiz ? (
-                <>
-                  {activeLesson.content.map((item, index) => {
-                    if (item.type === "text") {
-                      return <p key={index}>{item.value}</p>;
-                    } else if (item.type === "image") {
-                      return (
-                        <div key={index} className="lesson-image-container">
-                          <img 
-                            src={item.src} 
-                            alt={item.alt} 
-                            className="lesson-image" 
-                          />
-                          {item.caption && (
-                            <p className="image-caption">{item.caption}</p>
-                          )}
-                        </div>
-                      );
-                    }
-                    return null;
-                  })}
-                  <div className="lesson-actions">
-                    {progress.completedLessons.includes(activeLesson.id) ? (
-                      <div className="completion-badge">
-                        <i className="fas fa-trophy"></i>
-                        <p>Completed</p>
-                      </div>
-                    ) : (
-                      <button 
-                        className="start-quiz-button"
-                        onClick={startQuiz}
-                      >
-                        Start Quiz
-                      </button>
-                    )}
-                  </div>
-                </>
-              ) : (
-                <Quiz 
-                  questions={activeLesson.quiz.questions} 
-                  onComplete={handleQuizComplete} 
-                />
-              )}
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-};
-
-// Main App component
-function App() {
-  // Initialize progress if not already in localStorage
-  useEffect(() => {
-    if (!localStorage.getItem('tradeLingo_progress')) {
-      const initialProgress = {
-        completedLessons: [],
-        quizScores: {},
-        unlockedLevels: ['level1']
-      };
-      localStorage.setItem('tradeLingo_progress', JSON.stringify(initialProgress));
-    }
-  }, []);
-
-  return (
-    <Router>
-      <div className="app">
-        <SpaceBackground />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/level/:levelId" element={<LevelPage />} />
-          <Route path="*" element={<Navigate to="/" />} />
-        </Routes>
-      </div>
-    </Router>
-  );
-}
-
-export default App;
