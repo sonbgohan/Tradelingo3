@@ -1,4 +1,52 @@
-<div className="level-icon">
+const fromCenterY = fromLevel.position.top + 50;  // Half of the height
+    
+    const toCenterX = toLevel.position.left + 125;
+    const toCenterY = toLevel.position.top + 50;
+    
+    return `M${fromCenterX},${fromCenterY} Q${(fromCenterX + toCenterX) / 2},${(fromCenterY + toCenterY) / 2 - 50} ${toCenterX},${toCenterY}`;
+  };
+
+  return (
+    <div className="home-container">
+      <header>
+        <h1>TRADELINGO</h1>
+        <p>Master trading in a cosmic journey through space</p>
+      </header>
+      
+      <div className="world-map">
+        {/* Path connections between levels */}
+        <svg className="level-paths" width="100%" height="100%" viewBox="0 0 800 500" preserveAspectRatio="none">
+          {levelConnections.map((connection, index) => {
+            const isPathUnlocked = progress.unlockedLevels.includes(connection.to);
+            return (
+              <path 
+                key={index} 
+                d={getLevelConnectionPath(connection.from, connection.to)} 
+                className="level-path" 
+                style={{ 
+                  opacity: isPathUnlocked ? 1 : 0.4,
+                  strokeDasharray: isPathUnlocked ? "8" : "8",
+                  animation: isPathUnlocked ? "dash 30s linear infinite" : "none"
+                }}
+              />
+            );
+          })}
+        </svg>
+        
+        {/* Level nodes */}
+        {Object.keys(courseStructure).map((levelId) => {
+          const level = courseStructure[levelId];
+          const isUnlocked = progress.unlockedLevels.includes(levelId);
+          const levelProgress = getLevelProgress(levelId);
+          
+          return (
+            <div 
+              key={levelId} 
+              className={`level-node ${isUnlocked ? 'unlocked' : 'locked'}`}
+              onClick={() => isUnlocked && handleNavigation(levelId)}
+              style={{ top: `${level.position.top}px`, left: `${level.position.left}px` }}
+            >
+              <div className="level-icon">
                 <i className={`fas fa-${level.icon}`}></i>
               </div>
               <div className="level-info">
@@ -1136,50 +1184,4 @@ const Home = () => {
     
     // Calculate the center points of each level node
     const fromCenterX = fromLevel.position.left + 125; // Half of the width
-    const fromCenterY = fromLevel.position.top + 50;  // Half of the height
-    
-    const toCenterX = toLevel.position.left + 125;
-    const toCenterY = toLevel.position.top + 50;
-    
-    return `M${fromCenterX},${fromCenterY} Q${(fromCenterX + toCenterX) / 2},${(fromCenterY + toCenterY) / 2 - 50} ${toCenterX},${toCenterY}`;
-  };
-
-  return (
-    <div className="home-container">
-      <header>
-        <h1>TRADELINGO</h1>
-        <p>Master trading in a cosmic journey through space</p>
-      </header>
-      
-      <div className="world-map">
-        {/* Path connections between levels */}
-        <svg className="level-paths" width="100%" height="100%" viewBox="0 0 800 500" preserveAspectRatio="none">
-          {levelConnections.map((connection, index) => {
-            const isPathUnlocked = progress.unlockedLevels.includes(connection.to);
-            return (
-              <path 
-                key={index} 
-                d={getLevelConnectionPath(connection.from, connection.to)} 
-                className="level-path" 
-                style={{ 
-                  opacity: isPathUnlocked ? 1 : 0.4,
-                  strokeDasharray: isPathUnlocked ? "8" : "8",
-                  animation: isPathUnlocked ? "dash 30s linear infinite" : "none"
-                }}
-              />
-            );
-          })}
-        </svg>
-        
-        {Object.keys(courseStructure).map((levelId) => {
-          const level = courseStructure[levelId];
-          const isUnlocked = progress.unlockedLevels.includes(levelId);
-          const levelProgress = getLevelProgress(levelId);
-          
-          return (
-            <div 
-              key={levelId} 
-              className={`level-node ${isUnlocked ? 'unlocked' : 'locked'}`}
-              onClick={() => isUnlocked && handleNavigation(levelId)}
-              style={{ top: `${level.position.top}px`, left: `${level.position.left}px` }}
-            >
+    const fromCenterY = fromLevel.position.top
