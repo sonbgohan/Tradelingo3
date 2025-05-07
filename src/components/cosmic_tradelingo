@@ -1,0 +1,199 @@
+// Cosmic TradeLingo component - voegt kosmische elementen toe aan de app
+import React, { useEffect } from 'react';
+
+// Functie om alle level-nodes te transformeren naar planeten
+const transformLevelsToPlanets = () => {
+  const levelNodes = document.querySelectorAll('.level-node');
+  
+  levelNodes.forEach(node => {
+    // Haal bestaande elementen op
+    const levelIcon = node.querySelector('.level-icon');
+    const levelInfo = node.querySelector('.level-info');
+    
+    if (!levelIcon) return; // Skip als icon niet bestaat
+    
+    // Haal voortgangspercentage op
+    const progressBar = node.querySelector('.progress-bar .progress');
+    const progressStyle = progressBar ? progressBar.style.width : '0%';
+    const progressPercentage = parseInt(progressStyle) || 0;
+    
+    // Maak planeet container
+    const planetContainer = document.createElement('div');
+    planetContainer.className = 'planet-container';
+    
+    // Maak planeet
+    const planet = document.createElement('div');
+    planet.className = 'planet';
+    
+    // Voeg voortgangsindicator toe in het midden van de planeet
+    const planetProgress = document.createElement('div');
+    planetProgress.className = 'planet-progress';
+    
+    const progressText = document.createElement('div');
+    progressText.className = 'progress-text';
+    progressText.textContent = `${progressPercentage}%`;
+    
+    planetProgress.appendChild(progressText);
+    planet.appendChild(planetProgress);
+    
+    // Voeg willekeurige planeetkenmerken toe (kraters)
+    for (let i = 0; i < 8; i++) {
+      const feature = document.createElement('div');
+      feature.className = 'planet-feature';
+      
+      // Willekeurige positie binnen de planeet
+      feature.style.left = `${15 + Math.random() * 70}%`;
+      feature.style.top = `${15 + Math.random() * 70}%`;
+      
+      // Willekeurige grootte
+      const featureSize = 3 + Math.random() * 12;
+      feature.style.width = `${featureSize}px`;
+      feature.style.height = `${featureSize}px`;
+      
+      // Willekeurige transparantie
+      feature.style.opacity = 0.1 + Math.random() * 0.3;
+      
+      planet.appendChild(feature);
+    }
+    
+    // Voeg gloed-effect toe
+    const planetGlow = document.createElement('div');
+    planetGlow.className = 'planet-glow';
+    
+    // Plaats alles samen
+    planetContainer.appendChild(planet);
+    planetContainer.appendChild(planetGlow);
+    
+    // Vervang level icon met planeet
+    node.replaceChild(planetContainer, levelIcon);
+    
+    // Herpositioneer level info onder de planeet
+    if (levelInfo) {
+      node.appendChild(levelInfo);
+    }
+  });
+};
+
+// Functie om raketten toe te voegen op de paden tussen levels
+const addRocketsToLevelPaths = () => {
+  // Vindt SVG paden
+  const paths = document.querySelectorAll('.level-path');
+  if (paths.length === 0) return;
+  
+  paths.forEach((path, index) => {
+    // Maak een raket-element
+    const rocket = document.createElement('div');
+    rocket.className = 'rocket';
+    rocket.id = `rocket-${index}`;
+    
+    const rocketBody = document.createElement('div');
+    rocketBody.className = 'rocket-body';
+    
+    const rocketShape = document.createElement('div');
+    rocketShape.className = 'rocket-shape';
+    
+    const rocketWindow = document.createElement('div');
+    rocketWindow.className = 'rocket-window';
+    
+    const rocketFlame = document.createElement('div');
+    rocketFlame.className = 'rocket-flame';
+    
+    rocketBody.appendChild(rocketShape);
+    rocketBody.appendChild(rocketWindow);
+    rocketBody.appendChild(rocketFlame);
+    rocket.appendChild(rocketBody);
+    
+    // Voeg raket toe aan de DOM
+    document.querySelector('.world-map').appendChild(rocket);
+    
+    // Begin animatie
+    animateRocketAlongPath(rocket, path, index);
+  });
+};
+
+// Functie voor raket animatie langs het pad
+const animateRocketAlongPath = (rocket, path, pathIndex) => {
+  // Controleer of het pad ontgrendeld is (niet uitgegrijsd)
+  const isUnlocked = path.style.opacity !== '0.4';
+  if (!isUnlocked) return;
+  
+  // Berekening positie langs het pad
+  let progress = 0;
+  const speed = 0.5; // percentage per frame
+  
+  // Pak SVG path element als we kunnen
+  let svgPath = null;
+  try {
+    svgPath = path.cloneNode();
+  } catch (e) {
+    // Fallback als we het SVG path element niet kunnen gebruiken
+    console.log('Kan SVG path niet gebruiken voor animatie');
+  }
+  
+  function animate() {
+    // Update voortgang
+    progress += speed;
+    if (progress > 100) progress = 0;
+    
+    try {
+      // Positioneer raket op pad
+      const pathLength = path.getTotalLength ? path.getTotalLength() : 1000;
+      const point = path.getPointAtLength(pathLength * progress / 100);
+      
+      // Bereken hoek voor raket rotatie
+      const pointAhead = path.getPointAtLength(pathLength * Math.min(progress + 1, 100) / 100);
+      const angle = Math.atan2(pointAhead.y - point.y, pointAhead.x - point.x) * 180 / Math.PI;
+      
+      // Positioneer en roteer raket
+      rocket.style.transform = `translate(${point.x}px, ${point.y}px) rotate(${angle + 90}deg)`;
+    } catch (e) {
+      // Fallback animatie als we SVG methoden niet kunnen gebruiken
+      const pathRect = path.getBoundingClientRect();
+      const mapRect = document.querySelector('.world-map').getBoundingClientRect();
+      
+      // Lineaire animatie van begin tot eind
+      const startX = pathRect.left - mapRect.left;
+      const startY = pathRect.top - mapRect.top;
+      const endX = startX + pathRect.width;
+      const endY = startY + pathRect.height;
+      
+      const x = startX + (endX - startX) * progress / 100;
+      const y = startY + (endY - startY) * progress / 100;
+      const angle = Math.atan2(endY - startY, endX - startX) * 180 / Math.PI;
+      
+      rocket.style.transform = `translate(${x}px, ${y}px) rotate(${angle + 90}deg)`;
+    }
+    
+    // Herhaal animatie
+    requestAnimationFrame(animate);
+  }
+  
+  // Start animatie
+  if (isUnlocked) {
+    requestAnimationFrame(animate);
+  }
+};
+
+// Hoofdfunctie om alle kosmische elementen toe te voegen
+const applyCosmicTheme = () => {
+  // Wacht tot de DOM volledig geladen is
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    // Transformeer levels naar planeten
+    setTimeout(transformLevelsToPlanets, 500);
+    
+    // Voeg raketten toe
+    setTimeout(addRocketsToLevelPaths, 800);
+  } else {
+    document.addEventListener('DOMContentLoaded', () => {
+      setTimeout(transformLevelsToPlanets, 500);
+      setTimeout(addRocketsToLevelPaths, 800);
+    });
+  }
+};
+
+export const initCosmicElements = () => {
+  // Wacht tot de React-componenten gerenderd zijn
+  setTimeout(applyCosmicTheme, 1000);
+};
+
+export default { initCosmicElements };
