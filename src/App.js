@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate, Navigate } from 'react-router-dom';
 import './App.css';
 
-// Importeer kosmische elementen - aangepaste import zonder default
+// Verbeterde import - zorg ervoor dat het pad correct is
 import { initCosmicElements } from './components/cosmic_tradelingo';
 
 // Track user progress in localStorage
@@ -495,11 +495,24 @@ const Home = () => {
   const navigate = useNavigate();
   const [progress, setProgress] = useState(getUserProgress());
   
-  // Apply cosmic elements
+  // Apply cosmic elements with debugging
   useEffect(() => {
+    console.log("Home component gemonteerd, kosmische elementen voorbereiden...");
+    
     const timeoutId = setTimeout(() => {
-      initCosmicElements();
-    }, 300);
+      console.log("Timeout voorbij, initCosmicElements aanroepen...");
+      try {
+        if (typeof initCosmicElements === 'function') {
+          console.log("initCosmicElements is een functie, nu aanroepen");
+          initCosmicElements();
+        } else {
+          console.error("FOUT: initCosmicElements is GEEN functie!", typeof initCosmicElements);
+          console.error("Waarde van initCosmicElements:", initCosmicElements);
+        }
+      } catch (err) {
+        console.error("Fout bij aanroepen van initCosmicElements:", err);
+      }
+    }, 500);
     
     return () => clearTimeout(timeoutId);
   }, []);
@@ -605,11 +618,24 @@ const LevelPage = () => {
   const [activeLesson, setActiveLesson] = useState(null);
   const [showQuiz, setShowQuiz] = useState(false);
   
-  // Apply cosmic elements
+  // Apply cosmic elements with debugging
   useEffect(() => {
+    console.log("LevelPage component gemonteerd, kosmische elementen voorbereiden...");
+    
     const timeoutId = setTimeout(() => {
-      initCosmicElements();
-    }, 300);
+      console.log("Timeout voorbij, initCosmicElements aanroepen...");
+      try {
+        if (typeof initCosmicElements === 'function') {
+          console.log("initCosmicElements is een functie, nu aanroepen");
+          initCosmicElements();
+        } else {
+          console.error("FOUT: initCosmicElements is GEEN functie!", typeof initCosmicElements);
+          console.error("Waarde van initCosmicElements:", initCosmicElements);
+        }
+      } catch (err) {
+        console.error("Fout bij aanroepen van initCosmicElements:", err);
+      }
+    }, 500);
     
     return () => clearTimeout(timeoutId);
   }, []);
@@ -801,13 +827,18 @@ const LevelPage = () => {
 function App() {
   // Initialize progress if not already in localStorage
   useEffect(() => {
+    console.log("App component gemonteerd, localStorage controleren...");
+    
     if (!localStorage.getItem('tradeLingo_progress')) {
+      console.log("Geen localStorage data gevonden, initiële data aanmaken");
       const initialProgress = {
         completedLessons: [],
         quizScores: {},
         unlockedLevels: ['level1']
       };
       localStorage.setItem('tradeLingo_progress', JSON.stringify(initialProgress));
+    } else {
+      console.log("Bestaande localStorage data gevonden");
     }
   }, []);
 
