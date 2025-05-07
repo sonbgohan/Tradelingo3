@@ -148,12 +148,33 @@ header {
   padding: 20px 0;
 }
 
+/* Updated TradeLingo logo - futuristic/sci-fi style */
 header h1 {
-  font-size: 2.8rem;
+  font-size: 3.2rem;
   margin-bottom: 10px;
-  color: var(--primary-color);
-  text-shadow: 0 0 15px rgba(110, 231, 183, 0.5);
-  letter-spacing: 2px;
+  letter-spacing: 4px;
+  font-weight: 900;
+  text-transform: uppercase;
+  text-shadow: 0 0 15px rgba(110, 231, 183, 0.5),
+              0 0 25px rgba(110, 231, 183, 0.3);
+  color: transparent;
+  background: linear-gradient(135deg, #6ee7b7 0%, #14b8a6 50%, #0ea5e9 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  position: relative;
+}
+
+/* Add a glow effect around text */
+header h1::after {
+  content: 'TRADELINGO';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  color: rgba(110, 231, 183, 0.1);
+  filter: blur(8px);
 }
 
 header p {
@@ -169,27 +190,23 @@ header p {
   max-width: 800px;
 }
 
+/* Updated level styling - planet design */
 .level-node {
   position: absolute;
   width: 250px;
-  background-color: var(--card-bg);
+  background-color: transparent;
   border-radius: 12px;
-  padding: 20px;
+  padding: 10px;
   display: flex;
+  flex-direction: column;
   align-items: center;
   transition: transform 0.3s, box-shadow 0.3s;
   cursor: pointer;
   z-index: 2;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3), 
-              inset 0 1px 1px rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(110, 231, 183, 0.1);
 }
 
 .level-node.unlocked:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4), 
-              0 0 20px rgba(110, 231, 183, 0.2),
-              inset 0 1px 1px rgba(255, 255, 255, 0.15);
 }
 
 .level-node.locked {
@@ -198,25 +215,76 @@ header p {
   cursor: not-allowed;
 }
 
-.level-icon {
-  width: 50px;
-  height: 50px;
-  background-color: rgba(110, 231, 183, 0.1);
+/* Planet styling */
+.planet-container {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  margin-bottom: 15px;
+}
+
+.planet {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5),
+              0 0 30px rgba(110, 231, 183, 0.6);
+  background: radial-gradient(circle at 30% 30%, 
+    rgba(110, 231, 183, 0.8) 0%, 
+    rgba(14, 116, 144, 0.6) 70%, 
+    rgba(15, 23, 42, 0.9) 100%);
+  animation: rotate 30s linear infinite;
+}
+
+@keyframes rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.planet-feature {
+  position: absolute;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.planet-progress {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50%;
+  height: 50%;
+  background-color: rgba(0, 0, 0, 0.5);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 15px;
-  box-shadow: 0 0 10px rgba(110, 231, 183, 0.2);
+  border: 2px solid rgba(110, 231, 183, 0.8);
+  box-shadow: 0 0 10px rgba(110, 231, 183, 0.5);
 }
 
-.level-icon i {
-  font-size: 20px;
+.progress-text {
+  font-size: 1.2rem;
+  font-weight: bold;
   color: var(--primary-color);
 }
 
+.planet-glow {
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  right: -10px;
+  bottom: -10px;
+  border-radius: 50%;
+  background: transparent;
+  box-shadow: 0 0 40px rgba(110, 231, 183, 0.4);
+  z-index: -1;
+}
+
 .level-info {
-  flex: 1;
+  text-align: center;
 }
 
 .level-info h2 {
@@ -288,6 +356,57 @@ header p {
   to {
     stroke-dashoffset: -1000;
   }
+}
+
+/* Rocket animation */
+.rocket {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  z-index: 3;
+  transition: transform 0.1s linear;
+}
+
+.rocket-body {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.rocket-shape {
+  position: absolute;
+  width: 20px;
+  height: 30px;
+  background-color: var(--primary-color);
+  clip-path: polygon(50% 0%, 100% 70%, 80% 100%, 20% 100%, 0% 70%);
+  filter: drop-shadow(0 0 5px rgba(110, 231, 183, 0.8));
+}
+
+.rocket-window {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.8);
+  top: 10px;
+  left: 6px;
+}
+
+.rocket-flame {
+  position: absolute;
+  bottom: -15px;
+  left: 2px;
+  width: 16px;
+  height: 20px;
+  clip-path: polygon(20% 0%, 80% 0%, 100% 40%, 50% 100%, 0% 40%);
+  background: linear-gradient(to bottom, #f59e0b, #ef4444);
+  filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.9));
+  animation: flicker 0.2s infinite alternate;
+}
+
+@keyframes flicker {
+  0% { opacity: 0.7; }
+  100% { opacity: 1; }
 }
 
 /* Level Page Styles */
