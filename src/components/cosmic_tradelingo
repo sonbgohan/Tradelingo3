@@ -1,7 +1,7 @@
-// Verbeterde kosmische elementen voor TradeLingo
+// Enhanced cosmic elements for TradeLingo
 import React from 'react';
 
-// TradeLingo logo component - kan in de header worden gebruikt
+// TradeLingo logo component - can be used in the header
 const TradeLingoLogo = () => {
   return (
     <svg 
@@ -9,11 +9,12 @@ const TradeLingoLogo = () => {
       xmlns="http://www.w3.org/2000/svg"
       className="tradelingo-logo"
     >
-      {/* Gloed effect achter het logo */}
+      {/* Glow effect behind the logo */}
       <defs>
         <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
           <feGaussianBlur stdDeviation="5" result="blur" />
           <feComposite in="SourceGraphic" in2="blur" operator="over" />
+<feComposite in="SourceGraphic" in2="blur" operator="over" />
         </filter>
         
         <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -37,7 +38,7 @@ const TradeLingoLogo = () => {
         </filter>
       </defs>
       
-      {/* Raket als onderdeel van het logo */}
+      {/* Rocket as part of the logo */}
       <g transform="translate(30, 60) rotate(-30)" filter="url(#neonGlow)">
         <path 
           d="M0,0 L15,40 L0,55 L-15,40 Z" 
@@ -51,16 +52,16 @@ const TradeLingoLogo = () => {
         />
       </g>
       
-      {/* Tekst met gradient vulling */}
+      {/* Text with gradient fill */}
       <g filter="url(#neonGlow)">
         <text x="75" y="80" fontFamily="Arial" fontWeight="bold" fontSize="60" fill="url(#logoGradient)">TRADE</text>
         <text x="260" y="80" fontFamily="Arial" fontWeight="bold" fontSize="60" fill="url(#logoGradient)">LINGO</text>
       </g>
       
-      {/* Futuristische decoratieve elementen */}
+      {/* Futuristic decorative elements */}
       <path d="M75,90 L355,90" stroke="url(#logoGradient)" strokeWidth="2" strokeDasharray="5,5" />
       
-      {/* Grafiek/koers elementen */}
+      {/* Chart/course elements */}
       <polyline 
         points="380,60 390,50 400,65 410,45 420,55 430,40" 
         stroke="url(#logoGradient)" 
@@ -69,7 +70,7 @@ const TradeLingoLogo = () => {
         filter="url(#neonGlow)"
       />
       
-      {/* Cirkel/planeet element */}
+      {/* Circle/planet element */}
       <circle cx="450" cy="50" r="15" fill="none" stroke="url(#logoGradient)" strokeWidth="2" />
       <circle cx="450" cy="50" r="10" fill="url(#logoGradient)" fillOpacity="0.3" />
       <circle cx="450" cy="50" r="5" fill="url(#logoGradient)" fillOpacity="0.5" />
@@ -77,137 +78,185 @@ const TradeLingoLogo = () => {
   );
 };
 
-// Functie voor het transformeren van levels naar planeten
+// Function to transform levels into planets with different appearances
 const transformLevelsToPlanets = () => {
   try {
-    console.log('Transformeren van levels naar planeten...');
+    console.log('Transforming levels into planets...');
     const levelNodes = document.querySelectorAll('.level-node');
-    console.log(`${levelNodes.length} level nodes gevonden`);
+    console.log(`${levelNodes.length} level nodes found`);
     
     levelNodes.forEach((node, index) => {
-      // Controleer of de node al is getransformeerd
+      // Check if the node is already transformed
       if (node.querySelector('.planet-container')) {
-        console.log('Node is al getransformeerd, deze wordt overgeslagen');
+        console.log('Node is already transformed, skipping');
         return;
       }
       
-      // Haal bestaande elementen op
+      // Get existing elements
       const levelIcon = node.querySelector('.level-icon');
       const levelInfo = node.querySelector('.level-info');
       
       if (!levelIcon) {
-        console.log('Level icon niet gevonden in node', index);
-        return; // Skip als icon niet bestaat
+        console.log('Level icon not found in node', index);
+        return; // Skip if icon doesn't exist
       }
       
-      console.log('Transformatie van level node', index);
+      console.log('Transforming level node', index);
       
-      // Haal voortgangspercentage op
+      // Get progress percentage
       const progressBar = node.querySelector('.progress-bar .progress');
       const progressStyle = progressBar ? progressBar.style.width : '0%';
       const progressPercentage = parseInt(progressStyle) || 0;
       
-      // Maak planeet container
+      // Create planet container
       const planetContainer = document.createElement('div');
       planetContainer.className = 'planet-container';
       
-      // Maak planeet
+      // Create planet
       const planet = document.createElement('div');
       planet.className = 'planet';
       
-      // Voeg voortgangsindicator toe in het midden van de planeet
+      // Add progress indicator in the center of the planet
       const planetProgress = document.createElement('div');
       planetProgress.className = 'planet-progress';
-      planetProgress.style.zIndex = '10'; // Zorg dat dit bovenop de planeet blijft
+      planetProgress.style.zIndex = '10'; // Ensure it stays on top of the planet
       
       const progressText = document.createElement('div');
       progressText.className = 'progress-text';
-      progressText.style.animation = 'none'; // Voorkom dat tekst roteert
+      progressText.style.animation = 'none'; // Prevent text from rotating
       progressText.textContent = `${progressPercentage}%`;
       
       planetProgress.appendChild(progressText);
       planet.appendChild(planetProgress);
       
-      // Voeg willekeurige planeetkenmerken toe (kraters)
-      for (let i = 0; i < 8; i++) {
+      // Add random planet features (craters, mountains)
+      for (let i = 0; i < 12; i++) {
         const feature = document.createElement('div');
         feature.className = 'planet-feature';
         
-        // Willekeurige positie binnen de planeet
-        feature.style.left = `${15 + Math.random() * 70}%`;
-        feature.style.top = `${15 + Math.random() * 70}%`;
+        // Random position within the planet
+        feature.style.left = `${10 + Math.random() * 80}%`;
+        feature.style.top = `${10 + Math.random() * 80}%`;
         
-        // Willekeurige grootte
-        const featureSize = 3 + Math.random() * 12;
+        // Random size
+        const featureSize = 3 + Math.random() * 15;
         feature.style.width = `${featureSize}px`;
         feature.style.height = `${featureSize}px`;
         
-        // Willekeurige transparantie
-        feature.style.opacity = 0.1 + Math.random() * 0.3;
+        // Random opacity
+        feature.style.opacity = 0.1 + Math.random() * 0.4;
+        
+        // Different colors based on planet type
+        switch (index % 5) {
+          case 0: // Green planet
+            feature.style.backgroundColor = 'rgba(110, 231, 183, 0.4)';
+            break;
+          case 1: // Purple planet
+            feature.style.backgroundColor = 'rgba(167, 139, 250, 0.4)';
+            break;
+          case 2: // Orange planet
+            feature.style.backgroundColor = 'rgba(251, 146, 60, 0.4)';
+            break;
+          case 3: // Pink planet
+            feature.style.backgroundColor = 'rgba(244, 114, 182, 0.4)';
+            break;
+          case 4: // Yellow planet
+            feature.style.backgroundColor = 'rgba(250, 204, 21, 0.4)';
+            break;
+        }
         
         planet.appendChild(feature);
       }
       
-      // Voeg gloed-effect toe
+      // Add glow effect
       const planetGlow = document.createElement('div');
       planetGlow.className = 'planet-glow';
       
-      // Plaats alles samen
+      // Place everything together
       planetContainer.appendChild(planet);
       planetContainer.appendChild(planetGlow);
       
-      // Vervang level icon met planeet
-      try {
-        console.log('Level icon vervanging poging...');
-        node.replaceChild(planetContainer, levelIcon);
-        console.log('Level icon succesvol vervangen door planeet');
-      } catch (err) {
-        console.error('Fout bij vervangen van level icon:', err);
+      // Add orbiting rocket to active level (check if this level is unlocked but not completed)
+      const isUnlocked = !node.classList.contains('locked');
+      const progressCompleted = progressPercentage > 0 && progressPercentage < 100;
+      
+      if (isUnlocked && progressCompleted) {
+        console.log('Adding orbiting rocket to active level');
+        const orbitingRocket = document.createElement('div');
+        orbitingRocket.className = 'orbiting-rocket';
+        
+        const rocketBody = document.createElement('div');
+        rocketBody.className = 'rocket-body';
+        
+        const rocketShape = document.createElement('div');
+        rocketShape.className = 'rocket-shape';
+        
+        const rocketWindow = document.createElement('div');
+        rocketWindow.className = 'rocket-window';
+        
+        const rocketFlame = document.createElement('div');
+        rocketFlame.className = 'rocket-flame';
+        
+        rocketBody.appendChild(rocketShape);
+        rocketBody.appendChild(rocketWindow);
+        rocketBody.appendChild(rocketFlame);
+        orbitingRocket.appendChild(rocketBody);
+        
+        planetContainer.appendChild(orbitingRocket);
       }
       
-      // Pas de layout aan naar verticaal
+      // Replace level icon with planet
+      try {
+        console.log('Attempting to replace level icon...');
+        node.replaceChild(planetContainer, levelIcon);
+        console.log('Level icon successfully replaced with planet');
+      } catch (err) {
+        console.error('Error replacing level icon:', err);
+      }
+      
+      // Adjust the layout to vertical
       node.style.flexDirection = 'column';
       node.style.alignItems = 'center';
       
-      // Pas text alignment aan
+      // Adjust text alignment
       if (levelInfo) {
         levelInfo.style.textAlign = 'center';
       }
     });
   } catch (err) {
-    console.error('Fout bij transformatie van levels naar planeten:', err);
+    console.error('Error transforming levels into planets:', err);
   }
 };
 
-// Functie om raket toe te voegen op pad tussen levels (verbeterde versie)
+// Function to add rocket to the path between levels (enhanced version)
 const addRocketToPath = () => {
   try {
-    console.log('Raket toevoegen aan pad...');
+    console.log('Adding rocket to path...');
     
-    // Verwijder bestaande raketten om dubbele elementen te voorkomen
+    // Remove existing rockets to prevent duplicate elements
     document.querySelectorAll('.rocket').forEach(r => r.remove());
     
     const paths = document.querySelectorAll('.level-path');
     if (!paths || paths.length === 0) {
-      console.log('Geen paden gevonden om raket toe te voegen');
+      console.log('No paths found to add rocket to');
       return;
     }
     
-    console.log(`${paths.length} level paden gevonden`);
+    console.log(`${paths.length} level paths found`);
     
     paths.forEach((path, index) => {
-      // Controleer of pad actief is (niet uitgegrijsd)
+      // Check if path is active (not grayed out)
       const pathStyle = window.getComputedStyle(path);
       const isPathActive = pathStyle.opacity !== '0.4' && pathStyle.opacity > 0.5;
       
       if (!isPathActive) {
-        console.log('Pad is niet actief, skip raket toevoegen');
+        console.log('Path is not active, skipping rocket addition');
         return;
       }
       
-      console.log('Voeg raket toe aan actief pad', index);
+      console.log('Adding rocket to active path', index);
       
-      // Maak raket element
+      // Create rocket element
       const rocket = document.createElement('div');
       rocket.className = 'rocket';
       rocket.id = `rocket-${index}`;
@@ -229,152 +278,152 @@ const addRocketToPath = () => {
       rocketBody.appendChild(rocketFlame);
       rocket.appendChild(rocketBody);
       
-      // Voeg raket toe aan de DOM
+      // Add rocket to the DOM
       const worldMap = document.querySelector('.world-map');
       if (worldMap) {
         worldMap.appendChild(rocket);
-        console.log('Raket toegevoegd aan world-map');
+        console.log('Rocket added to world-map');
         
-        // Start animatie
+        // Start animation
         animateRocketAlongPath(rocket, path, worldMap);
       } else {
-        console.log('World-map niet gevonden');
+        console.log('World-map not found');
       }
     });
   } catch (err) {
-    console.error('Fout bij toevoegen van raket:', err);
+    console.error('Error adding rocket:', err);
   }
 };
 
-// Verbeterde raket-animatie functie
+// Enhanced rocket animation function
 const animateRocketAlongPath = (rocket, path, worldMap) => {
   try {
     if (!rocket || !path || !worldMap) {
-      console.log('Missende elementen voor raket animatie');
+      console.log('Missing elements for rocket animation');
       return;
     }
     
-    console.log('Start raket animatie langs pad');
+    console.log('Starting rocket animation along path');
     
     let progress = 0;
     const speed = 0.5; // percentage per frame
     
-    // Bereken begrenzingsvakken voor het pad en de wereld-map
+    // Calculate bounding boxes for the path and the world map
     const pathRect = path.getBoundingClientRect();
     const mapRect = worldMap.getBoundingClientRect();
     
-    // Bepaal het start- en eindpunt van het pad
+    // Determine the start and endpoint of the path
     let pathLength = null;
     try {
       pathLength = path.getTotalLength ? path.getTotalLength() : null;
     } catch (err) {
-      console.log('Kon pad lengte niet ophalen, gebruik fallback methode');
+      console.log('Could not get path length, using fallback method');
       pathLength = null;
     }
     
-    // Als we de SVG-pad lengtes kunnen gebruiken
+    // If we can use SVG path lengths
     if (pathLength) {
-      console.log('Gebruik SVG path voor animatie, lengte:', pathLength);
+      console.log('Using SVG path for animation, length:', pathLength);
       
       const animate = () => {
-        // Update voortgang
+        // Update progress
         progress += speed;
         if (progress > 100) progress = 0;
         
         try {
-          // Bereken positie op pad
+          // Calculate position on path
           const pointOnPath = path.getPointAtLength(pathLength * progress / 100);
           
-          // Bereken een punt iets verder op het pad voor de rotatie
+          // Calculate a point slightly ahead on the path for rotation
           const pointAhead = path.getPointAtLength(pathLength * Math.min((progress + 1) / 100, 1));
           
-          // Bereken rotatie hoek
+          // Calculate rotation angle
           const angle = Math.atan2(pointAhead.y - pointOnPath.y, pointAhead.x - pointOnPath.x) * 180 / Math.PI;
           
-          // Positie relatief tot de wereldkaart
+          // Position relative to the world map
           const x = pointOnPath.x - mapRect.left;
           const y = pointOnPath.y - mapRect.top;
           
-          // Zet raket op deze positie met de juiste rotatie
+          // Set rocket at this position with correct rotation
           rocket.style.transform = `translate(${x}px, ${y}px) rotate(${angle + 90}deg)`;
-          rocket.style.display = 'block'; // Zorg dat de raket zichtbaar is
+          rocket.style.display = 'block'; // Ensure the rocket is visible
         } catch (err) {
-          console.error('Fout tijdens raket positionering:', err);
+          console.error('Error during rocket positioning:', err);
         }
         
-        // Volgende frame
+        // Next frame
         requestAnimationFrame(animate);
       };
       
-      // Start animatie
+      // Start animation
       requestAnimationFrame(animate);
     } else {
-      console.log('Fallback animatie methode (geen SVG path support)');
+      console.log('Fallback animation method (no SVG path support)');
       
-      // Fallback methode voor browsers die SVG functies niet ondersteunen
-      // Start positie is links van het pad, eind positie is rechts
+      // Fallback method for browsers that don't support SVG functions
+      // Start position is left of the path, end position is right
       const startX = pathRect.left - mapRect.left;
       const startY = pathRect.top - mapRect.top;
       const endX = pathRect.right - mapRect.left;
       const endY = pathRect.bottom - mapRect.top;
       
-      // Middenpunt voor een gebogen pad (voor een eenvoudige boog)
+      // Midpoint for a curved path (for a simple arc)
       const midX = (startX + endX) / 2;
-      const midY = startY - 50; // Hoger dan de lijn voor een boog naar boven
+      const midY = startY - 50; // Higher than the line for an upward arc
       
       const animate = () => {
-        // Update voortgang
+        // Update progress
         progress += speed;
         if (progress > 100) progress = 0;
         
         const t = progress / 100;
         
-        // Bereken quadratische bezier curve punt
+        // Calculate quadratic bezier curve point
         const x = (1 - t) * (1 - t) * startX + 2 * (1 - t) * t * midX + t * t * endX;
         const y = (1 - t) * (1 - t) * startY + 2 * (1 - t) * t * midY + t * t * endY;
         
-        // Bereken een punt iets verder op de curve voor de rotatie
+        // Calculate a point slightly ahead on the curve for rotation
         const tAhead = Math.min(t + 0.01, 1);
         const xAhead = (1 - tAhead) * (1 - tAhead) * startX + 2 * (1 - tAhead) * tAhead * midX + tAhead * tAhead * endX;
         const yAhead = (1 - tAhead) * (1 - tAhead) * startY + 2 * (1 - tAhead) * tAhead * midY + tAhead * tAhead * endY;
         
-        // Bereken rotatie hoek
+        // Calculate rotation angle
         const angle = Math.atan2(yAhead - y, xAhead - x) * 180 / Math.PI;
         
-        // Positioneer de raket
+        // Position the rocket
         rocket.style.transform = `translate(${x}px, ${y}px) rotate(${angle + 90}deg)`;
-        rocket.style.display = 'block'; // Zorg dat de raket zichtbaar is
+        rocket.style.display = 'block'; // Ensure the rocket is visible
         
-        // Volgende frame
+        // Next frame
         requestAnimationFrame(animate);
       };
       
-      // Start animatie
+      // Start animation
       requestAnimationFrame(animate);
     }
   } catch (err) {
-    console.error('Fout in de raket animatie functie:', err);
+    console.error('Error in the rocket animation function:', err);
   }
 };
 
-// Vervang de TradeLingo tekst door het logo in de header
+// Replace the TradeLingo text with the logo in the header
 const replaceTitleWithLogo = () => {
   try {
-    console.log('Vervangen van titel met logo...');
+    console.log('Replacing title with logo...');
     const headerTitle = document.querySelector('header h1');
     if (!headerTitle) {
-      console.log('Header titel niet gevonden');
+      console.log('Header title not found');
       return;
     }
     
     if (headerTitle.querySelector('.tradelingo-logo')) {
-      console.log('Logo is al geplaatst, skip vervanging');
+      console.log('Logo is already placed, skipping replacement');
       return;
     }
     
-    console.log('Header titel gevonden, vervangen met logo');
+    console.log('Header title found, replacing with logo');
     
-    // Maak een container voor het logo
+    // Create a container for the logo
     const logoContainer = document.createElement('div');
     logoContainer.className = 'logo-container';
     logoContainer.innerHTML = `
@@ -383,7 +432,7 @@ const replaceTitleWithLogo = () => {
         xmlns="http://www.w3.org/2000/svg"
         class="tradelingo-logo"
       >
-        <!-- Gloed effect achter het logo -->
+        <!-- Glow effect behind the logo -->
         <defs>
           <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
             <feGaussianBlur stdDeviation="5" result="blur" />
@@ -411,7 +460,7 @@ const replaceTitleWithLogo = () => {
           </filter>
         </defs>
         
-        <!-- Raket als onderdeel van het logo -->
+        <!-- Rocket as part of the logo -->
         <g transform="translate(30, 60) rotate(-30)" filter="url(#neonGlow)">
           <path 
             d="M0,0 L15,40 L0,55 L-15,40 Z" 
@@ -425,16 +474,16 @@ const replaceTitleWithLogo = () => {
           />
         </g>
         
-        <!-- Tekst met gradient vulling -->
+        <!-- Text with gradient fill -->
         <g filter="url(#neonGlow)">
           <text x="75" y="80" fontFamily="Arial" fontWeight="bold" fontSize="60" fill="url(#logoGradient)">TRADE</text>
           <text x="260" y="80" fontFamily="Arial" fontWeight="bold" fontSize="60" fill="url(#logoGradient)">LINGO</text>
         </g>
         
-        <!-- Futuristische decoratieve elementen -->
+        <!-- Futuristic decorative elements -->
         <path d="M75,90 L355,90" stroke="url(#logoGradient)" strokeWidth="2" strokeDasharray="5,5" />
         
-        <!-- Grafiek/koers elementen -->
+        <!-- Chart/course elements -->
         <polyline 
           points="380,60 390,50 400,65 410,45 420,55 430,40" 
           stroke="url(#logoGradient)" 
@@ -443,73 +492,73 @@ const replaceTitleWithLogo = () => {
           filter="url(#neonGlow)"
         />
         
-        <!-- Cirkel/planeet element -->
+        <!-- Circle/planet element -->
         <circle cx="450" cy="50" r="15" fill="none" stroke="url(#logoGradient)" strokeWidth="2" />
         <circle cx="450" cy="50" r="10" fill="url(#logoGradient)" fillOpacity="0.3" />
         <circle cx="450" cy="50" r="5" fill="url(#logoGradient)" fillOpacity="0.5" />
       </svg>
     `;
     
-    // Vervang de titel met het SVG-logo
+    // Replace the title with the SVG logo
     try {
       headerTitle.innerHTML = '';
       headerTitle.appendChild(logoContainer);
-      console.log('Logo succesvol toegevoegd');
+      console.log('Logo successfully added');
     } catch (err) {
-      console.error('Fout bij vervangen van titel met logo:', err);
+      console.error('Error replacing title with logo:', err);
     }
   } catch (err) {
-    console.error('Fout in replaceTitleWithLogo functie:', err);
+    console.error('Error in replaceTitleWithLogo function:', err);
   }
 };
 
-// Functie om kosmische elementen toe te passen
+// Function to apply cosmic elements
 const applyCosmicElements = () => {
-  console.log('Toepassen van kosmische elementen...');
+  console.log('Applying cosmic elements...');
   
-  // Stapsgewijs uitvoeren met geschikte vertragingen
+  // Execute step by step with appropriate delays
   setTimeout(() => {
     replaceTitleWithLogo();
-    console.log('Logo vervangen');
+    console.log('Logo replaced');
     
     setTimeout(() => {
       transformLevelsToPlanets();
-      console.log('Levels omgezet naar planeten');
+      console.log('Levels transformed into planets');
       
       setTimeout(() => {
         addRocketToPath();
-        console.log('Raket toegevoegd');
+        console.log('Rocket added');
       }, 800);
     }, 500);
   }, 300);
 };
 
-// Functie om kosmische elementen te initialiseren (wordt geëxporteerd voor gebruik in App.js)
+// Function to initialize cosmic elements (exported for use in App.js)
 const initCosmicElements = () => {
-  console.log('Initialiseren van kosmische elementen...');
+  console.log('Initializing cosmic elements...');
   
-  // Controleer eerst of de DOM volledig is geladen
+  // First check if the DOM is fully loaded
   if (document.readyState === 'complete' || document.readyState === 'interactive') {
-    console.log('DOM is al geladen, direct toepassen');
+    console.log('DOM is already loaded, applying directly');
     applyCosmicElements();
   } else {
-    console.log('DOM nog niet geladen, wacht op DOMContentLoaded event');
+    console.log('DOM not yet loaded, waiting for DOMContentLoaded event');
     document.addEventListener('DOMContentLoaded', applyCosmicElements);
   }
   
-  // Voeg een extra listener toe voor in geval van React rendering na DOM laden
+  // Add an extra listener for React rendering after DOM load
   window.addEventListener('load', () => {
-    console.log('Window load event, opnieuw toepassen na vertraging');
+    console.log('Window load event, applying again after delay');
     setTimeout(applyCosmicElements, 1000);
   });
 };
 
-// BELANGRIJKE WIJZIGING: Maak een object met alle functies en exporteer dat als default
+// IMPORTANT CHANGE: Create an object with all functions and export it as default
 const cosmicModule = {
   TradeLingoLogo,
   initCosmicElements,
   applyCosmicElements
 };
 
-// Exporteer het gehele object als default export
+// Export the entire object as default export
 export default cosmicModule;
