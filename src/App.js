@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate, Navigate } from 'react-router-dom';
 import './App.css';
 
-// Verbeterde import - zorg ervoor dat het pad correct is
-import { initCosmicElements } from './components/cosmic_tradelingo';
+// GEWIJZIGD: Nu importeren we het hele object en halen we initCosmicElements eruit
+import cosmicModule from './components/cosmic_tradelingo';
+// We halen de functie uit het geïmporteerde object
+const { initCosmicElements } = cosmicModule;
 
 // Track user progress in localStorage
 const getUserProgress = () => {
