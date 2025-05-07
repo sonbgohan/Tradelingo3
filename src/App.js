@@ -19,90 +19,27 @@ const saveUserProgress = (progress) => {
   localStorage.setItem('tradeLingo_progress', JSON.stringify(progress));
 };
 
-// Define course structure
+// Define course structure met bijgewerkte lesinhoud
 const courseStructure = {
   level1: {
     id: 'level1',
-    title: 'Trading Basics',
+    title: 'What is Trading?',
     icon: 'chart-line',
     nextLevel: 'level2',
     position: { top: 100, left: 100 },
     lessons: [
       { 
         id: 'basics1',
-        title: "What is Trading?", 
-        description: "Introduction to financial markets and trading",
-        content: [
-          {
-            type: "text",
-            value: "Trading is the process of buying and selling financial assets with the goal of making a profit. Traders participate in various markets like stocks, forex, cryptocurrencies, and commodities, analyzing price movements to make informed decisions."
-          },
-          {
-            type: "text",
-            value: "Unlike long-term investors who might hold assets for years, traders often operate on shorter timeframes, from minutes to months, trying to capitalize on price fluctuations."
-          },
-          {
-            type: "image",
-            src: "/api/placeholder/600/400",
-            alt: "Trading chart showing buy and sell points",
-            caption: "Example of trading decisions on a price chart"
-          },
-          {
-            type: "text",
-            value: "Trading involves different strategies including day trading (completing all trades within a single day), swing trading (holding positions for several days or weeks), and position trading (holding for weeks or months)."
-          }
-        ],
-        quiz: {
-          title: "Test Your Understanding",
-          questions: [
-            {
-              id: "q1",
-              question: "What is the main goal of trading?",
-              options: [
-                "To own a part of a company long-term",
-                "To make a profit from price movements",
-                "To support businesses you believe in",
-                "To diversify your portfolio"
-              ],
-              correctAnswer: 1
-            },
-            {
-              id: "q2",
-              question: "How does trading differ from long-term investing?",
-              options: [
-                "Trading involves only stocks, while investing involves all assets",
-                "Trading requires more capital than investing",
-                "Trading typically uses shorter timeframes to capitalize on price movements",
-                "Trading is risk-free compared to investing"
-              ],
-              correctAnswer: 2
-            },
-            {
-              id: "q3",
-              question: "Which of the following is NOT a common trading timeframe?",
-              options: [
-                "Day trading",
-                "Swing trading",
-                "Position trading",
-                "Decade trading"
-              ],
-              correctAnswer: 3
-            }
-          ]
-        }
-      },
-      { 
-        id: 'basics2',
         title: "How Does Trading Work?", 
-        description: "Understanding the mechanics of trading",
+        description: "Understanding the fundamentals of trading",
         content: [
+          {
+            type: "text",
+            value: "Trading is the process of buying and selling financial assets with the goal of making a profit. Traders buy assets when they believe prices will rise and sell when they think prices will fall."
+          },
           {
             type: "text",
             value: "Trading works through exchanges and marketplaces where buyers and sellers come together to transact. Modern trading is primarily electronic, happening through online platforms provided by brokers or exchanges."
-          },
-          {
-            type: "text",
-            value: "When you place a trade, you're essentially placing an order to buy or sell an asset at a specific price. This order goes to the exchange where it's matched with a counterparty willing to take the other side of your trade."
           },
           {
             type: "image",
@@ -112,11 +49,11 @@ const courseStructure = {
           },
           {
             type: "text",
-            value: "Trading can be done in two directions: going 'long' (buying first, then selling later at a hopefully higher price) or going 'short' (selling borrowed assets first, then buying them back later at a hopefully lower price)."
+            value: "When you place a trade, you're essentially placing an order to buy or sell an asset at a specific price. This order goes to the exchange where it's matched with a counterparty willing to take the other side of your trade."
           },
           {
             type: "text",
-            value: "Most trading platforms allow you to use leverage (borrowed funds) to control larger positions than your account balance would normally allow. This amplifies both potential profits and losses."
+            value: "Trading can be done in two directions: going 'long' (buying first, then selling later at a hopefully higher price) or going 'short' (selling borrowed assets first, then buying them back later at a hopefully lower price)."
           }
         ],
         quiz: {
@@ -146,20 +83,20 @@ const courseStructure = {
             },
             {
               id: "q3",
-              question: "What effect does leverage have on trading?",
+              question: "What are the two main directions for trading?",
               options: [
-                "It guarantees profits regardless of market movements",
-                "It reduces the risk of trading completely",
-                "It allows trading larger positions than your capital alone permits",
-                "It slows down the execution of trades"
+                "Up and down",
+                "Long and short",
+                "Buy and hold",
+                "Fast and slow"
               ],
-              correctAnswer: 2
+              correctAnswer: 1
             }
           ]
         }
       },
       { 
-        id: 'basics3',
+        id: 'basics2',
         title: "What Does a Trader Do?", 
         description: "The day-to-day activities of a trader",
         content: [
@@ -183,11 +120,7 @@ const courseStructure = {
           },
           {
             type: "text",
-            value: "Record-keeping is crucial for traders. They track their trades, analyze their performance, identify patterns in their winning and losing trades, and continuously work to improve their strategy."
-          },
-          {
-            type: "text",
-            value: "Successful traders spend significant time on risk management, ensuring they don't risk too much on any single trade and that their overall risk exposure is controlled."
+            value: "Risk management is a crucial part of a trader's activities. They determine how much capital to risk on each trade, use stop-loss orders to limit potential losses, and diversify their trades across different assets or markets."
           }
         ],
         quiz: {
@@ -206,25 +139,297 @@ const courseStructure = {
             },
             {
               id: "q2",
-              question: "Why is record-keeping important for traders?",
+              question: "Why is risk management important for traders?",
               options: [
-                "It's only required for tax purposes",
-                "To track performance and improve trading strategies",
-                "It's not important; successful traders rely on intuition",
-                "Only to impress other traders with their results"
+                "It's not important; traders aim for maximum gains",
+                "To protect their capital and ensure longevity in the markets",
+                "Only because regulations require it",
+                "Just to impress other traders"
               ],
               correctAnswer: 1
             },
             {
               id: "q3",
-              question: "What is a key aspect of a trading plan?",
+              question: "What is a trading plan?",
               options: [
                 "A guarantee of profits",
-                "A list of hot stock tips from friends",
-                "Entry and exit points, risk management rules",
-                "Predictions about market crashes"
+                "A set of guidelines including entry/exit points and risk management",
+                "A list of hot tips from other traders",
+                "A schedule of when to trade during the day"
+              ],
+              correctAnswer: 1
+            }
+          ]
+        }
+      },
+      { 
+        id: 'basics3',
+        title: "Trading vs Investing", 
+        description: "Key differences between trading and investing",
+        content: [
+          {
+            type: "text",
+            value: "Trading and investing are both ways to participate in financial markets, but they differ significantly in approach, timeframe, and goals."
+          },
+          {
+            type: "text",
+            value: "Traders typically focus on short-term price movements, holding positions for minutes, hours, days, or weeks. They aim to profit from market volatility and price fluctuations."
+          },
+          {
+            type: "text",
+            value: "Investors, on the other hand, take a long-term approach, often holding assets for years or decades. They focus on the fundamental value of assets and their potential for growth over time."
+          },
+          {
+            type: "image",
+            src: "/api/placeholder/600/400",
+            alt: "Trading vs Investing comparison chart",
+            caption: "Key differences between trading and investing approaches"
+          },
+          {
+            type: "text",
+            value: "Trading typically requires more active market monitoring and frequent decision-making, while investing often follows a 'buy and hold' strategy with less frequent adjustments."
+          },
+          {
+            type: "text",
+            value: "Both trading and investing have their own advantages and risks, and many market participants use a combination of both approaches in their financial strategy."
+          }
+        ],
+        quiz: {
+          title: "Trading vs Investing Quiz",
+          questions: [
+            {
+              id: "q1",
+              question: "What is the typical timeframe for trading?",
+              options: [
+                "Minutes to weeks",
+                "Months to years",
+                "Only seconds",
+                "Decades"
+              ],
+              correctAnswer: 0
+            },
+            {
+              id: "q2",
+              question: "How would you characterize an investor's approach compared to a trader's?",
+              options: [
+                "More focus on short-term price movements",
+                "More concern with day-to-day market volatility",
+                "More emphasis on long-term growth and fundamental value",
+                "More focus on leveraged positions"
               ],
               correctAnswer: 2
+            },
+            {
+              id: "q3",
+              question: "Which approach typically requires more frequent market monitoring?",
+              options: [
+                "Investing",
+                "Trading",
+                "Both require the same amount",
+                "Neither requires monitoring"
+              ],
+              correctAnswer: 1
+            }
+          ]
+        }
+      },
+      { 
+        id: 'basics4',
+        title: "How Does a Broker Work?", 
+        description: "Understanding brokers, orderbooks, and matching",
+        content: [
+          {
+            type: "text",
+            value: "A broker is a financial intermediary who executes trades on behalf of clients. Brokers provide access to markets that individuals typically cannot access directly."
+          },
+          {
+            type: "text",
+            value: "When you place an order through a broker, it's sent to an exchange or market where it's added to the order book. An order book is a list of all buy and sell orders for a specific asset, organized by price level."
+          },
+          {
+            type: "image",
+            src: "/api/placeholder/600/400",
+            alt: "Order book visualization",
+            caption: "Example of an order book showing buy and sell orders at different price levels"
+          },
+          {
+            type: "text",
+            value: "Order matching is the process where buy orders are paired with sell orders. When a buy order price matches or exceeds a sell order price, a trade executes. This typically happens automatically on electronic exchanges."
+          },
+          {
+            type: "text",
+            value: "Most modern brokers offer services beyond just executing trades, including providing trading platforms, research tools, educational resources, and sometimes financial advice."
+          }
+        ],
+        quiz: {
+          title: "Broker and Order Book Quiz",
+          questions: [
+            {
+              id: "q1",
+              question: "What is an order book?",
+              options: [
+                "A record of all executed trades",
+                "A list of all buy and sell orders organized by price",
+                "A broker's client list",
+                "A trader's personal trade journal"
+              ],
+              correctAnswer: 1
+            },
+            {
+              id: "q2",
+              question: "When does order matching occur?",
+              options: [
+                "When a broker decides to execute an order",
+                "At the end of the trading day",
+                "When buy and sell prices match or overlap",
+                "When new market data is released"
+              ],
+              correctAnswer: 2
+            },
+            {
+              id: "q3",
+              question: "What is the primary role of a broker?",
+              options: [
+                "To provide financial advice",
+                "To manage your investment portfolio",
+                "To execute trades on behalf of clients",
+                "To predict market movements"
+              ],
+              correctAnswer: 2
+            }
+          ]
+        }
+      },
+      { 
+        id: 'basics5',
+        title: "Trading Terminology", 
+        description: "Understanding spreads, slippage, and liquidity",
+        content: [
+          {
+            type: "text",
+            value: "The spread is the difference between the bid price (what buyers are willing to pay) and the ask price (what sellers are willing to accept). Tighter spreads generally indicate more liquid markets."
+          },
+          {
+            type: "image",
+            src: "/api/placeholder/600/400",
+            alt: "Bid-ask spread illustration",
+            caption: "Visual representation of the bid-ask spread in a market"
+          },
+          {
+            type: "text",
+            value: "Slippage occurs when an order executes at a different price than expected. This typically happens during periods of high volatility or in markets with low liquidity, when orders cannot be filled at the exact requested price."
+          },
+          {
+            type: "text",
+            value: "Liquidity refers to how easily an asset can be bought or sold without affecting its price. Highly liquid markets have many buyers and sellers, making it easier to execute trades at expected prices."
+          },
+          {
+            type: "text",
+            value: "Other important terms include 'volume' (the number of shares or contracts traded), 'volatility' (the degree of variation in price over time), and 'market depth' (the market's ability to absorb large orders without price impact)."
+          }
+        ],
+        quiz: {
+          title: "Trading Terminology Quiz",
+          questions: [
+            {
+              id: "q1",
+              question: "What is the spread in trading?",
+              options: [
+                "The range between the highest and lowest price in a day",
+                "The difference between bid and ask prices",
+                "The commission charged by brokers",
+                "The average price movement of an asset"
+              ],
+              correctAnswer: 1
+            },
+            {
+              id: "q2",
+              question: "What causes slippage?",
+              options: [
+                "Technical errors in trading platforms",
+                "Traders changing their minds after placing orders",
+                "Low liquidity or high volatility in markets",
+                "Brokers deliberately changing prices"
+              ],
+              correctAnswer: 2
+            },
+            {
+              id: "q3",
+              question: "What characterizes a highly liquid market?",
+              options: [
+                "High trading fees",
+                "Large price gaps between trades",
+                "Many active buyers and sellers",
+                "Few trades but in large volume"
+              ],
+              correctAnswer: 2
+            }
+          ]
+        }
+      },
+      { 
+        id: 'basics6',
+        title: "Bulls and Bears", 
+        description: "Understanding market sentiment and trends",
+        content: [
+          {
+            type: "text",
+            value: "The terms 'bull' and 'bear' are used to describe market sentiment and trends. A bull market is characterized by rising prices and optimism, while a bear market features falling prices and pessimism."
+          },
+          {
+            type: "image",
+            src: "/api/placeholder/600/400",
+            alt: "Bull and bear market comparison",
+            caption: "Visual comparison of bull and bear market patterns"
+          },
+          {
+            type: "text",
+            value: "Bulls are traders who believe prices will rise and therefore take 'long' positions. The term comes from the way a bull thrusts its horns upward when attacking."
+          },
+          {
+            type: "text",
+            value: "Bears are traders who believe prices will fall and take 'short' positions. The term comes from the way a bear swipes its paws downward when attacking."
+          },
+          {
+            type: "text",
+            value: "Market sentiment can shift between bullish and bearish based on economic indicators, company earnings, geopolitical events, and many other factors that influence trader psychology."
+          }
+        ],
+        quiz: {
+          title: "Bulls and Bears Quiz",
+          questions: [
+            {
+              id: "q1",
+              question: "What characterizes a bull market?",
+              options: [
+                "Falling prices and pessimism",
+                "Rising prices and optimism",
+                "Stable prices with low volatility",
+                "High trading volume but no price change"
+              ],
+              correctAnswer: 1
+            },
+            {
+              id: "q2",
+              question: "What position would a bear typically take in the market?",
+              options: [
+                "Long position, buying assets",
+                "Short position, selling assets",
+                "No position, staying in cash",
+                "Neutral position with equal buys and sells"
+              ],
+              correctAnswer: 1
+            },
+            {
+              id: "q3",
+              question: "What can cause shifts between bullish and bearish market sentiment?",
+              options: [
+                "Only central bank decisions",
+                "Only company earnings reports",
+                "Only technical chart patterns",
+                "Economic indicators, earnings, geopolitical events, and more"
+              ],
+              correctAnswer: 3
             }
           ]
         }
@@ -233,80 +438,614 @@ const courseStructure = {
   },
   level2: {
     id: 'level2',
-    title: 'Technical Analysis',
+    title: 'Financial Markets',
     icon: 'analytics',
     nextLevel: null, // Last level for now
     position: { top: 250, left: 450 },
     lessons: [
       { 
-        id: 'tech1',
-        title: "Chart Types", 
-        description: "Understanding different chart representations",
+        id: 'markets1',
+        title: "Forex Market", 
+        description: "Understanding currency trading",
         content: [
           {
             type: "text",
-            value: "Charts are visual representations of price movements over time. There are several types of charts traders use to analyze markets."
+            value: "The foreign exchange (forex) market is where currencies are traded. It's the largest financial market in the world, with an average daily trading volume exceeding $6 trillion."
           },
           {
             type: "text",
-            value: "Line charts are the simplest form, showing a single line connecting closing prices. They provide a clean overview of price movement but lack detail about price action within each period."
+            value: "Forex trading involves buying one currency while simultaneously selling another, creating currency pairs such as EUR/USD (Euro/US Dollar) or GBP/JPY (British Pound/Japanese Yen)."
           },
           {
             type: "image",
             src: "/api/placeholder/600/400",
-            alt: "Line chart example",
-            caption: "Example of a simple line chart showing price movement"
+            alt: "Forex trading chart",
+            caption: "Example of a forex trading chart showing currency pair movements"
           },
           {
             type: "text",
-            value: "Candlestick charts show opening, closing, high, and low prices for each time period. They form patterns that traders use to predict future price movements."
-          },
-          {
-            type: "image",
-            src: "/api/placeholder/600/400",
-            alt: "Candlestick chart explained",
-            caption: "Anatomy of a candlestick chart with bullish and bearish candles"
+            value: "The forex market operates 24 hours a day, five days a week, closing only for weekends. It spans across major financial centers in different time zones, allowing for continuous trading."
           },
           {
             type: "text",
-            value: "Bar charts (OHLC charts) also display opening, high, low, and closing prices, but in a different format than candlesticks. They use vertical bars with small horizontal lines."
+            value: "Forex traders profit from changes in currency exchange rates, which are influenced by economic indicators, interest rates, geopolitical events, and market sentiment."
           }
         ],
         quiz: {
-          title: "Chart Types Quiz",
+          title: "Forex Market Quiz",
           questions: [
             {
               id: "q1",
-              question: "What information does a line chart typically show?",
+              question: "What are traded in the forex market?",
               options: [
-                "Opening, high, low, and closing prices",
-                "Only opening and closing prices",
-                "Only closing prices connected by a line",
-                "Trading volume and price averages"
+                "Stocks",
+                "Commodities",
+                "Currency pairs",
+                "Bonds"
               ],
               correctAnswer: 2
             },
             {
               id: "q2",
-              question: "Which chart type shows opening, closing, high, and low prices in a format that makes patterns easier to identify?",
+              question: "What is the approximate daily trading volume in the forex market?",
               options: [
-                "Point and figure charts",
-                "Candlestick charts",
-                "Line charts",
-                "Scatter plots"
+                "$1 billion",
+                "$100 billion",
+                "$6 trillion",
+                "$10 trillion"
+              ],
+              correctAnswer: 2
+            },
+            {
+              id: "q3",
+              question: "When does the forex market operate?",
+              options: [
+                "During US business hours only",
+                "24 hours a day, 7 days a week",
+                "24 hours a day, 5 days a week",
+                "9 AM to 5 PM in each local market"
+              ],
+              correctAnswer: 2
+            }
+          ]
+        }
+      },
+      { 
+        id: 'markets2',
+        title: "Stock Market", 
+        description: "Trading company shares",
+        content: [
+          {
+            type: "text",
+            value: "The stock market is where shares of publicly traded companies are bought and sold. When you buy a stock, you're purchasing a small ownership stake in a company."
+          },
+          {
+            type: "text",
+            value: "Stocks are traded on exchanges like the New York Stock Exchange (NYSE), NASDAQ, or Tokyo Stock Exchange (TSE). These exchanges provide organized marketplaces with rules and regulations."
+          },
+          {
+            type: "image",
+            src: "/api/placeholder/600/400",
+            alt: "Stock market trading floor",
+            caption: "Stock exchange trading floor (though most trading is now electronic)"
+          },
+          {
+            type: "text",
+            value: "Stock prices are influenced by company performance, industry trends, economic conditions, investor sentiment, and many other factors. Traders analyze these factors using fundamental or technical analysis."
+          },
+          {
+            type: "text",
+            value: "Unlike forex, stock markets have specific opening hours. For example, the NYSE operates from 9:30 AM to 4:00 PM Eastern Time, Monday through Friday, excluding holidays."
+          }
+        ],
+        quiz: {
+          title: "Stock Market Quiz",
+          questions: [
+            {
+              id: "q1",
+              question: "What do you own when you buy a stock?",
+              options: [
+                "A loan to the company",
+                "A share of company ownership",
+                "A company product",
+                "A right to manage the company"
+              ],
+              correctAnswer: 1
+            },
+            {
+              id: "q2",
+              question: "Where are stocks traded?",
+              options: [
+                "Only in private transactions",
+                "On stock exchanges like NYSE and NASDAQ",
+                "Directly at company headquarters",
+                "Only through banks"
               ],
               correctAnswer: 1
             },
             {
               id: "q3",
-              question: "What is a limitation of line charts compared to candlestick charts?",
+              question: "What are the trading hours for the New York Stock Exchange?",
               options: [
-                "Line charts cannot show long time periods",
-                "Line charts are more complex to read",
-                "Line charts lack detail about price action within each period",
-                "Line charts cannot be used for technical analysis"
+                "24 hours a day",
+                "9:30 AM to 4:00 PM Eastern Time, weekdays",
+                "8:00 AM to 8:00 PM, including weekends",
+                "7:00 AM to 2:00 PM, weekdays"
+              ],
+              correctAnswer: 1
+            }
+          ]
+        }
+      },
+      { 
+        id: 'markets3',
+        title: "Cryptocurrency Market", 
+        description: "Trading digital assets",
+        content: [
+          {
+            type: "text",
+            value: "The cryptocurrency market involves the trading of digital or virtual currencies like Bitcoin, Ethereum, and thousands of other alternative coins (altcoins)."
+          },
+          {
+            type: "text",
+            value: "Unlike traditional markets, cryptocurrencies trade 24/7, 365 days a year on various exchanges worldwide. These exchanges can be centralized (like Coinbase or Binance) or decentralized (like Uniswap)."
+          },
+          {
+            type: "image",
+            src: "/api/placeholder/600/400",
+            alt: "Cryptocurrency trading interface",
+            caption: "Example of a cryptocurrency trading platform interface"
+          },
+          {
+            type: "text",
+            value: "Cryptocurrency prices are highly volatile and can be influenced by technological developments, regulatory news, market sentiment, and broader adoption trends."
+          },
+          {
+            type: "text",
+            value: "Trading cryptocurrencies involves specific considerations including wallet security, blockchain transaction confirmations, and understanding the unique technologies behind different digital assets."
+          }
+        ],
+        quiz: {
+          title: "Cryptocurrency Market Quiz",
+          questions: [
+            {
+              id: "q1",
+              question: "What are the trading hours for cryptocurrency markets?",
+              options: [
+                "Same as stock markets",
+                "24 hours a day, 7 days a week",
+                "9 AM to 9 PM globally",
+                "Only during US business hours"
+              ],
+              correctAnswer: 1
+            },
+            {
+              id: "q2",
+              question: "What are two examples of major cryptocurrencies?",
+              options: [
+                "Dollar and Euro",
+                "Gold and Silver",
+                "Bitcoin and Ethereum",
+                "NYSE and NASDAQ"
               ],
               correctAnswer: 2
+            },
+            {
+              id: "q3",
+              question: "What's a characteristic of cryptocurrency markets?",
+              options: [
+                "Low volatility",
+                "Government-backed stability",
+                "Central bank regulation",
+                "High price volatility"
+              ],
+              correctAnswer: 3
+            }
+          ]
+        }
+      },
+      { 
+        id: 'markets4',
+        title: "Commodities Market", 
+        description: "Trading physical goods",
+        content: [
+          {
+            type: "text",
+            value: "Commodities markets involve the trading of raw materials or primary agricultural products. Major categories include energy (oil, natural gas), metals (gold, silver), and agricultural products (wheat, coffee)."
+          },
+          {
+            type: "text",
+            value: "Most commodity trading happens through futures contracts, which are agreements to buy or sell a specific amount of a commodity at a predetermined price at a specified time in the future."
+          },
+          {
+            type: "image",
+            src: "/api/placeholder/600/400",
+            alt: "Commodity trading chart",
+            caption: "Gold futures price chart showing historical price movements"
+          },
+          {
+            type: "text",
+            value: "Commodity prices are influenced by supply and demand factors, weather conditions (for agricultural commodities), geopolitical events, and broader economic trends."
+          },
+          {
+            type: "text",
+            value: "Traders can participate in commodity markets through futures exchanges like the Chicago Mercantile Exchange (CME), through commodity ETFs, or via stocks of companies involved in commodity production."
+          }
+        ],
+        quiz: {
+          title: "Commodities Market Quiz",
+          questions: [
+            {
+              id: "q1",
+              question: "What are examples of commodities?",
+              options: [
+                "Stocks and bonds",
+                "Oil, gold, and wheat",
+                "Real estate properties",
+                "Currency pairs"
+              ],
+              correctAnswer: 1
+            },
+            {
+              id: "q2",
+              question: "How are commodities typically traded?",
+              options: [
+                "Only through direct physical exchange",
+                "Primarily through futures contracts",
+                "Only in small retail quantities",
+                "Through cryptocurrency exchanges"
+              ],
+              correctAnswer: 1
+            },
+            {
+              id: "q3",
+              question: "What factors influence agricultural commodity prices?",
+              options: [
+                "Only company earnings",
+                "Only interest rates",
+                "Weather conditions and supply/demand",
+                "Only stock market performance"
+              ],
+              correctAnswer: 2
+            }
+          ]
+        }
+      },
+      { 
+        id: 'markets5',
+        title: "Indices Market", 
+        description: "Trading market indexes",
+        content: [
+          {
+            type: "text",
+            value: "Market indices track the performance of groups of stocks, providing a snapshot of market performance. Examples include the S&P 500, Dow Jones Industrial Average, and NASDAQ Composite in the US, and others like FTSE 100 (UK) or Nikkei 225 (Japan)."
+          },
+          {
+            type: "text",
+            value: "Traders can't directly buy or sell an index, but they can trade index funds, futures, options, or ETFs that track these indices."
+          },
+          {
+            type: "image",
+            src: "/api/placeholder/600/400",
+            alt: "Market index chart",
+            caption: "Performance chart of a major market index"
+          },
+          {
+            type: "text",
+            value: "Indices are weighted differently: some are price-weighted (like the Dow Jones), while others are market-capitalization-weighted (like the S&P 500), affecting how individual stock movements impact the index."
+          },
+          {
+            type: "text",
+            value: "Trading index-based products offers exposure to broad market segments without the need to buy individual stocks, providing instant diversification."
+          }
+        ],
+        quiz: {
+          title: "Indices Market Quiz",
+          questions: [
+            {
+              id: "q1",
+              question: "What is a market index?",
+              options: [
+                "A single company's stock",
+                "A measure tracking a group of stocks' performance",
+                "A type of cryptocurrency",
+                "A government bond"
+              ],
+              correctAnswer: 1
+            },
+            {
+              id: "q2",
+              question: "Can traders directly buy an index like the S&P 500?",
+              options: [
+                "Yes, directly from the exchange",
+                "No, they must use index funds, futures, or ETFs",
+                "Only during specific market hours",
+                "Only with special broker permissions"
+              ],
+              correctAnswer: 1
+            },
+            {
+              id: "q3",
+              question: "What's an advantage of trading index-based products?",
+              options: [
+                "Guaranteed returns",
+                "No risk exposure",
+                "Instant diversification across multiple stocks",
+                "No trading fees"
+              ],
+              correctAnswer: 2
+            }
+          ]
+        }
+      },
+      { 
+        id: 'markets6',
+        title: "Futures Market", 
+        description: "Trading future delivery contracts",
+        content: [
+          {
+            type: "text",
+            value: "Futures are standardized contracts obligating the buyer to purchase, or the seller to sell, a specific asset at a predetermined price on a specified future date."
+          },
+          {
+            type: "text",
+            value: "Originally developed for agricultural producers and consumers to hedge against price fluctuations, futures now cover a wide range of assets including commodities, currencies, indices, and even interest rates."
+          },
+          {
+            type: "image",
+            src: "/api/placeholder/600/400",
+            alt: "Futures trading terminal",
+            caption: "Example of a futures trading platform showing various contracts"
+          },
+          {
+            type: "text",
+            value: "Futures trading typically involves leverage, meaning traders only need to put up a fraction of the contract's value (margin) to control the full position, amplifying both potential profits and losses."
+          },
+          {
+            type: "text",
+            value: "Unlike many other markets, futures contracts have expiration dates. Traders who don't want to take or make delivery must close or roll over their positions before expiration."
+          }
+        ],
+        quiz: {
+          title: "Futures Market Quiz",
+          questions: [
+            {
+              id: "q1",
+              question: "What is a futures contract?",
+              options: [
+                "An option to buy or sell at your discretion",
+                "An agreement to buy/sell an asset at a predetermined future price/date",
+                "A loan to purchase stocks",
+                "A type of cryptocurrency"
+              ],
+              correctAnswer: 1
+            },
+            {
+              id: "q2",
+              question: "What happens if you hold a futures contract until expiration?",
+              options: [
+                "The contract automatically renews",
+                "You're obligated to take or make delivery of the underlying asset",
+                "The contract becomes worthless",
+                "The broker closes it for you with no consequences"
+              ],
+              correctAnswer: 1
+            },
+            {
+              id: "q3",
+              question: "What does trading on margin mean in futures markets?",
+              options: [
+                "Trading with borrowed money",
+                "Trading with only a fraction of the contract value as deposit",
+                "Trading only at market open",
+                "Trading without fees"
+              ],
+              correctAnswer: 1
+            }
+          ]
+        }
+      },
+      { 
+        id: 'markets7',
+        title: "Options Market", 
+        description: "Trading the right to buy or sell",
+        content: [
+          {
+            type: "text",
+            value: "Options are contracts that give the holder the right, but not the obligation, to buy (call option) or sell (put option) an underlying asset at a specified price (strike price) before a certain date (expiration date)."
+          },
+          {
+            type: "text",
+            value: "The buyer of an option pays a premium to the seller for this right. If the market moves favorably, the option can be exercised for profit; if not, the buyer can let it expire worthless, losing only the premium paid."
+          },
+          {
+            type: "image",
+            src: "/api/placeholder/600/400",
+            alt: "Options chain display",
+            caption: "Example of an options chain showing various strike prices and expiration dates"
+          },
+          {
+            type: "text",
+            value: "Options are used for speculation, income generation, and risk management (hedging). They offer flexibility and can be combined in various strategies to profit from different market conditions."
+          },
+          {
+            type: "text",
+            value: "Option pricing is influenced by several factors including the underlying asset's price, time until expiration, volatility, interest rates, and dividends. These components are measured by 'the Greeks' (delta, gamma, theta, vega, and rho)."
+          }
+        ],
+        quiz: {
+          title: "Options Market Quiz",
+          questions: [
+            {
+              id: "q1",
+              question: "What right does a call option give its holder?",
+              options: [
+                "The right to sell an asset at the strike price",
+                "The right to buy an asset at the strike price",
+                "The right to change the strike price",
+                "The right to extend the expiration date"
+              ],
+              correctAnswer: 1
+            },
+            {
+              id: "q2",
+              question: "What does the buyer of an option pay?",
+              options: [
+                "Strike price",
+                "Premium",
+                "Margin",
+                "Commission only"
+              ],
+              correctAnswer: 1
+            },
+            {
+              id: "q3",
+              question: "What happens if you don't exercise an option by expiration?",
+              options: [
+                "You're forced to exercise it",
+                "The option is automatically renewed",
+                "The option expires worthless",
+                "You pay a penalty fee"
+              ],
+              correctAnswer: 2
+            }
+          ]
+        }
+      },
+      { 
+        id: 'markets8',
+        title: "ETFs and Funds", 
+        description: "Trading baskets of assets",
+        content: [
+          {
+            type: "text",
+            value: "Exchange-Traded Funds (ETFs) are investment funds traded on stock exchanges, similar to individual stocks. They hold assets like stocks, bonds, or commodities and typically track an underlying index."
+          },
+          {
+            type: "text",
+            value: "ETFs offer diversification benefits as they contain multiple securities, reducing the risk compared to holding individual assets. They can track broad markets, specific sectors, commodities, or even investment strategies."
+          },
+          {
+            type: "image",
+            src: "/api/placeholder/600/400",
+            alt: "ETF structure diagram",
+            caption: "How ETFs are structured and traded on exchanges"
+          },
+          {
+            type: "text",
+            value: "Unlike mutual funds, ETFs trade throughout the day at market prices that may differ from their net asset value (NAV). They generally have lower expense ratios and greater tax efficiency than mutual funds."
+          },
+          {
+            type: "text",
+            value: "Other fund types include mutual funds (pooled investments managed by professionals, priced once daily), index funds (similar to ETFs but structured as mutual funds), and hedge funds (private investment vehicles with more flexibility and higher minimums)."
+          }
+        ],
+        quiz: {
+          title: "ETFs and Funds Quiz",
+          questions: [
+            {
+              id: "q1",
+              question: "What is an ETF?",
+              options: [
+                "A type of cryptocurrency",
+                "An individual stock",
+                "An investment fund traded on exchanges like a stock",
+                "A type of options contract"
+              ],
+              correctAnswer: 2
+            },
+            {
+              id: "q2",
+              question: "How do ETFs differ from mutual funds in terms of trading?",
+              options: [
+                "ETFs can only be bought, not sold",
+                "ETFs trade throughout the day at market prices",
+                "ETFs can only be traded monthly",
+                "ETFs have fixed prices set by the fund manager"
+              ],
+              correctAnswer: 1
+            },
+            {
+              id: "q3",
+              question: "What's a primary benefit of ETFs?",
+              options: [
+                "Guaranteed returns",
+                "No risk exposure",
+                "Diversification across multiple securities",
+                "Free trading without fees"
+              ],
+              correctAnswer: 2
+            }
+          ]
+        }
+      },
+      { 
+        id: 'markets9',
+        title: "Trading Hours Per Market", 
+        description: "Understanding when markets are open",
+        content: [
+          {
+            type: "text",
+            value: "Different financial markets operate during specific hours, often aligned with business hours in their respective regions. Understanding these hours is crucial for traders."
+          },
+          {
+            type: "text",
+            value: "Stock markets typically follow set schedules based on their location. For example, the New York Stock Exchange (NYSE) and NASDAQ operate from 9:30 AM to 4:00 PM Eastern Time (ET), Monday through Friday, excluding holidays."
+          },
+          {
+            type: "text",
+            value: "Asian markets like the Tokyo Stock Exchange (8:00 AM to 3:00 PM Japan Standard Time) and Hong Kong Stock Exchange (9:30 AM to 4:00 PM Hong Kong Time) open first, followed by European markets like the London Stock Exchange (8:00 AM to 4:30 PM GMT), and then North American markets."
+          },
+          {
+            type: "image",
+            src: "/api/placeholder/600/400",
+            alt: "Global trading hours chart",
+            caption: "Time overlap of major financial markets around the world"
+          },
+          {
+            type: "text",
+            value: "The forex market operates 24 hours a day, five days a week, with trading beginning in Asia, moving to Europe, and then to North America before beginning again in Asia the next day."
+          },
+          {
+            type: "text",
+            value: "Cryptocurrency markets operate 24/7, while futures and options markets often have regular trading hours with additional electronic trading sessions outside standard hours. Commodity markets frequently follow the hours of the exchanges where they're traded."
+          }
+        ],
+        quiz: {
+          title: "Trading Hours Quiz",
+          questions: [
+            {
+              id: "q1",
+              question: "What are the trading hours for the New York Stock Exchange (NYSE)?",
+              options: [
+                "24 hours a day, 7 days a week",
+                "9:30 AM to 4:00 PM Eastern Time, weekdays",
+                "8:00 AM to 5:00 PM Eastern Time, including weekends",
+                "7:00 AM to 2:00 PM Eastern Time, weekdays"
+              ],
+              correctAnswer: 1
+            },
+            {
+              id: "q2",
+              question: "Which market operates continuously, 24 hours a day, 7 days a week?",
+              options: [
+                "Stock markets",
+                "Bond markets",
+                "Cryptocurrency markets",
+                "Commodity markets"
+              ],
+              correctAnswer: 2
+            },
+            {
+              id: "q3",
+              question: "How does the forex market operate?",
+              options: [
+                "Only during US business hours",
+                "24 hours a day, 5 days a week",
+                "Only when stock markets are open",
+                "9 AM to 5 PM in each local timezone"
+              ],
+              correctAnswer: 1
             }
           ]
         }
