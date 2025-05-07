@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate, Navigate } from 'react-router-dom';
 import './App.css';
 
-// Importeer kosmische elementen
+// Importeer kosmische elementen - aangepaste import zonder default
 import { initCosmicElements } from './components/cosmic_tradelingo';
 
 // Track user progress in localStorage
