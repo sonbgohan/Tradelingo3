@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Link, useNavigate, Navigate } f
 import './App.css';
 
 // Importeer kosmische elementen
-import { initCosmicElements } from './components/cosmic-tradelingo';
+import { initCosmicElements } from './components/cosmic_tradelingo';
 
 // Track user progress in localStorage
 const getUserProgress = () => {
