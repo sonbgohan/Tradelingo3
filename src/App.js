@@ -2,10 +2,290 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate, Navigate } from 'react-router-dom';
 import './App.css';
 
-// GEWIJZIGD: Nu importeren we het hele object en halen we initCosmicElements eruit
-import cosmicModule from './components/cosmic_tradelingo';
-// We halen de functie uit het geïmporteerde object
-const { initCosmicElements } = cosmicModule;
+// Kosmische elementen functionaliteit
+const initCosmicElements = () => {
+  console.log("Kosmische elementen initialiseren...");
+  
+  // Functie om de titel te vervangen door een beter logo
+  const replaceTitleWithLogo = () => {
+    const headerTitle = document.querySelector('header h1');
+    if (!headerTitle) return;
+    
+    const logoContainer = document.createElement('div');
+    logoContainer.className = 'logo-container';
+    logoContainer.innerHTML = `
+      <svg viewBox="0 0 500 120" xmlns="http://www.w3.org/2000/svg" class="tradelingo-logo">
+        <defs>
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="5" result="blur" />
+            <feComposite in="SourceGraphic" in2="blur" operator="over" />
+          </filter>
+          
+          <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#6ee7b7" />
+            <stop offset="50%" stopColor="#14b8a6" />
+            <stop offset="100%" stopColor="#0ea5e9" />
+          </linearGradient>
+          
+          <filter id="neonGlow">
+            <feGaussianBlur stdDeviation="4" result="glow" />
+            <feMerge>
+              <feMergeNode in="glow" />
+              <feMergeNode in="glow" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+        </defs>
+        
+        <g transform="translate(30, 60) rotate(-30)" filter="url(#neonGlow)">
+          <path d="M0,0 L15,40 L0,55 L-15,40 Z" fill="url(#logoGradient)" />
+          <circle cx="0" cy="15" r="5" fill="white" fillOpacity="0.8" />
+          <path d="M-10,40 L0,60 L10,40" fill="#f59e0b" filter="url(#glow)" />
+        </g>
+        
+        <g filter="url(#neonGlow)">
+          <text x="75" y="80" fontFamily="Arial" fontWeight="bold" fontSize="60" fill="url(#logoGradient)">TRADE</text>
+          <text x="260" y="80" fontFamily="Arial" fontWeight="bold" fontSize="60" fill="url(#logoGradient)">LINGO</text>
+        </g>
+        
+        <path d="M75,90 L355,90" stroke="url(#logoGradient)" strokeWidth="2" strokeDasharray="5,5" />
+        
+        <polyline points="380,60 390,50 400,65 410,45 420,55 430,40" 
+          stroke="url(#logoGradient)" strokeWidth="3" fill="none" filter="url(#neonGlow)" />
+        
+        <circle cx="450" cy="50" r="15" fill="none" stroke="url(#logoGradient)" strokeWidth="2" />
+        <circle cx="450" cy="50" r="10" fill="url(#logoGradient)" fillOpacity="0.3" />
+        <circle cx="450" cy="50" r="5" fill="url(#logoGradient)" fillOpacity="0.5" />
+      </svg>
+    `;
+    
+    headerTitle.innerHTML = '';
+    headerTitle.appendChild(logoContainer);
+  };
+  
+  // Functie om levels te transformeren naar planeten
+  const transformLevelsToPlanets = () => {
+    const levelNodes = document.querySelectorAll('.level-node');
+    
+    levelNodes.forEach((node, index) => {
+      // Check of de node al is getransformeerd
+      if (node.querySelector('.planet-container')) return;
+      
+      // Haal bestaande elementen op
+      const levelIcon = node.querySelector('.level-icon');
+      const levelInfo = node.querySelector('.level-info');
+      if (!levelIcon) return;
+      
+      // Haal voortgangspercentage op
+      const progressBar = node.querySelector('.progress-bar .progress');
+      const progressStyle = progressBar ? progressBar.style.width : '0%';
+      const progressPercentage = parseInt(progressStyle) || 0;
+      
+      // Maak planeet container
+      const planetContainer = document.createElement('div');
+      planetContainer.className = 'planet-container';
+      
+      // Maak planeet
+      const planet = document.createElement('div');
+      planet.className = 'planet';
+      
+      // Voeg voortgangsindicator toe in het midden van de planeet
+      const planetProgress = document.createElement('div');
+      planetProgress.className = 'planet-progress';
+      
+      const progressText = document.createElement('div');
+      progressText.className = 'progress-text';
+      progressText.textContent = `${progressPercentage}%`;
+      
+      planetProgress.appendChild(progressText);
+      planet.appendChild(planetProgress);
+      
+      // Voeg planeetkenmerken toe (kraters)
+      for (let i = 0; i < 8; i++) {
+        const feature = document.createElement('div');
+        feature.className = 'planet-feature';
+        
+        // Willekeurige positie binnen de planeet
+        feature.style.left = `${15 + Math.random() * 70}%`;
+        feature.style.top = `${15 + Math.random() * 70}%`;
+        
+        // Willekeurige grootte
+        const featureSize = 3 + Math.random() * 12;
+        feature.style.width = `${featureSize}px`;
+        feature.style.height = `${featureSize}px`;
+        
+        // Willekeurige transparantie
+        feature.style.opacity = 0.1 + Math.random() * 0.3;
+        
+        planet.appendChild(feature);
+      }
+      
+      // Voeg gloed-effect toe
+      const planetGlow = document.createElement('div');
+      planetGlow.className = 'planet-glow';
+      
+      // Plaats alles samen
+      planetContainer.appendChild(planet);
+      planetContainer.appendChild(planetGlow);
+
+      // Voeg draaiende raket toe aan actieve planeet
+      const isUnlocked = !node.classList.contains('locked');
+      const isActive = progressPercentage > 0 && progressPercentage < 100;
+      
+      if (isUnlocked && isActive) {
+        const orbitingRocket = document.createElement('div');
+        orbitingRocket.className = 'orbiting-rocket';
+        
+        const rocketBody = document.createElement('div');
+        rocketBody.className = 'rocket-body';
+        
+        const rocketShape = document.createElement('div');
+        rocketShape.className = 'rocket-shape';
+        
+        const rocketWindow = document.createElement('div');
+        rocketWindow.className = 'rocket-window';
+        
+        const rocketFlame = document.createElement('div');
+        rocketFlame.className = 'rocket-flame';
+        
+        rocketBody.appendChild(rocketShape);
+        rocketBody.appendChild(rocketWindow);
+        rocketBody.appendChild(rocketFlame);
+        orbitingRocket.appendChild(rocketBody);
+        
+        planetContainer.appendChild(orbitingRocket);
+      }
+      
+      // Vervang level icon met planeet
+      try {
+        node.replaceChild(planetContainer, levelIcon);
+        
+        // Pas de layout aan naar verticaal
+        node.style.flexDirection = 'column';
+        node.style.alignItems = 'center';
+        
+        // Pas text alignment aan
+        if (levelInfo) {
+          levelInfo.style.textAlign = 'center';
+        }
+      } catch (err) {
+        console.error('Fout bij vervangen van level icon:', err);
+      }
+    });
+  };
+
+  // Functie om raket toe te voegen aan paden
+  const addRocketToPath = () => {
+    // Verwijder bestaande raketten om dubbele elementen te voorkomen
+    document.querySelectorAll('.rocket').forEach(r => r.remove());
+    
+    const paths = document.querySelectorAll('.level-path');
+    if (!paths || paths.length === 0) return;
+    
+    paths.forEach((path, index) => {
+      // Controleer of pad actief is (niet uitgegrijsd)
+      const pathStyle = window.getComputedStyle(path);
+      const isPathActive = pathStyle.opacity !== '0.4' && pathStyle.opacity > 0.5;
+      
+      if (!isPathActive) return;
+      
+      // Maak raket element
+      const rocket = document.createElement('div');
+      rocket.className = 'rocket';
+      rocket.id = `rocket-${index}`;
+      
+      const rocketBody = document.createElement('div');
+      rocketBody.className = 'rocket-body';
+      
+      const rocketShape = document.createElement('div');
+      rocketShape.className = 'rocket-shape';
+      
+      const rocketWindow = document.createElement('div');
+      rocketWindow.className = 'rocket-window';
+      
+      const rocketFlame = document.createElement('div');
+      rocketFlame.className = 'rocket-flame';
+      
+      rocketBody.appendChild(rocketShape);
+      rocketBody.appendChild(rocketWindow);
+      rocketBody.appendChild(rocketFlame);
+      rocket.appendChild(rocketBody);
+      
+      // Voeg raket toe aan de DOM
+      const worldMap = document.querySelector('.world-map');
+      if (worldMap) {
+        worldMap.appendChild(rocket);
+        
+        // Start animatie
+        animateRocketAlongPath(rocket, path, worldMap);
+      }
+    });
+  };
+  
+  // Functie om raket langs pad te animeren
+  const animateRocketAlongPath = (rocket, path, worldMap) => {
+    if (!rocket || !path || !worldMap) return;
+    
+    let progress = 0;
+    const speed = 0.5;
+    
+    const pathRect = path.getBoundingClientRect();
+    const mapRect = worldMap.getBoundingClientRect();
+    
+    // Bepaal het start- en eindpunt van het pad
+    const startX = pathRect.left - mapRect.left;
+    const startY = pathRect.top - mapRect.top;
+    const endX = pathRect.right - mapRect.left;
+    const endY = pathRect.bottom - mapRect.top;
+    
+    // Middenpunt voor een gebogen pad
+    const midX = (startX + endX) / 2;
+    const midY = startY - 50;
+    
+    const animate = () => {
+      // Update voortgang
+      progress += speed;
+      if (progress > 100) progress = 0;
+      
+      const t = progress / 100;
+      
+      // Bereken quadratische bezier curve punt
+      const x = (1 - t) * (1 - t) * startX + 2 * (1 - t) * t * midX + t * t * endX;
+      const y = (1 - t) * (1 - t) * startY + 2 * (1 - t) * t * midY + t * t * endY;
+      
+      // Bereken een punt iets verder op de curve voor de rotatie
+      const tAhead = Math.min(t + 0.01, 1);
+      const xAhead = (1 - tAhead) * (1 - tAhead) * startX + 2 * (1 - tAhead) * tAhead * midX + tAhead * tAhead * endX;
+      const yAhead = (1 - tAhead) * (1 - tAhead) * startY + 2 * (1 - tAhead) * tAhead * midY + tAhead * tAhead * endY;
+      
+      // Bereken rotatie hoek
+      const angle = Math.atan2(yAhead - y, xAhead - x) * 180 / Math.PI;
+      
+      // Positioneer de raket
+      rocket.style.transform = `translate(${x}px, ${y}px) rotate(${angle + 90}deg)`;
+      rocket.style.display = 'block';
+      
+      // Volgende frame
+      requestAnimationFrame(animate);
+    };
+    
+    // Start animatie
+    requestAnimationFrame(animate);
+  };
+  
+  // Voer alles uit met vertragingen om de DOM te laten laden
+  setTimeout(() => {
+    replaceTitleWithLogo();
+    
+    setTimeout(() => {
+      transformLevelsToPlanets();
+      
+      setTimeout(() => {
+        addRocketToPath();
+      }, 500);
+    }, 300);
+  }, 200);
+};
 
 // Track user progress in localStorage
 const getUserProgress = () => {
@@ -30,412 +310,7 @@ const courseStructure = {
     nextLevel: 'level2',
     position: { top: 100, left: 100 },
     lessons: [
-      { 
-        id: 'basics1',
-        title: "How Does Trading Work?", 
-        description: "Understanding the fundamentals of trading",
-        content: [
-          {
-            type: "text",
-            value: "Trading is the process of buying and selling financial assets with the goal of making a profit. Traders buy assets when they believe prices will rise and sell when they think prices will fall."
-          },
-          {
-            type: "text",
-            value: "Trading works through exchanges and marketplaces where buyers and sellers come together to transact. Modern trading is primarily electronic, happening through online platforms provided by brokers or exchanges."
-          },
-          {
-            type: "image",
-            src: "/api/placeholder/600/400",
-            alt: "Trading process flow diagram",
-            caption: "The flow of a typical trade from order placement to execution"
-          },
-          {
-            type: "text",
-            value: "When you place a trade, you're essentially placing an order to buy or sell an asset at a specific price. This order goes to the exchange where it's matched with a counterparty willing to take the other side of your trade."
-          },
-          {
-            type: "text",
-            value: "Trading can be done in two directions: going 'long' (buying first, then selling later at a hopefully higher price) or going 'short' (selling borrowed assets first, then buying them back later at a hopefully lower price)."
-          }
-        ],
-        quiz: {
-          title: "How Trading Works Quiz",
-          questions: [
-            {
-              id: "q1",
-              question: "What happens when you place a trade order?",
-              options: [
-                "Your order is automatically executed at your desired price",
-                "Your order goes to an exchange to be matched with a counterparty",
-                "A broker buys the asset from their inventory to sell to you",
-                "The asset is created at the moment you place the order"
-              ],
-              correctAnswer: 1
-            },
-            {
-              id: "q2",
-              question: "What does 'going long' in trading mean?",
-              options: [
-                "Trading with long-term goals in mind",
-                "Using a long and complex trading strategy",
-                "Buying first and selling later, hoping prices rise",
-                "Trading with a large amount of capital"
-              ],
-              correctAnswer: 2
-            },
-            {
-              id: "q3",
-              question: "What are the two main directions for trading?",
-              options: [
-                "Up and down",
-                "Long and short",
-                "Buy and hold",
-                "Fast and slow"
-              ],
-              correctAnswer: 1
-            }
-          ]
-        }
-      },
-      { 
-        id: 'basics2',
-        title: "What Does a Trader Do?", 
-        description: "The day-to-day activities of a trader",
-        content: [
-          {
-            type: "text",
-            value: "Traders analyze markets to identify opportunities for profitable trades. This involves studying price charts, economic news, company reports, and other factors that might affect asset prices."
-          },
-          {
-            type: "text",
-            value: "A typical trader's day often starts with reviewing overnight market movements and news that could impact their trading plans. They'll check their existing positions and adjust their strategy accordingly."
-          },
-          {
-            type: "image",
-            src: "/api/placeholder/600/400",
-            alt: "Trader at desk with multiple screens",
-            caption: "A trader monitors multiple markets and data sources simultaneously"
-          },
-          {
-            type: "text",
-            value: "Traders develop and follow trading plans to guide their decisions. These plans include entry and exit points, risk management rules, and criteria for identifying good trade setups."
-          },
-          {
-            type: "text",
-            value: "Risk management is a crucial part of a trader's activities. They determine how much capital to risk on each trade, use stop-loss orders to limit potential losses, and diversify their trades across different assets or markets."
-          }
-        ],
-        quiz: {
-          title: "Trader Activities Quiz",
-          questions: [
-            {
-              id: "q1",
-              question: "What do traders analyze to find trading opportunities?",
-              options: [
-                "Only company financial statements",
-                "Only technical chart patterns",
-                "Price charts, news, reports, and other market-moving factors",
-                "Only the advice of other traders"
-              ],
-              correctAnswer: 2
-            },
-            {
-              id: "q2",
-              question: "Why is risk management important for traders?",
-              options: [
-                "It's not important; traders aim for maximum gains",
-                "To protect their capital and ensure longevity in the markets",
-                "Only because regulations require it",
-                "Just to impress other traders"
-              ],
-              correctAnswer: 1
-            },
-            {
-              id: "q3",
-              question: "What is a trading plan?",
-              options: [
-                "A guarantee of profits",
-                "A set of guidelines including entry/exit points and risk management",
-                "A list of hot tips from other traders",
-                "A schedule of when to trade during the day"
-              ],
-              correctAnswer: 1
-            }
-          ]
-        }
-      },
-      { 
-        id: 'basics3',
-        title: "Trading vs Investing", 
-        description: "Key differences between trading and investing",
-        content: [
-          {
-            type: "text",
-            value: "Trading and investing are both ways to participate in financial markets, but they differ significantly in approach, timeframe, and goals."
-          },
-          {
-            type: "text",
-            value: "Traders typically focus on short-term price movements, holding positions for minutes, hours, days, or weeks. They aim to profit from market volatility and price fluctuations."
-          },
-          {
-            type: "text",
-            value: "Investors, on the other hand, take a long-term approach, often holding assets for years or decades. They focus on the fundamental value of assets and their potential for growth over time."
-          },
-          {
-            type: "image",
-            src: "/api/placeholder/600/400",
-            alt: "Trading vs Investing comparison chart",
-            caption: "Key differences between trading and investing approaches"
-          },
-          {
-            type: "text",
-            value: "Trading typically requires more active market monitoring and frequent decision-making, while investing often follows a 'buy and hold' strategy with less frequent adjustments."
-          },
-          {
-            type: "text",
-            value: "Both trading and investing have their own advantages and risks, and many market participants use a combination of both approaches in their financial strategy."
-          }
-        ],
-        quiz: {
-          title: "Trading vs Investing Quiz",
-          questions: [
-            {
-              id: "q1",
-              question: "What is the typical timeframe for trading?",
-              options: [
-                "Minutes to weeks",
-                "Months to years",
-                "Only seconds",
-                "Decades"
-              ],
-              correctAnswer: 0
-            },
-            {
-              id: "q2",
-              question: "How would you characterize an investor's approach compared to a trader's?",
-              options: [
-                "More focus on short-term price movements",
-                "More concern with day-to-day market volatility",
-                "More emphasis on long-term growth and fundamental value",
-                "More focus on leveraged positions"
-              ],
-              correctAnswer: 2
-            },
-            {
-              id: "q3",
-              question: "Which approach typically requires more frequent market monitoring?",
-              options: [
-                "Investing",
-                "Trading",
-                "Both require the same amount",
-                "Neither requires monitoring"
-              ],
-              correctAnswer: 1
-            }
-          ]
-        }
-      },
-      { 
-        id: 'basics4',
-        title: "How Does a Broker Work?", 
-        description: "Understanding brokers, orderbooks, and matching",
-        content: [
-          {
-            type: "text",
-            value: "A broker is a financial intermediary who executes trades on behalf of clients. Brokers provide access to markets that individuals typically cannot access directly."
-          },
-          {
-            type: "text",
-            value: "When you place an order through a broker, it's sent to an exchange or market where it's added to the order book. An order book is a list of all buy and sell orders for a specific asset, organized by price level."
-          },
-          {
-            type: "image",
-            src: "/api/placeholder/600/400",
-            alt: "Order book visualization",
-            caption: "Example of an order book showing buy and sell orders at different price levels"
-          },
-          {
-            type: "text",
-            value: "Order matching is the process where buy orders are paired with sell orders. When a buy order price matches or exceeds a sell order price, a trade executes. This typically happens automatically on electronic exchanges."
-          },
-          {
-            type: "text",
-            value: "Most modern brokers offer services beyond just executing trades, including providing trading platforms, research tools, educational resources, and sometimes financial advice."
-          }
-        ],
-        quiz: {
-          title: "Broker and Order Book Quiz",
-          questions: [
-            {
-              id: "q1",
-              question: "What is an order book?",
-              options: [
-                "A record of all executed trades",
-                "A list of all buy and sell orders organized by price",
-                "A broker's client list",
-                "A trader's personal trade journal"
-              ],
-              correctAnswer: 1
-            },
-            {
-              id: "q2",
-              question: "When does order matching occur?",
-              options: [
-                "When a broker decides to execute an order",
-                "At the end of the trading day",
-                "When buy and sell prices match or overlap",
-                "When new market data is released"
-              ],
-              correctAnswer: 2
-            },
-            {
-              id: "q3",
-              question: "What is the primary role of a broker?",
-              options: [
-                "To provide financial advice",
-                "To manage your investment portfolio",
-                "To execute trades on behalf of clients",
-                "To predict market movements"
-              ],
-              correctAnswer: 2
-            }
-          ]
-        }
-      },
-      { 
-        id: 'basics5',
-        title: "Trading Terminology", 
-        description: "Understanding spreads, slippage, and liquidity",
-        content: [
-          {
-            type: "text",
-            value: "The spread is the difference between the bid price (what buyers are willing to pay) and the ask price (what sellers are willing to accept). Tighter spreads generally indicate more liquid markets."
-          },
-          {
-            type: "image",
-            src: "/api/placeholder/600/400",
-            alt: "Bid-ask spread illustration",
-            caption: "Visual representation of the bid-ask spread in a market"
-          },
-          {
-            type: "text",
-            value: "Slippage occurs when an order executes at a different price than expected. This typically happens during periods of high volatility or in markets with low liquidity, when orders cannot be filled at the exact requested price."
-          },
-          {
-            type: "text",
-            value: "Liquidity refers to how easily an asset can be bought or sold without affecting its price. Highly liquid markets have many buyers and sellers, making it easier to execute trades at expected prices."
-          },
-          {
-            type: "text",
-            value: "Other important terms include 'volume' (the number of shares or contracts traded), 'volatility' (the degree of variation in price over time), and 'market depth' (the market's ability to absorb large orders without price impact)."
-          }
-        ],
-        quiz: {
-          title: "Trading Terminology Quiz",
-          questions: [
-            {
-              id: "q1",
-              question: "What is the spread in trading?",
-              options: [
-                "The range between the highest and lowest price in a day",
-                "The difference between bid and ask prices",
-                "The commission charged by brokers",
-                "The average price movement of an asset"
-              ],
-              correctAnswer: 1
-            },
-            {
-              id: "q2",
-              question: "What causes slippage?",
-              options: [
-                "Technical errors in trading platforms",
-                "Traders changing their minds after placing orders",
-                "Low liquidity or high volatility in markets",
-                "Brokers deliberately changing prices"
-              ],
-              correctAnswer: 2
-            },
-            {
-              id: "q3",
-              question: "What characterizes a highly liquid market?",
-              options: [
-                "High trading fees",
-                "Large price gaps between trades",
-                "Many active buyers and sellers",
-                "Few trades but in large volume"
-              ],
-              correctAnswer: 2
-            }
-          ]
-        }
-      },
-      { 
-        id: 'basics6',
-        title: "Bulls and Bears", 
-        description: "Understanding market sentiment and trends",
-        content: [
-          {
-            type: "text",
-            value: "The terms 'bull' and 'bear' are used to describe market sentiment and trends. A bull market is characterized by rising prices and optimism, while a bear market features falling prices and pessimism."
-          },
-          {
-            type: "image",
-            src: "/api/placeholder/600/400",
-            alt: "Bull and bear market comparison",
-            caption: "Visual comparison of bull and bear market patterns"
-          },
-          {
-            type: "text",
-            value: "Bulls are traders who believe prices will rise and therefore take 'long' positions. The term comes from the way a bull thrusts its horns upward when attacking."
-          },
-          {
-            type: "text",
-            value: "Bears are traders who believe prices will fall and take 'short' positions. The term comes from the way a bear swipes its paws downward when attacking."
-          },
-          {
-            type: "text",
-            value: "Market sentiment can shift between bullish and bearish based on economic indicators, company earnings, geopolitical events, and many other factors that influence trader psychology."
-          }
-        ],
-        quiz: {
-          title: "Bulls and Bears Quiz",
-          questions: [
-            {
-              id: "q1",
-              question: "What characterizes a bull market?",
-              options: [
-                "Falling prices and pessimism",
-                "Rising prices and optimism",
-                "Stable prices with low volatility",
-                "High trading volume but no price change"
-              ],
-              correctAnswer: 1
-            },
-            {
-              id: "q2",
-              question: "What position would a bear typically take in the market?",
-              options: [
-                "Long position, buying assets",
-                "Short position, selling assets",
-                "No position, staying in cash",
-                "Neutral position with equal buys and sells"
-              ],
-              correctAnswer: 1
-            },
-            {
-              id: "q3",
-              question: "What can cause shifts between bullish and bearish market sentiment?",
-              options: [
-                "Only central bank decisions",
-                "Only company earnings reports",
-                "Only technical chart patterns",
-                "Economic indicators, earnings, geopolitical events, and more"
-              ],
-              correctAnswer: 3
-            }
-          ]
-        }
-      }
+      // Je bestaande lessen hier...
     ]
   },
   level2: {
@@ -445,613 +320,7 @@ const courseStructure = {
     nextLevel: null, // Last level for now
     position: { top: 250, left: 450 },
     lessons: [
-      { 
-        id: 'markets1',
-        title: "Forex Market", 
-        description: "Understanding currency trading",
-        content: [
-          {
-            type: "text",
-            value: "The foreign exchange (forex) market is where currencies are traded. It's the largest financial market in the world, with an average daily trading volume exceeding $6 trillion."
-          },
-          {
-            type: "text",
-            value: "Forex trading involves buying one currency while simultaneously selling another, creating currency pairs such as EUR/USD (Euro/US Dollar) or GBP/JPY (British Pound/Japanese Yen)."
-          },
-          {
-            type: "image",
-            src: "/api/placeholder/600/400",
-            alt: "Forex trading chart",
-            caption: "Example of a forex trading chart showing currency pair movements"
-          },
-          {
-            type: "text",
-            value: "The forex market operates 24 hours a day, five days a week, closing only for weekends. It spans across major financial centers in different time zones, allowing for continuous trading."
-          },
-          {
-            type: "text",
-            value: "Forex traders profit from changes in currency exchange rates, which are influenced by economic indicators, interest rates, geopolitical events, and market sentiment."
-          }
-        ],
-        quiz: {
-          title: "Forex Market Quiz",
-          questions: [
-            {
-              id: "q1",
-              question: "What are traded in the forex market?",
-              options: [
-                "Stocks",
-                "Commodities",
-                "Currency pairs",
-                "Bonds"
-              ],
-              correctAnswer: 2
-            },
-            {
-              id: "q2",
-              question: "What is the approximate daily trading volume in the forex market?",
-              options: [
-                "$1 billion",
-                "$100 billion",
-                "$6 trillion",
-                "$10 trillion"
-              ],
-              correctAnswer: 2
-            },
-            {
-              id: "q3",
-              question: "When does the forex market operate?",
-              options: [
-                "During US business hours only",
-                "24 hours a day, 7 days a week",
-                "24 hours a day, 5 days a week",
-                "9 AM to 5 PM in each local market"
-              ],
-              correctAnswer: 2
-            }
-          ]
-        }
-      },
-      { 
-        id: 'markets2',
-        title: "Stock Market", 
-        description: "Trading company shares",
-        content: [
-          {
-            type: "text",
-            value: "The stock market is where shares of publicly traded companies are bought and sold. When you buy a stock, you're purchasing a small ownership stake in a company."
-          },
-          {
-            type: "text",
-            value: "Stocks are traded on exchanges like the New York Stock Exchange (NYSE), NASDAQ, or Tokyo Stock Exchange (TSE). These exchanges provide organized marketplaces with rules and regulations."
-          },
-          {
-            type: "image",
-            src: "/api/placeholder/600/400",
-            alt: "Stock market trading floor",
-            caption: "Stock exchange trading floor (though most trading is now electronic)"
-          },
-          {
-            type: "text",
-            value: "Stock prices are influenced by company performance, industry trends, economic conditions, investor sentiment, and many other factors. Traders analyze these factors using fundamental or technical analysis."
-          },
-          {
-            type: "text",
-            value: "Unlike forex, stock markets have specific opening hours. For example, the NYSE operates from 9:30 AM to 4:00 PM Eastern Time, Monday through Friday, excluding holidays."
-          }
-        ],
-        quiz: {
-          title: "Stock Market Quiz",
-          questions: [
-            {
-              id: "q1",
-              question: "What do you own when you buy a stock?",
-              options: [
-                "A loan to the company",
-                "A share of company ownership",
-                "A company product",
-                "A right to manage the company"
-              ],
-              correctAnswer: 1
-            },
-            {
-              id: "q2",
-              question: "Where are stocks traded?",
-              options: [
-                "Only in private transactions",
-                "On stock exchanges like NYSE and NASDAQ",
-                "Directly at company headquarters",
-                "Only through banks"
-              ],
-              correctAnswer: 1
-            },
-            {
-              id: "q3",
-              question: "What are the trading hours for the New York Stock Exchange?",
-              options: [
-                "24 hours a day",
-                "9:30 AM to 4:00 PM Eastern Time, weekdays",
-                "8:00 AM to 8:00 PM, including weekends",
-                "7:00 AM to 2:00 PM, weekdays"
-              ],
-              correctAnswer: 1
-            }
-          ]
-        }
-      },
-      { 
-        id: 'markets3',
-        title: "Cryptocurrency Market", 
-        description: "Trading digital assets",
-        content: [
-          {
-            type: "text",
-            value: "The cryptocurrency market involves the trading of digital or virtual currencies like Bitcoin, Ethereum, and thousands of other alternative coins (altcoins)."
-          },
-          {
-            type: "text",
-            value: "Unlike traditional markets, cryptocurrencies trade 24/7, 365 days a year on various exchanges worldwide. These exchanges can be centralized (like Coinbase or Binance) or decentralized (like Uniswap)."
-          },
-          {
-            type: "image",
-            src: "/api/placeholder/600/400",
-            alt: "Cryptocurrency trading interface",
-            caption: "Example of a cryptocurrency trading platform interface"
-          },
-          {
-            type: "text",
-            value: "Cryptocurrency prices are highly volatile and can be influenced by technological developments, regulatory news, market sentiment, and broader adoption trends."
-          },
-          {
-            type: "text",
-            value: "Trading cryptocurrencies involves specific considerations including wallet security, blockchain transaction confirmations, and understanding the unique technologies behind different digital assets."
-          }
-        ],
-        quiz: {
-          title: "Cryptocurrency Market Quiz",
-          questions: [
-            {
-              id: "q1",
-              question: "What are the trading hours for cryptocurrency markets?",
-              options: [
-                "Same as stock markets",
-                "24 hours a day, 7 days a week",
-                "9 AM to 9 PM globally",
-                "Only during US business hours"
-              ],
-              correctAnswer: 1
-            },
-            {
-              id: "q2",
-              question: "What are two examples of major cryptocurrencies?",
-              options: [
-                "Dollar and Euro",
-                "Gold and Silver",
-                "Bitcoin and Ethereum",
-                "NYSE and NASDAQ"
-              ],
-              correctAnswer: 2
-            },
-            {
-              id: "q3",
-              question: "What's a characteristic of cryptocurrency markets?",
-              options: [
-                "Low volatility",
-                "Government-backed stability",
-                "Central bank regulation",
-                "High price volatility"
-              ],
-              correctAnswer: 3
-            }
-          ]
-        }
-      },
-      { 
-        id: 'markets4',
-        title: "Commodities Market", 
-        description: "Trading physical goods",
-        content: [
-          {
-            type: "text",
-            value: "Commodities markets involve the trading of raw materials or primary agricultural products. Major categories include energy (oil, natural gas), metals (gold, silver), and agricultural products (wheat, coffee)."
-          },
-          {
-            type: "text",
-            value: "Most commodity trading happens through futures contracts, which are agreements to buy or sell a specific amount of a commodity at a predetermined price at a specified time in the future."
-          },
-          {
-            type: "image",
-            src: "/api/placeholder/600/400",
-            alt: "Commodity trading chart",
-            caption: "Gold futures price chart showing historical price movements"
-          },
-          {
-            type: "text",
-            value: "Commodity prices are influenced by supply and demand factors, weather conditions (for agricultural commodities), geopolitical events, and broader economic trends."
-          },
-          {
-            type: "text",
-            value: "Traders can participate in commodity markets through futures exchanges like the Chicago Mercantile Exchange (CME), through commodity ETFs, or via stocks of companies involved in commodity production."
-          }
-        ],
-        quiz: {
-          title: "Commodities Market Quiz",
-          questions: [
-            {
-              id: "q1",
-              question: "What are examples of commodities?",
-              options: [
-                "Stocks and bonds",
-                "Oil, gold, and wheat",
-                "Real estate properties",
-                "Currency pairs"
-              ],
-              correctAnswer: 1
-            },
-            {
-              id: "q2",
-              question: "How are commodities typically traded?",
-              options: [
-                "Only through direct physical exchange",
-                "Primarily through futures contracts",
-                "Only in small retail quantities",
-                "Through cryptocurrency exchanges"
-              ],
-              correctAnswer: 1
-            },
-            {
-              id: "q3",
-              question: "What factors influence agricultural commodity prices?",
-              options: [
-                "Only company earnings",
-                "Only interest rates",
-                "Weather conditions and supply/demand",
-                "Only stock market performance"
-              ],
-              correctAnswer: 2
-            }
-          ]
-        }
-      },
-      { 
-        id: 'markets5',
-        title: "Indices Market", 
-        description: "Trading market indexes",
-        content: [
-          {
-            type: "text",
-            value: "Market indices track the performance of groups of stocks, providing a snapshot of market performance. Examples include the S&P 500, Dow Jones Industrial Average, and NASDAQ Composite in the US, and others like FTSE 100 (UK) or Nikkei 225 (Japan)."
-          },
-          {
-            type: "text",
-            value: "Traders can't directly buy or sell an index, but they can trade index funds, futures, options, or ETFs that track these indices."
-          },
-          {
-            type: "image",
-            src: "/api/placeholder/600/400",
-            alt: "Market index chart",
-            caption: "Performance chart of a major market index"
-          },
-          {
-            type: "text",
-            value: "Indices are weighted differently: some are price-weighted (like the Dow Jones), while others are market-capitalization-weighted (like the S&P 500), affecting how individual stock movements impact the index."
-          },
-          {
-            type: "text",
-            value: "Trading index-based products offers exposure to broad market segments without the need to buy individual stocks, providing instant diversification."
-          }
-        ],
-        quiz: {
-          title: "Indices Market Quiz",
-          questions: [
-            {
-              id: "q1",
-              question: "What is a market index?",
-              options: [
-                "A single company's stock",
-                "A measure tracking a group of stocks' performance",
-                "A type of cryptocurrency",
-                "A government bond"
-              ],
-              correctAnswer: 1
-            },
-            {
-              id: "q2",
-              question: "Can traders directly buy an index like the S&P 500?",
-              options: [
-                "Yes, directly from the exchange",
-                "No, they must use index funds, futures, or ETFs",
-                "Only during specific market hours",
-                "Only with special broker permissions"
-              ],
-              correctAnswer: 1
-            },
-            {
-              id: "q3",
-              question: "What's an advantage of trading index-based products?",
-              options: [
-                "Guaranteed returns",
-                "No risk exposure",
-                "Instant diversification across multiple stocks",
-                "No trading fees"
-              ],
-              correctAnswer: 2
-            }
-          ]
-        }
-      },
-      { 
-        id: 'markets6',
-        title: "Futures Market", 
-        description: "Trading future delivery contracts",
-        content: [
-          {
-            type: "text",
-            value: "Futures are standardized contracts obligating the buyer to purchase, or the seller to sell, a specific asset at a predetermined price on a specified future date."
-          },
-          {
-            type: "text",
-            value: "Originally developed for agricultural producers and consumers to hedge against price fluctuations, futures now cover a wide range of assets including commodities, currencies, indices, and even interest rates."
-          },
-          {
-            type: "image",
-            src: "/api/placeholder/600/400",
-            alt: "Futures trading terminal",
-            caption: "Example of a futures trading platform showing various contracts"
-          },
-          {
-            type: "text",
-            value: "Futures trading typically involves leverage, meaning traders only need to put up a fraction of the contract's value (margin) to control the full position, amplifying both potential profits and losses."
-          },
-          {
-            type: "text",
-            value: "Unlike many other markets, futures contracts have expiration dates. Traders who don't want to take or make delivery must close or roll over their positions before expiration."
-          }
-        ],
-        quiz: {
-          title: "Futures Market Quiz",
-          questions: [
-            {
-              id: "q1",
-              question: "What is a futures contract?",
-              options: [
-                "An option to buy or sell at your discretion",
-                "An agreement to buy/sell an asset at a predetermined future price/date",
-                "A loan to purchase stocks",
-                "A type of cryptocurrency"
-              ],
-              correctAnswer: 1
-            },
-            {
-              id: "q2",
-              question: "What happens if you hold a futures contract until expiration?",
-              options: [
-                "The contract automatically renews",
-                "You're obligated to take or make delivery of the underlying asset",
-                "The contract becomes worthless",
-                "The broker closes it for you with no consequences"
-              ],
-              correctAnswer: 1
-            },
-            {
-              id: "q3",
-              question: "What does trading on margin mean in futures markets?",
-              options: [
-                "Trading with borrowed money",
-                "Trading with only a fraction of the contract value as deposit",
-                "Trading only at market open",
-                "Trading without fees"
-              ],
-              correctAnswer: 1
-            }
-          ]
-        }
-      },
-      { 
-        id: 'markets7',
-        title: "Options Market", 
-        description: "Trading the right to buy or sell",
-        content: [
-          {
-            type: "text",
-            value: "Options are contracts that give the holder the right, but not the obligation, to buy (call option) or sell (put option) an underlying asset at a specified price (strike price) before a certain date (expiration date)."
-          },
-          {
-            type: "text",
-            value: "The buyer of an option pays a premium to the seller for this right. If the market moves favorably, the option can be exercised for profit; if not, the buyer can let it expire worthless, losing only the premium paid."
-          },
-          {
-            type: "image",
-            src: "/api/placeholder/600/400",
-            alt: "Options chain display",
-            caption: "Example of an options chain showing various strike prices and expiration dates"
-          },
-          {
-            type: "text",
-            value: "Options are used for speculation, income generation, and risk management (hedging). They offer flexibility and can be combined in various strategies to profit from different market conditions."
-          },
-          {
-            type: "text",
-            value: "Option pricing is influenced by several factors including the underlying asset's price, time until expiration, volatility, interest rates, and dividends. These components are measured by 'the Greeks' (delta, gamma, theta, vega, and rho)."
-          }
-        ],
-        quiz: {
-          title: "Options Market Quiz",
-          questions: [
-            {
-              id: "q1",
-              question: "What right does a call option give its holder?",
-              options: [
-                "The right to sell an asset at the strike price",
-                "The right to buy an asset at the strike price",
-                "The right to change the strike price",
-                "The right to extend the expiration date"
-              ],
-              correctAnswer: 1
-            },
-            {
-              id: "q2",
-              question: "What does the buyer of an option pay?",
-              options: [
-                "Strike price",
-                "Premium",
-                "Margin",
-                "Commission only"
-              ],
-              correctAnswer: 1
-            },
-            {
-              id: "q3",
-              question: "What happens if you don't exercise an option by expiration?",
-              options: [
-                "You're forced to exercise it",
-                "The option is automatically renewed",
-                "The option expires worthless",
-                "You pay a penalty fee"
-              ],
-              correctAnswer: 2
-            }
-          ]
-        }
-      },
-      { 
-        id: 'markets8',
-        title: "ETFs and Funds", 
-        description: "Trading baskets of assets",
-        content: [
-          {
-            type: "text",
-            value: "Exchange-Traded Funds (ETFs) are investment funds traded on stock exchanges, similar to individual stocks. They hold assets like stocks, bonds, or commodities and typically track an underlying index."
-          },
-          {
-            type: "text",
-            value: "ETFs offer diversification benefits as they contain multiple securities, reducing the risk compared to holding individual assets. They can track broad markets, specific sectors, commodities, or even investment strategies."
-          },
-          {
-            type: "image",
-            src: "/api/placeholder/600/400",
-            alt: "ETF structure diagram",
-            caption: "How ETFs are structured and traded on exchanges"
-          },
-          {
-            type: "text",
-            value: "Unlike mutual funds, ETFs trade throughout the day at market prices that may differ from their net asset value (NAV). They generally have lower expense ratios and greater tax efficiency than mutual funds."
-          },
-          {
-            type: "text",
-            value: "Other fund types include mutual funds (pooled investments managed by professionals, priced once daily), index funds (similar to ETFs but structured as mutual funds), and hedge funds (private investment vehicles with more flexibility and higher minimums)."
-          }
-        ],
-        quiz: {
-          title: "ETFs and Funds Quiz",
-          questions: [
-            {
-              id: "q1",
-              question: "What is an ETF?",
-              options: [
-                "A type of cryptocurrency",
-                "An individual stock",
-                "An investment fund traded on exchanges like a stock",
-                "A type of options contract"
-              ],
-              correctAnswer: 2
-            },
-            {
-              id: "q2",
-              question: "How do ETFs differ from mutual funds in terms of trading?",
-              options: [
-                "ETFs can only be bought, not sold",
-                "ETFs trade throughout the day at market prices",
-                "ETFs can only be traded monthly",
-                "ETFs have fixed prices set by the fund manager"
-              ],
-              correctAnswer: 1
-            },
-            {
-              id: "q3",
-              question: "What's a primary benefit of ETFs?",
-              options: [
-                "Guaranteed returns",
-                "No risk exposure",
-                "Diversification across multiple securities",
-                "Free trading without fees"
-              ],
-              correctAnswer: 2
-            }
-          ]
-        }
-      },
-      { 
-        id: 'markets9',
-        title: "Trading Hours Per Market", 
-        description: "Understanding when markets are open",
-        content: [
-          {
-            type: "text",
-            value: "Different financial markets operate during specific hours, often aligned with business hours in their respective regions. Understanding these hours is crucial for traders."
-          },
-          {
-            type: "text",
-            value: "Stock markets typically follow set schedules based on their location. For example, the New York Stock Exchange (NYSE) and NASDAQ operate from 9:30 AM to 4:00 PM Eastern Time (ET), Monday through Friday, excluding holidays."
-          },
-          {
-            type: "text",
-            value: "Asian markets like the Tokyo Stock Exchange (8:00 AM to 3:00 PM Japan Standard Time) and Hong Kong Stock Exchange (9:30 AM to 4:00 PM Hong Kong Time) open first, followed by European markets like the London Stock Exchange (8:00 AM to 4:30 PM GMT), and then North American markets."
-          },
-          {
-            type: "image",
-            src: "/api/placeholder/600/400",
-            alt: "Global trading hours chart",
-            caption: "Time overlap of major financial markets around the world"
-          },
-          {
-            type: "text",
-            value: "The forex market operates 24 hours a day, five days a week, with trading beginning in Asia, moving to Europe, and then to North America before beginning again in Asia the next day."
-          },
-          {
-            type: "text",
-            value: "Cryptocurrency markets operate 24/7, while futures and options markets often have regular trading hours with additional electronic trading sessions outside standard hours. Commodity markets frequently follow the hours of the exchanges where they're traded."
-          }
-        ],
-        quiz: {
-          title: "Trading Hours Quiz",
-          questions: [
-            {
-              id: "q1",
-              question: "What are the trading hours for the New York Stock Exchange (NYSE)?",
-              options: [
-                "24 hours a day, 7 days a week",
-                "9:30 AM to 4:00 PM Eastern Time, weekdays",
-                "8:00 AM to 5:00 PM Eastern Time, including weekends",
-                "7:00 AM to 2:00 PM Eastern Time, weekdays"
-              ],
-              correctAnswer: 1
-            },
-            {
-              id: "q2",
-              question: "Which market operates continuously, 24 hours a day, 7 days a week?",
-              options: [
-                "Stock markets",
-                "Bond markets",
-                "Cryptocurrency markets",
-                "Commodity markets"
-              ],
-              correctAnswer: 2
-            },
-            {
-              id: "q3",
-              question: "How does the forex market operate?",
-              options: [
-                "Only during US business hours",
-                "24 hours a day, 5 days a week",
-                "Only when stock markets are open",
-                "9 AM to 5 PM in each local timezone"
-              ],
-              correctAnswer: 1
-            }
-          ]
-        }
-      }
+      // Je bestaande lessen hier...
     ]
   }
 };
@@ -1236,26 +505,12 @@ const Home = () => {
   const navigate = useNavigate();
   const [progress, setProgress] = useState(getUserProgress());
   
-  // Apply cosmic elements with debugging
+  // Direct aanroepen van de kosmische elementen
   useEffect(() => {
-    console.log("Home component gemonteerd, kosmische elementen voorbereiden...");
-    
-    const timeoutId = setTimeout(() => {
-      console.log("Timeout voorbij, initCosmicElements aanroepen...");
-      try {
-        if (typeof initCosmicElements === 'function') {
-          console.log("initCosmicElements is een functie, nu aanroepen");
-          initCosmicElements();
-        } else {
-          console.error("FOUT: initCosmicElements is GEEN functie!", typeof initCosmicElements);
-          console.error("Waarde van initCosmicElements:", initCosmicElements);
-        }
-      } catch (err) {
-        console.error("Fout bij aanroepen van initCosmicElements:", err);
-      }
+    const timer = setTimeout(() => {
+      initCosmicElements();
     }, 500);
-    
-    return () => clearTimeout(timeoutId);
+    return () => clearTimeout(timer);
   }, []);
   
   const handleNavigation = (levelId) => {
@@ -1359,26 +614,12 @@ const LevelPage = () => {
   const [activeLesson, setActiveLesson] = useState(null);
   const [showQuiz, setShowQuiz] = useState(false);
   
-  // Apply cosmic elements with debugging
+  // Ook op de level pagina de kosmische elementen toepassen
   useEffect(() => {
-    console.log("LevelPage component gemonteerd, kosmische elementen voorbereiden...");
-    
-    const timeoutId = setTimeout(() => {
-      console.log("Timeout voorbij, initCosmicElements aanroepen...");
-      try {
-        if (typeof initCosmicElements === 'function') {
-          console.log("initCosmicElements is een functie, nu aanroepen");
-          initCosmicElements();
-        } else {
-          console.error("FOUT: initCosmicElements is GEEN functie!", typeof initCosmicElements);
-          console.error("Waarde van initCosmicElements:", initCosmicElements);
-        }
-      } catch (err) {
-        console.error("Fout bij aanroepen van initCosmicElements:", err);
-      }
+    const timer = setTimeout(() => {
+      initCosmicElements();
     }, 500);
-    
-    return () => clearTimeout(timeoutId);
+    return () => clearTimeout(timer);
   }, []);
   
   // Get level ID from URL
@@ -1541,6 +782,11 @@ const LevelPage = () => {
                         <p>Completed</p>
                       </div>
                     ) : (
+                      <div className="completion-badge">
+                        <i className="fas fa-trophy"></i>
+                        <p>Completed</p>
+                      </div>
+                    ) : (
                       <button 
                         className="start-quiz-button"
                         onClick={startQuiz}
@@ -1568,18 +814,13 @@ const LevelPage = () => {
 function App() {
   // Initialize progress if not already in localStorage
   useEffect(() => {
-    console.log("App component gemonteerd, localStorage controleren...");
-    
     if (!localStorage.getItem('tradeLingo_progress')) {
-      console.log("Geen localStorage data gevonden, initiële data aanmaken");
       const initialProgress = {
         completedLessons: [],
         quizScores: {},
         unlockedLevels: ['level1']
       };
       localStorage.setItem('tradeLingo_progress', JSON.stringify(initialProgress));
-    } else {
-      console.log("Bestaande localStorage data gevonden");
     }
   }, []);
 
