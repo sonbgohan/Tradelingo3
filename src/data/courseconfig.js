@@ -1,6 +1,7 @@
-// src/data/courseConfig.js
-import level1 from './levels/level1';
-import level2 from './levels/level2';
+// src/data/courseconfig.js
+// Importeer de level bestanden - controleer of je bestandsnamen kloppen
+import level1 from './levels/level1.js';
+import level2 from './levels/level2.js';
 
 // Define all level objects
 export const courseStructure = {
