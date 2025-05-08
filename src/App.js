@@ -782,11 +782,6 @@ const LevelPage = () => {
                         <p>Completed</p>
                       </div>
                     ) : (
-                      <div className="completion-badge">
-                        <i className="fas fa-trophy"></i>
-                        <p>Completed</p>
-                      </div>
-                    ) : (
                       <button 
                         className="start-quiz-button"
                         onClick={startQuiz}
