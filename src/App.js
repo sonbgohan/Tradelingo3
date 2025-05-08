@@ -3,13 +3,16 @@ import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
 
-// Import components
-import SpaceBackground from './components/SpaceBackground';
-import Home from './pages/Home';
-import LevelPage from './pages/LevelPage';
+// Import components - aangepast naar exacte bestandsnamen
+// Als je SpaceBackground.js in de components map hebt, uncomment deze regel
+// import SpaceBackground from './components/SpaceBackground';
 
-// Import utils
-import { initializeProgress } from './utils/progress';
+// Import pages - gebruik hoofdlettergevoelige bestandsnamen
+import Home from './pages/home.js';  // Aangepast naar kleine letters
+import LevelPage from './pages/levelpage.js';  // Aangepast naar kleine letters
+
+// Import utilities
+import { initializeProgress } from './utils/progress.js';  // Importeer de specifieke functie
 
 // Main App component
 function App() {
@@ -21,7 +24,9 @@ function App() {
   return (
     <Router>
       <div className="app">
-        <SpaceBackground />
+        {/* Als je SpaceBackground component nog niet hebt, houd deze regel gecommentarieerd */}
+        {/* <SpaceBackground /> */}
+        
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/level/:levelId" element={<LevelPage />} />
