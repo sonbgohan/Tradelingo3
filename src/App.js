@@ -301,7 +301,7 @@ const saveUserProgress = (progress) => {
   localStorage.setItem('tradeLingo_progress', JSON.stringify(progress));
 };
 
-// Define course structure met bijgewerkte lesinhoud
+// Define course structure with lesson content
 const courseStructure = {
   level1: {
     id: 'level1',
@@ -310,7 +310,134 @@ const courseStructure = {
     nextLevel: 'level2',
     position: { top: 100, left: 100 },
     lessons: [
-      // Je bestaande lessen hier...
+      {
+        id: 'lesson1_1',
+        title: 'Introduction to Trading',
+        description: 'Learn the basic concepts of trading in financial markets',
+        content: [
+          {
+            type: 'text',
+            value: 'Trading is the process of buying and selling financial instruments like stocks, bonds, currencies, commodities, and derivatives with the goal of generating a profit. It involves the transfer of assets between parties, typically facilitated by exchanges or over-the-counter markets.'
+          },
+          {
+            type: 'text',
+            value: 'Unlike long-term investing, trading often involves shorter timeframes and more frequent transactions. Traders aim to capitalize on price movements in the market, whether prices are rising (going long) or falling (going short).'
+          },
+          {
+            type: 'image',
+            src: 'https://via.placeholder.com/600x300',
+            alt: 'Trading concept illustration',
+            caption: 'Trading involves analyzing markets and executing transactions at optimal times'
+          },
+          {
+            type: 'text',
+            value: 'Various factors influence trading decisions, including technical analysis (studying price charts and patterns), fundamental analysis (evaluating economic indicators and company financials), and market sentiment (gauging investor emotions and behavior).'
+          }
+        ],
+        quiz: {
+          questions: [
+            {
+              id: 'q1_1',
+              question: 'What is the primary goal of trading?',
+              options: [
+                'Long-term wealth preservation',
+                'Generating profits from price movements',
+                'Avoiding market volatility',
+                'Collecting dividends only'
+              ],
+              correctAnswer: 1
+            },
+            {
+              id: 'q1_2',
+              question: 'Which of these is NOT typically used in trading decision-making?',
+              options: [
+                'Technical analysis',
+                'Fundamental analysis',
+                'Market sentiment',
+                'Astrological charts'
+              ],
+              correctAnswer: 3
+            },
+            {
+              id: 'q1_3',
+              question: 'What does "going short" mean in trading?',
+              options: [
+                'Making quick trades',
+                'Trading small amounts',
+                'Profiting from falling prices',
+                'Trading for less than one hour'
+              ],
+              correctAnswer: 2
+            }
+          ]
+        }
+      },
+      {
+        id: 'lesson1_2',
+        title: 'Types of Financial Markets',
+        description: 'Explore different financial markets and their characteristics',
+        content: [
+          {
+            type: 'text',
+            value: 'Financial markets are platforms where buyers and sellers can trade securities, commodities, and other financial instruments. These markets play a crucial role in allocating resources and facilitating economic growth.'
+          },
+          {
+            type: 'text',
+            value: 'Stock markets are perhaps the most well-known type of financial market. They enable companies to raise capital by selling shares to investors who become partial owners. Examples include the New York Stock Exchange (NYSE) and NASDAQ.'
+          },
+          {
+            type: 'text',
+            value: 'Bond markets (or debt markets) allow entities to issue debt securities to raise funds. Investors who purchase bonds are essentially lending money to the issuer in exchange for regular interest payments and the return of principal at maturity.'
+          },
+          {
+            type: 'text',
+            value: 'Foreign exchange (forex) markets facilitate the trading of currencies. With a daily trading volume exceeding $6 trillion, the forex market is the largest and most liquid financial market in the world.'
+          },
+          {
+            type: 'image',
+            src: 'https://via.placeholder.com/600x300',
+            alt: 'Different financial markets',
+            caption: 'Major financial markets include stock, bond, forex, and commodity markets'
+          }
+        ],
+        quiz: {
+          questions: [
+            {
+              id: 'q2_1',
+              question: 'Which market has the highest daily trading volume?',
+              options: [
+                'Stock market',
+                'Bond market',
+                'Forex market',
+                'Cryptocurrency market'
+              ],
+              correctAnswer: 2
+            },
+            {
+              id: 'q2_2',
+              question: 'What do investors receive when they purchase shares in the stock market?',
+              options: [
+                'A loan agreement with the company',
+                'Partial ownership in the company',
+                'Regular interest payments',
+                'A physical certificate only'
+              ],
+              correctAnswer: 1
+            },
+            {
+              id: 'q2_3',
+              question: 'What is the primary function of financial markets?',
+              options: [
+                'To regulate company operations',
+                'To collect taxes for governments',
+                'To allocate resources and facilitate economic growth',
+                'To prevent financial crises'
+              ],
+              correctAnswer: 2
+            }
+          ]
+        }
+      }
     ]
   },
   level2: {
@@ -320,7 +447,130 @@ const courseStructure = {
     nextLevel: null, // Last level for now
     position: { top: 250, left: 450 },
     lessons: [
-      // Je bestaande lessen hier...
+      {
+        id: 'lesson2_1',
+        title: 'Stock Markets Explained',
+        description: 'Understand how stock markets function and how to participate',
+        content: [
+          {
+            type: 'text',
+            value: 'Stock markets are organized marketplaces where shares of publicly traded companies are bought and sold. These markets can be physical locations (like the NYSE trading floor) or electronic networks (like NASDAQ).'
+          },
+          {
+            type: 'text',
+            value: 'When companies want to raise capital, they can issue shares through an Initial Public Offering (IPO). After the IPO, these shares trade on secondary markets where investors buy and sell them based on their perceived value.'
+          },
+          {
+            type: 'text',
+            value: 'Stock prices are determined by supply and demand dynamics. When more investors want to buy a stock than sell it, the price typically rises. Conversely, when more investors want to sell than buy, the price usually falls.'
+          },
+          {
+            type: 'image',
+            src: 'https://via.placeholder.com/600x300',
+            alt: 'Stock market trading',
+            caption: 'Modern stock trading happens primarily through electronic networks'
+          }
+        ],
+        quiz: {
+          questions: [
+            {
+              id: 'q3_1',
+              question: 'What is an IPO?',
+              options: [
+                'International Portfolio Optimization',
+                'Initial Public Offering',
+                'Internal Price Oscillation',
+                'Investor Protection Order'
+              ],
+              correctAnswer: 1
+            },
+            {
+              id: 'q3_2',
+              question: 'What happens to a stock\'s price when more investors want to sell it than buy it?',
+              options: [
+                'The price typically rises',
+                'The price remains stable',
+                'The price typically falls',
+                'Trading gets suspended'
+              ],
+              correctAnswer: 2
+            },
+            {
+              id: 'q3_3',
+              question: 'Which of these is NOT a major stock exchange?',
+              options: [
+                'NYSE (New York Stock Exchange)',
+                'NASDAQ',
+                'LSE (London Stock Exchange)',
+                'IMF (International Monetary Fund)'
+              ],
+              correctAnswer: 3
+            }
+          ]
+        }
+      },
+      {
+        id: 'lesson2_2',
+        title: 'Bond Markets and Debt Securities',
+        description: 'Learn about bonds, treasuries, and other debt instruments',
+        content: [
+          {
+            type: 'text',
+            value: 'Bond markets, also known as debt markets or fixed-income markets, allow governments, municipalities, and corporations to issue debt securities to raise capital. Investors who buy bonds are essentially lending money to the issuer.'
+          },
+          {
+            type: 'text',
+            value: 'Bonds typically pay regular interest (known as coupon payments) and return the principal amount at maturity. They are generally considered less risky than stocks, though the risk level varies depending on the issuer\'s creditworthiness.'
+          },
+          {
+            type: 'text',
+            value: 'Government bonds, such as U.S. Treasury securities, are backed by the full faith and credit of the issuing government and are considered among the safest investments. Corporate bonds, issued by companies, generally offer higher yields but come with higher risk.'
+          },
+          {
+            type: 'image',
+            src: 'https://via.placeholder.com/600x300',
+            alt: 'Bond market illustration',
+            caption: 'Bonds trade in various markets with different characteristics and risk profiles'
+          }
+        ],
+        quiz: {
+          questions: [
+            {
+              id: 'q4_1',
+              question: 'What is a coupon payment in bond investing?',
+              options: [
+                'A discount voucher for purchasing more bonds',
+                'The regular interest payment made to bondholders',
+                'The fee charged by brokers for bond transactions',
+                'The principal amount returned at maturity'
+              ],
+              correctAnswer: 1
+            },
+            {
+              id: 'q4_2',
+              question: 'Which type of bonds are generally considered the safest?',
+              options: [
+                'Corporate bonds',
+                'Municipal bonds',
+                'Junk bonds',
+                'Government treasury bonds'
+              ],
+              correctAnswer: 3
+            },
+            {
+              id: 'q4_3',
+              question: 'What happens to existing bonds when interest rates rise?',
+              options: [
+                'Their prices typically rise',
+                'Their prices typically fall',
+                'Their coupon rates automatically adjust upward',
+                'They automatically mature earlier'
+              ],
+              correctAnswer: 1
+            }
+          ]
+        }
+      }
     ]
   }
 };
