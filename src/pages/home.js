@@ -1,9 +1,11 @@
-// src/pages/Home.js
+// src/pages/home.js
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { courseStructure, levelConnections } from '../data/courseConfig';
-import { getUserProgress, getLevelProgress } from '../utils/progress';
-import { initCosmicElements } from '../utils/cosmicElements';
+
+// Aangepaste imports om overeen te komen met je bestandsnamen
+import { courseStructure, levelConnections } from '../data/courseconfig.js';  // Aangepast naar kleine letters
+import { getUserProgress, getLevelProgress } from '../utils/progress.js';
+import { initCosmicElements } from '../utils/cosmicelement.js';  // Aangepast naar kleine letters zonder 's'
 
 const Home = () => {
   const navigate = useNavigate();
