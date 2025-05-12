@@ -6,4 +6,5 @@
   height: 100%;
   z-index: -1; /* Plaats de achtergrond achter alle andere content */
   pointer-events: none; /* Zorgt ervoor dat je door de canvas heen kunt klikken */
+  display: block; /* Zorg ervoor dat de canvas wordt weergegeven */
 }
