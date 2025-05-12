@@ -17,10 +17,10 @@
 
 body {
   font-family: 'Segoe UI', 'Roboto', sans-serif;
-  background-color: var(--dark-bg);
   color: var(--text-light);
   position: relative;
   overflow-x: hidden;
+  /* Verwijderd: background-color: var(--dark-bg); */
 }
 
 /* Space Background Canvas Styles */
@@ -34,14 +34,16 @@ body {
   pointer-events: none; /* Zorgt ervoor dat je door de canvas heen kunt klikken */
 }
 
-/* Animated space background */
+/* Aangepast zodat het de canvas achtergrond niet overschrijft */
 .app {
   width: 100%;
   min-height: 100vh;
   position: relative;
-  background: linear-gradient(125deg, #0f172a 0%, #020617 100%);
+  /* Verwijderd: background: linear-gradient(125deg, #0f172a 0%, #020617 100%); */
 }
 
+/* Verwijderd: .app::before stijl die de canvas achtergrond kan overschrijven */
+/*
 .app::before {
   content: '';
   position: fixed;
@@ -54,6 +56,7 @@ body {
     radial-gradient(circle at 75% 75%, rgba(20, 184, 166, 0.15) 0%, transparent 40%);
   z-index: -2;
 }
+*/
 
 /* Stars animation */
 @keyframes twinkle {
