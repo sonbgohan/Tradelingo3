@@ -17,7 +17,7 @@ const level1 = {
         },
         {
           type: 'text',
-          value: 'Unlike long-term investing, trading often involves shorter timeframes and more frequent transactions. Traders aim to capitalize on price movements in the market, whether prices are rising (going long) or falling (going short).'
+          value: "Unlike long-term investing, trading often involves shorter timeframes and more frequent transactions. Traders aim to capitalize on price movements in the market, whether prices are rising (going long) or falling (going short)."
         },
         {
           type: 'image',
@@ -66,7 +66,7 @@ const level1 = {
               'Trading for less than one hour'
             ],
             correctAnswer: 2,
-            explanation: 'Going short refers to a trading strategy where a trader aims to profit from falling prices by selling assets they don\'t own (borrowing them) and buying them back later at a lower price.'
+            explanation: "Going short refers to a trading strategy where a trader aims to profit from falling prices by selling assets they don't own (borrowing them) and buying them back later at a lower price."
           }
         ]
       }
@@ -88,11 +88,11 @@ const level1 = {
         },
         {
           type: 'text',
-          value: 'First, traders analyze markets using various methods to identify potential trading opportunities. Once they spot an opportunity, they place orders through brokers or trading platforms, specifying the asset, quantity, and sometimes the price they're willing to accept.'
+          value: "First, traders analyze markets using various methods to identify potential trading opportunities. Once they spot an opportunity, they place orders through brokers or trading platforms, specifying the asset, quantity, and sometimes the price they're willing to accept."
         },
         {
           type: 'text',
-          value: 'These orders enter a marketplace where they're matched with counterparties – other traders looking to take the opposite side of the trade. When a match occurs, the trade is executed, and ownership of the asset transfers from seller to buyer.'
+          value: "These orders enter a marketplace where they're matched with counterparties – other traders looking to take the opposite side of the trade. When a match occurs, the trade is executed, and ownership of the asset transfers from seller to buyer."
         },
         {
           type: 'text',
@@ -180,7 +180,7 @@ const level1 = {
         questions: [
           {
             id: 'q3_1',
-            question: 'Which of these is NOT typically part of a trader\'s daily routine?',
+            question: "Which of these is NOT typically part of a trader's daily routine?",
             options: [
               'Analyzing market data',
               'Managing risk on open positions',
@@ -208,7 +208,7 @@ const level1 = {
           },
           {
             id: 'q3_3',
-            question: 'Which skill is MOST important for a trader\'s success?',
+            question: "Which skill is MOST important for a trader's success?",
             options: [
               'Programming',
               'Risk management',
@@ -238,23 +238,23 @@ const level1 = {
         },
         {
           type: 'text',
-          value: 'Timeframe: Trading typically involves shorter holding periods – from seconds (in high-frequency trading) to days or weeks. Investing, on the other hand, involves holding assets for months, years, or even decades.'
+          value: "Timeframe: Trading typically involves shorter holding periods – from seconds (in high-frequency trading) to days or weeks. Investing, on the other hand, involves holding assets for months, years, or even decades."
         },
         {
           type: 'text',
-          value: 'Goals: Traders aim to profit from price movements and market volatility, often making many smaller gains that accumulate over time. Investors seek long-term appreciation, dividends, interest, and the power of compounding returns.'
+          value: "Goals: Traders aim to profit from price movements and market volatility, often making many smaller gains that accumulate over time. Investors seek long-term appreciation, dividends, interest, and the power of compounding returns."
         },
         {
           type: 'text',
-          value: 'Analysis: Traders frequently employ technical analysis, focusing on price patterns, momentum, and market psychology. Investors typically rely more on fundamental analysis, examining company financials, competitive advantages, and growth potential.'
+          value: "Analysis: Traders frequently employ technical analysis, focusing on price patterns, momentum, and market psychology. Investors typically rely more on fundamental analysis, examining company financials, competitive advantages, and growth potential."
         },
         {
           type: 'text',
-          value: 'Activity Level: Trading requires active market monitoring and frequent decision-making. Investing can be more passive, with periodic portfolio reviews and adjustments.'
+          value: "Activity Level: Trading requires active market monitoring and frequent decision-making. Investing can be more passive, with periodic portfolio reviews and adjustments."
         },
         {
           type: 'text',
-          value: 'Neither approach is inherently superior – both can be successful when executed properly, and many market participants use elements of both strategies in their financial plans.'
+          value: "Neither approach is inherently superior – both can be successful when executed properly, and many market participants use elements of both strategies in their financial plans."
         }
       ],
       quiz: {
@@ -323,7 +323,7 @@ const level1 = {
         },
         {
           type: 'text',
-          value: 'Buy orders are typically arranged from highest price to lowest, while sell orders are arranged from lowest price to highest. The difference between the highest bid and the lowest ask is called the spread.'
+          value: "Buy orders are typically arranged from highest price to lowest, while sell orders are arranged from lowest price to highest. The difference between the highest bid and the lowest ask is called the spread."
         },
         {
           type: 'image',
@@ -333,11 +333,11 @@ const level1 = {
         },
         {
           type: 'text',
-          value: 'The matching process occurs when a buy order and sell order have compatible prices. For example, if someone wants to buy at $10.05 or lower, and someone else wants to sell at $10.05 or higher, these orders can match, resulting in a trade execution.'
+          value: "The matching process occurs when a buy order and sell order have compatible prices. For example, if someone wants to buy at $10.05 or lower, and someone else wants to sell at $10.05 or higher, these orders can match, resulting in a trade execution."
         },
         {
           type: 'text',
-          value: 'Modern markets use sophisticated electronic matching engines that process thousands of orders per second according to strict price-time priority rules. The best prices get executed first, and when prices are equal, the orders that arrived earlier take precedence.'
+          value: "Modern markets use sophisticated electronic matching engines that process thousands of orders per second according to strict price-time priority rules. The best prices get executed first, and when prices are equal, the orders that arrived earlier take precedence."
         }
       ],
       quiz: {
@@ -396,7 +396,7 @@ const level1 = {
         },
         {
           type: 'text',
-          value: 'Spread: The difference between the bid price (what buyers are willing to pay) and the ask price (what sellers are willing to accept). Narrow spreads typically indicate liquid markets with high trading activity.'
+          value: "Spread: The difference between the bid price (what buyers are willing to pay) and the ask price (what sellers are willing to accept). Narrow spreads typically indicate liquid markets with high trading activity."
         },
         {
           type: 'image',
@@ -406,11 +406,11 @@ const level1 = {
         },
         {
           type: 'text',
-          value: 'Slippage: The difference between the expected price of a trade and the actual executed price. Slippage often occurs during high volatility or when large orders are executed in markets with limited liquidity.'
+          value: "Slippage: The difference between the expected price of a trade and the actual executed price. Slippage often occurs during high volatility or when large orders are executed in markets with limited liquidity."
         },
         {
           type: 'text',
-          value: 'Liquidity: The ease with which an asset can be bought or sold without causing a significant price movement. High liquidity means there are many buyers and sellers, making it easier to enter and exit positions at stable prices.'
+          value: "Liquidity: The ease with which an asset can be bought or sold without causing a significant price movement. High liquidity means there are many buyers and sellers, making it easier to enter and exit positions at stable prices."
         },
         {
           type: 'image',
@@ -420,7 +420,7 @@ const level1 = {
         },
         {
           type: 'text',
-          value: 'Other important terms include volume (the number of shares or contracts traded), volatility (the rate at which prices change), margin (borrowed funds used to increase position size), and leverage (the ratio of the position size to the required capital).'
+          value: "Other important terms include volume (the number of shares or contracts traded), volatility (the rate at which prices change), margin (borrowed funds used to increase position size), and leverage (the ratio of the position size to the required capital)."
         }
       ],
       quiz: {
@@ -475,7 +475,7 @@ const level1 = {
       content: [
         {
           type: 'text',
-          value: 'The terms "bull" and "bear" are fundamental concepts in financial markets that describe market sentiment, trends, and investor attitudes. These animal metaphors have been part of financial terminology for centuries.'
+          value: "The terms \"bull\" and \"bear\" are fundamental concepts in financial markets that describe market sentiment, trends, and investor attitudes. These animal metaphors have been part of financial terminology for centuries."
         },
         {
           type: 'image',
@@ -485,15 +485,15 @@ const level1 = {
         },
         {
           type: 'text',
-          value: 'A bull market is characterized by rising prices and positive sentiment. The term comes from the way a bull attacks – thrusting its horns upward. During bull markets, investor confidence is high, economic indicators are positive, and there\'s generally optimism about future prospects.'
+          value: "A bull market is characterized by rising prices and positive sentiment. The term comes from the way a bull attacks – thrusting its horns upward. During bull markets, investor confidence is high, economic indicators are positive, and there's generally optimism about future prospects."
         },
         {
           type: 'text',
-          value: 'A bear market is characterized by falling prices and negative sentiment. The term derives from the way a bear attacks – swiping its paws downward. Bear markets typically involve economic slowdowns, pessimism, and cautious or fearful market participants.'
+          value: "A bear market is characterized by falling prices and negative sentiment. The term derives from the way a bear attacks – swiping its paws downward. Bear markets typically involve economic slowdowns, pessimism, and cautious or fearful market participants."
         },
         {
           type: 'text',
-          value: 'Traders and investors are also described as "bullish" or "bearish" based on their outlook. A bullish trader expects prices to rise and may take long positions, while a bearish trader anticipates price declines and may take short positions.'
+          value: "Traders and investors are also described as \"bullish\" or \"bearish\" based on their outlook. A bullish trader expects prices to rise and may take long positions, while a bearish trader anticipates price declines and may take short positions."
         },
         {
           type: 'image',
@@ -503,7 +503,7 @@ const level1 = {
         },
         {
           type: 'text',
-          value: 'Market sentiment often shifts between these two extremes, and recognizing the prevailing sentiment – and potential shifts – is crucial for successful trading. However, it\'s important to note that markets rarely move in a straight line, and even strong bull markets experience corrections, while bear markets have rallies.'
+          value: "Market sentiment often shifts between these two extremes, and recognizing the prevailing sentiment – and potential shifts – is crucial for successful trading. However, it's important to note that markets rarely move in a straight line, and even strong bull markets experience corrections, while bear markets have rallies."
         }
       ],
       quiz: {
