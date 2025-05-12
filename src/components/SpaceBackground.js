@@ -18,114 +18,115 @@ const SpaceBackground = () => {
     window.addEventListener('resize', setCanvasSize);
     setCanvasSize();
     
-    // Sterren eigenschappen
-    const stars = [];
-    const starCount = 200; // Aantal sterren
-    const maxStarSize = 3;
-    
-    // Maak sterren aan
-    for (let i = 0; i < starCount; i++) {
-      stars.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        size: Math.random() * maxStarSize,
-        speedX: (Math.random() - 0.5) * 0.2,
-        speedY: (Math.random() - 0.5) * 0.2,
-        brightness: Math.random(),
-        blinkSpeed: 0.01 + Math.random() * 0.02
-      });
-    }
-    
-    // Nevels (melkwegwolken)
-    const nebulae = [];
-    const nebulaCount = 5; // Aantal nevels
-    
-    // Creëer nevels
-    for (let i = 0; i < nebulaCount; i++) {
-      nebulae.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        size: 100 + Math.random() * 200,
-        color: `rgba(${30 + Math.random() * 20}, ${50 + Math.random() * 100}, ${150 + Math.random() * 100}, 0.05)`,
-        speedX: (Math.random() - 0.5) * 0.1,
-        speedY: (Math.random() - 0.5) * 0.1
-      });
-    }
-    
-    // Animatie functie
-    const animate = () => {
-      // Achtergrond verloop van donkerblauw naar zwart
+    // Teken de statische ruimte-achtergrond
+    const drawBackground = () => {
+      // Achtergrond verloop van diep paars naar donkerblauw
       const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-      gradient.addColorStop(0, '#0a0a1f');
-      gradient.addColorStop(1, '#000005');
+      gradient.addColorStop(0, '#0f0c29');
+      gradient.addColorStop(0.5, '#302b63');
+      gradient.addColorStop(1, '#24243e');
       
       ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       
-      // Teken nevels
-      nebulae.forEach(nebula => {
-        // Beweeg nevel
-        nebula.x += nebula.speedX;
-        nebula.y += nebula.speedY;
-        
-        // Laat nevel aan andere kant terugkomen als deze buiten het scherm gaat
-        if (nebula.x < -nebula.size) nebula.x = canvas.width + nebula.size;
-        if (nebula.x > canvas.width + nebula.size) nebula.x = -nebula.size;
-        if (nebula.y < -nebula.size) nebula.y = canvas.height + nebula.size;
-        if (nebula.y > canvas.height + nebula.size) nebula.y = -nebula.size;
-        
-        // Maak een radial gradient voor elke nevel
-        const nebulaGradient = ctx.createRadialGradient(
-          nebula.x, nebula.y, 0,
-          nebula.x, nebula.y, nebula.size
-        );
-        
-        nebulaGradient.addColorStop(0, nebula.color);
-        nebulaGradient.addColorStop(1, 'rgba(0, 0, 20, 0)');
-        
-        ctx.fillStyle = nebulaGradient;
-        ctx.beginPath();
-        ctx.arc(nebula.x, nebula.y, nebula.size, 0, Math.PI * 2);
-        ctx.fill();
-      });
+      // Teken sterren (kleine witte punten)
+      const starCount = 400;
       
-      // Teken sterren
-      stars.forEach(star => {
-        // Beweeg ster
-        star.x += star.speedX;
-        star.y += star.speedY;
+      for (let i = 0; i < starCount; i++) {
+        const x = Math.random() * canvas.width;
+        const y = Math.random() * canvas.height;
+        const size = Math.random() * 3;
+        const brightness = 0.5 + Math.random() * 0.5;
         
-        // Laat ster aan andere kant terugkomen als deze buiten het scherm gaat
-        if (star.x < 0) star.x = canvas.width;
-        if (star.x > canvas.width) star.x = 0;
-        if (star.y < 0) star.y = canvas.height;
-        if (star.y > canvas.height) star.y = 0;
-        
-        // Laat ster knipperen
-        star.brightness += star.blinkSpeed;
-        if (star.brightness > 1 || star.brightness < 0.3) {
-          star.blinkSpeed = -star.blinkSpeed;
-        }
-        
-        // Teken ster
         ctx.beginPath();
-        ctx.arc(star.x, star.y, star.size * star.brightness, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255, 255, 255, ${star.brightness})`;
+        ctx.arc(x, y, size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 255, 255, ${brightness})`;
         ctx.fill();
         
-        // Teken optionele gloed rond helderdere sterren
-        if (star.size > 1.5) {
+        // Voeg wat gloed toe aan grotere sterren
+        if (size > 1.5) {
           ctx.beginPath();
-          ctx.arc(star.x, star.y, star.size * 2, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(200, 220, 255, ${star.brightness * 0.2})`;
+          ctx.arc(x, y, size * 3, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(200, 220, 255, ${brightness * 0.2})`;
           ctx.fill();
         }
-      });
+      }
       
-      requestAnimationFrame(animate);
+      // Teken een paar kleurrijke nevels
+      drawNebula(canvas.width * 0.2, canvas.height * 0.3, 150, 'rgba(100, 50, 255, 0.1)');
+      drawNebula(canvas.width * 0.8, canvas.height * 0.7, 200, 'rgba(255, 100, 100, 0.08)');
+      drawNebula(canvas.width * 0.5, canvas.height * 0.2, 180, 'rgba(50, 255, 150, 0.07)');
+      
+      // Teken planeten
+      drawPlanet(canvas.width * 0.15, canvas.height * 0.7, 60, '#6ee7b7', '#14b8a6');
+      drawPlanet(canvas.width * 0.85, canvas.height * 0.3, 40, '#a78bfa', '#7c3aed');
+      drawPlanet(canvas.width * 0.65, canvas.height * 0.8, 35, '#fb924c', '#ea580c');
+      drawPlanet(canvas.width * 0.4, canvas.height * 0.2, 50, '#f472b6', '#db2777');
+      drawPlanet(canvas.width * 0.75, canvas.height * 0.5, 30, '#facc15', '#eab308');
+      
+      // Teken ringen rond enkele planeten
+      drawPlanetRing(canvas.width * 0.15, canvas.height * 0.7, 60, 110, '#6ee7b7');
+      drawPlanetRing(canvas.width * 0.75, canvas.height * 0.5, 30, 70, '#facc15');
     };
     
-    animate();
+    // Functie om een nevel (gekleurde wolk) te tekenen
+    const drawNebula = (x, y, size, color) => {
+      const gradient = ctx.createRadialGradient(x, y, 0, x, y, size);
+      gradient.addColorStop(0, color);
+      gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+      
+      ctx.fillStyle = gradient;
+      ctx.beginPath();
+      ctx.arc(x, y, size, 0, Math.PI * 2);
+      ctx.fill();
+    };
+    
+    // Functie om een planeet te tekenen
+    const drawPlanet = (x, y, radius, color1, color2) => {
+      // Teken de planeet
+      const gradient = ctx.createRadialGradient(
+        x - radius * 0.3, y - radius * 0.3, radius * 0.1,
+        x, y, radius
+      );
+      gradient.addColorStop(0, color1);
+      gradient.addColorStop(1, color2);
+      
+      ctx.fillStyle = gradient;
+      ctx.beginPath();
+      ctx.arc(x, y, radius, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // Voeg wat details toe aan de planeet
+      ctx.beginPath();
+      ctx.arc(x - radius * 0.2, y - radius * 0.3, radius * 0.2, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+      ctx.fill();
+      
+      // Voeg een gloed toe rond de planeet
+      ctx.beginPath();
+      ctx.arc(x, y, radius + 10, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${color1.substring(1, 3)}, ${color1.substring(3, 5)}, ${color1.substring(5, 7)}, 0.1)`;
+      ctx.fill();
+    };
+    
+    // Functie om ringen rond een planeet te tekenen
+    const drawPlanetRing = (x, y, innerRadius, outerRadius, color) => {
+      ctx.beginPath();
+      ctx.ellipse(x, y, outerRadius, outerRadius * 0.3, Math.PI / 6, 0, Math.PI * 2);
+      ctx.moveTo(x + innerRadius * Math.cos(Math.PI / 6), y + innerRadius * 0.3 * Math.sin(Math.PI / 6));
+      ctx.ellipse(x, y, innerRadius, innerRadius * 0.3, Math.PI / 6, 0, Math.PI * 2, true);
+      
+      const gradient = ctx.createRadialGradient(x, y, innerRadius, x, y, outerRadius);
+      gradient.addColorStop(0, 'rgba(255, 255, 255, 0.1)');
+      gradient.addColorStop(0.5, `${color}80`); // 50% transparant
+      gradient.addColorStop(1, 'rgba(255, 255, 255, 0.1)');
+      
+      ctx.fillStyle = gradient;
+      ctx.fill();
+    };
+    
+    // Teken de achtergrond
+    drawBackground();
     
     return () => {
       window.removeEventListener('resize', setCanvasSize);
