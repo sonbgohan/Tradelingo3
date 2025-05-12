@@ -1,12 +1,16 @@
 :root {
-  --primary-color: #6ee7b7;
-  --dark-bg: #0a0d20;
-  --card-bg: #141b33;
-  --text-light: #e2e8f0;
+  --primary-color: #3b82f6;
+  --primary-hover: #2563eb;
+  --dark-bg: #0f172a;
+  --card-bg: #1e293b;
+  --card-hover: #334155;
+  --text-light: #f1f5f9;
   --text-secondary: #94a3b8;
   --success-color: #10b981;
   --locked-color: #64748b;
-  --path-color: #34d399;
+  --path-color: #60a5fa;
+  --border-color: rgba(148, 163, 184, 0.1);
+  --shadow-color: rgba(0, 0, 0, 0.25);
 }
 
 * {
@@ -16,11 +20,12 @@
 }
 
 body {
-  font-family: 'Segoe UI', 'Roboto', sans-serif;
+  font-family: 'Inter', 'Segoe UI', 'Roboto', sans-serif;
   color: var(--text-light);
   position: relative;
   overflow-x: hidden;
-  /* Verwijderd: background-color: var(--dark-bg); */
+  line-height: 1.5;
+  letter-spacing: 0.01em;
 }
 
 /* Space Background Canvas Styles */
@@ -30,126 +35,19 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: -1; /* Plaats de achtergrond achter alle andere content */
-  pointer-events: none; /* Zorgt ervoor dat je door de canvas heen kunt klikken */
+  z-index: -1;
+  pointer-events: none;
 }
 
-/* Aangepast zodat het de canvas achtergrond niet overschrijft */
 .app {
   width: 100%;
   min-height: 100vh;
   position: relative;
-  /* Verwijderd: background: linear-gradient(125deg, #0f172a 0%, #020617 100%); */
-}
-
-/* Verwijderd: .app::before stijl die de canvas achtergrond kan overschrijven */
-/*
-.app::before {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: 
-    radial-gradient(circle at 25% 25%, rgba(76, 29, 149, 0.15) 0%, transparent 40%),
-    radial-gradient(circle at 75% 75%, rgba(20, 184, 166, 0.15) 0%, transparent 40%);
-  z-index: -2;
-}
-*/
-
-/* Stars animation */
-@keyframes twinkle {
-  0% { opacity: 0.3; }
-  50% { opacity: 1; }
-  100% { opacity: 0.3; }
-}
-
-.stars {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: -3;
-}
-
-.star {
-  position: absolute;
-  width: 2px;
-  height: 2px;
-  background-color: #fff;
-  border-radius: 50%;
-}
-
-.star.small {
-  width: 1px;
-  height: 1px;
-}
-
-.star.medium {
-  width: 2px;
-  height: 2px;
-}
-
-.star.large {
-  width: 3px;
-  height: 3px;
-  box-shadow: 0 0 4px 1px rgba(255, 255, 255, 0.7);
-}
-
-.star.twinkle {
-  animation: twinkle 3s infinite ease-in-out;
-}
-
-.star.slow {
-  animation-duration: 5s;
-}
-
-.star.fast {
-  animation-duration: 2s;
-}
-
-/* Floating particles */
-@keyframes float {
-  0% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(-20px) rotate(5deg); }
-  100% { transform: translateY(0) rotate(0deg); }
-}
-
-.particles {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: -4;
-}
-
-.particle {
-  position: absolute;
-  opacity: 0.2;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(110, 231, 183, 0.8) 0%, transparent 70%);
-}
-
-.particle.float {
-  animation: float 15s infinite ease-in-out;
-}
-
-.particle.float-slow {
-  animation-duration: 25s;
-}
-
-.particle.float-fast {
-  animation-duration: 10s;
 }
 
 /* Home Page Styles */
 .home-container {
-  padding: 20px;
+  padding: 2rem;
   max-width: 1200px;
   margin: 0 auto;
   position: relative;
@@ -158,28 +56,22 @@ body {
 
 header {
   text-align: center;
-  margin-bottom: 40px;
-  padding: 20px 0;
+  margin-bottom: 3rem;
+  padding: 1.5rem 0;
 }
 
-/* Logo styles */
+/* Logo styles - meer ingetogen, professioneler */
 header h1 {
-  font-size: 3rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  background: linear-gradient(to right, #6ee7b7, #14b8a6, #0ea5e9);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  text-shadow: 0 0 15px rgba(110, 231, 183, 0.4);
-  letter-spacing: 2px;
-  margin-bottom: 10px;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--text-light);
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.02em;
 }
 
 .logo-container {
-  margin: 0 auto 15px;
-  max-width: 400px;
-  filter: drop-shadow(0 0 15px rgba(110, 231, 183, 0.6));
+  margin: 0 auto 1rem;
+  max-width: 300px;
 }
 
 .tradelingo-logo {
@@ -188,256 +80,108 @@ header h1 {
 }
 
 header p {
-  font-size: 1.2rem;
+  font-size: 1.125rem;
   color: var(--text-secondary);
+  max-width: 600px;
+  margin: 0 auto;
 }
 
-/* World Map Styles */
-.world-map {
+/* World Map Styles - omgedoopt tot meer professionele naam */
+.learning-pathway {
   position: relative;
   height: 500px;
   margin: 0 auto;
-  max-width: 800px;
+  max-width: 900px;
 }
 
-/* Level nodes as planets */
+/* Level nodes - professioneler ontwerp */
 .level-node {
   position: absolute;
-  width: 250px;
-  background: rgba(20, 27, 51, 0.7);
-  border-radius: 15px;
-  padding: 20px;
+  width: 280px;
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 1.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  transition: transform 0.3s, box-shadow 0.3s;
+  transition: all 0.2s ease;
   cursor: pointer;
   z-index: 2;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5), 
-              inset 0 1px 1px rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(110, 231, 183, 0.1);
-  backdrop-filter: blur(5px);
+  box-shadow: 0 4px 20px var(--shadow-color);
+  border: 1px solid var(--border-color);
 }
 
 .level-node.unlocked:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 
-              0 0 25px rgba(110, 231, 183, 0.3),
-              inset 0 1px 1px rgba(255, 255, 255, 0.2);
+  background: var(--card-hover);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
 }
 
 .level-node.locked {
   opacity: 0.7;
-  filter: grayscale(70%);
+  filter: grayscale(40%);
   cursor: not-allowed;
 }
 
-/* Planet container styling */
-.planet-container {
+/* Module indicator styling */
+.module-indicator {
   position: relative;
-  width: 140px;
-  height: 140px;
-  margin-bottom: 20px;
-  perspective: 1000px;
-}
-
-/* Planet styling */
-.planet {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  position: relative;
-  overflow: hidden;
-  box-shadow: inset 0 0 25px rgba(0, 0, 0, 0.6),
-              0 0 35px rgba(110, 231, 183, 0.4);
-  animation: rotate 40s linear infinite;
-}
-
-/* Different planet types based on position in list */
-.level-node:nth-of-type(1) .planet {
-  background: radial-gradient(circle at 30% 30%, 
-    rgba(110, 231, 183, 0.9) 0%, 
-    rgba(14, 116, 144, 0.7) 60%, 
-    rgba(15, 23, 42, 0.9) 100%);
-  box-shadow: inset 0 0 25px rgba(0, 0, 0, 0.6),
-              0 0 35px rgba(110, 231, 183, 0.5);
-}
-
-.level-node:nth-of-type(2) .planet {
-  background: radial-gradient(circle at 30% 30%, 
-    rgba(167, 139, 250, 0.9) 0%, 
-    rgba(124, 58, 237, 0.7) 60%, 
-    rgba(15, 23, 42, 0.9) 100%);
-  box-shadow: inset 0 0 25px rgba(0, 0, 0, 0.6),
-              0 0 35px rgba(124, 58, 237, 0.5);
-}
-
-.level-node:nth-of-type(3) .planet {
-  background: radial-gradient(circle at 30% 30%, 
-    rgba(251, 146, 60, 0.9) 0%, 
-    rgba(234, 88, 12, 0.7) 60%, 
-    rgba(15, 23, 42, 0.9) 100%);
-  box-shadow: inset 0 0 25px rgba(0, 0, 0, 0.6),
-              0 0 35px rgba(234, 88, 12, 0.5);
-}
-
-.level-node:nth-of-type(4) .planet {
-  background: radial-gradient(circle at 30% 30%, 
-    rgba(244, 114, 182, 0.9) 0%, 
-    rgba(219, 39, 119, 0.7) 60%, 
-    rgba(15, 23, 42, 0.9) 100%);
-  box-shadow: inset 0 0 25px rgba(0, 0, 0, 0.6),
-              0 0 35px rgba(219, 39, 119, 0.5);
-}
-
-.level-node:nth-of-type(5) .planet {
-  background: radial-gradient(circle at 30% 30%, 
-    rgba(250, 204, 21, 0.9) 0%, 
-    rgba(234, 179, 8, 0.7) 60%, 
-    rgba(15, 23, 42, 0.9) 100%);
-  box-shadow: inset 0 0 25px rgba(0, 0, 0, 0.6),
-              0 0 35px rgba(234, 179, 8, 0.5);
-}
-
-@keyframes rotate {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-/* Planet features - craters, mountains, etc. */
-.planet-feature {
-  position: absolute;
-  border-radius: 50%;
-  background-color: rgba(255, 255, 255, 0.2);
-}
-
-/* Progress indicator in center of planet */
-.planet-progress {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 60%;
-  height: 60%;
-  background-color: rgba(0, 0, 0, 0.5);
+  width: 80px;
+  height: 80px;
+  margin-bottom: 1.25rem;
+  background: var(--primary-color);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 2px solid rgba(255, 255, 255, 0.5);
-  box-shadow: 0 0 15px rgba(110, 231, 183, 0.5);
-  z-index: 10;
-  animation: none !important; /* Prevent rotation */
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
 }
 
-.progress-text {
-  font-size: 1.4rem;
-  font-weight: bold;
+.module-number {
+  font-size: 1.75rem;
+  font-weight: 700;
   color: white;
-  text-shadow: 0 0 10px rgba(110, 231, 183, 0.8);
-  animation: none !important;
-  transform: none !important;
 }
 
-.planet-glow {
+.progress-indicator {
   position: absolute;
-  top: -15px;
-  left: -15px;
-  right: -15px;
-  bottom: -15px;
-  border-radius: 50%;
-  background: transparent;
-  box-shadow: 0 0 50px rgba(110, 231, 183, 0.3);
-  z-index: -1;
-}
-
-/* Orbiting rocket animation */
-@keyframes orbit {
-  0% { transform: rotate(0deg) translateX(90px) rotate(0deg); }
-  100% { transform: rotate(360deg) translateX(90px) rotate(-360deg); }
-}
-
-.orbiting-rocket {
-  position: absolute;
-  width: 30px;
-  height: 30px;
-  top: 50%;
-  left: 50%;
-  z-index: 11;
-  animation: orbit 8s linear infinite;
-  pointer-events: none;
-}
-
-.rocket-body {
-  position: relative;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  transform: rotate(90deg);
-}
-
-.rocket-shape {
-  position: absolute;
-  width: 30px;
-  height: 40px;
-  background-color: #6ee7b7;
-  clip-path: polygon(50% 0%, 100% 70%, 80% 100%, 20% 100%, 0% 70%);
-  filter: drop-shadow(0 0 8px rgba(110, 231, 183, 0.8));
-}
-
-.rocket-window {
-  position: absolute;
-  width: 10px;
-  height: 10px;
   border-radius: 50%;
-  background-color: rgba(255, 255, 255, 0.8);
-  top: 15px;
-  left: 10px;
-}
-
-.rocket-flame {
-  position: absolute;
-  bottom: -15px;
-  left: 7px;
-  width: 16px;
-  height: 20px;
-  clip-path: polygon(20% 0%, 80% 0%, 100% 40%, 50% 100%, 0% 40%);
-  background: linear-gradient(to bottom, #f59e0b, #ef4444);
-  filter: drop-shadow(0 0 10px rgba(245, 158, 11, 0.7));
-  animation: flicker 0.1s infinite alternate;
-}
-
-@keyframes flicker {
-  0% { opacity: 0.7; transform: scaleY(0.8); }
-  100% { opacity: 1; transform: scaleY(1.2); }
+  border: 3px solid transparent;
+  border-top: 3px solid white;
+  border-right: 3px solid white;
+  transform: rotate(45deg);
 }
 
 .level-info {
-  flex: 1;
   text-align: center;
+  width: 100%;
 }
 
 .level-info h2 {
-  font-size: 1.3rem;
-  margin-bottom: 10px;
-  text-shadow: 0 0 10px rgba(110, 231, 183, 0.5);
+  font-size: 1.25rem;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
 }
 
 .progress-bar {
-  height: 8px;
+  height: 6px;
   background-color: rgba(255, 255, 255, 0.1);
-  border-radius: 4px;
+  border-radius: 3px;
   overflow: hidden;
-  margin-bottom: 5px;
+  margin-bottom: 0.75rem;
 }
 
 .progress {
   height: 100%;
   background-color: var(--primary-color);
-  box-shadow: 0 0 8px rgba(110, 231, 183, 0.5);
 }
 
 .level-info p {
-  font-size: 0.9rem;
+  font-size: 0.875rem;
   color: var(--text-secondary);
   text-align: center;
 }
@@ -448,8 +192,8 @@ header p {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.4);
-  border-radius: 15px;
+  background-color: rgba(15, 23, 42, 0.7);
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -457,11 +201,11 @@ header p {
 }
 
 .lock-overlay i {
-  font-size: 35px;
+  font-size: 28px;
   color: var(--locked-color);
 }
 
-/* Level paths */
+/* Level paths - subtielere, strakkere lijnen */
 .level-paths {
   position: absolute;
   top: 0;
@@ -474,34 +218,16 @@ header p {
 
 .level-path {
   stroke: var(--path-color);
-  stroke-width: 5px;
+  stroke-width: 2px;
   fill: none;
   stroke-linecap: round;
-  stroke-dasharray: 12, 6;
-  filter: drop-shadow(0 0 8px rgba(52, 211, 153, 0.7));
-  animation: dash 15s linear infinite;
-}
-
-@keyframes dash {
-  to {
-    stroke-dashoffset: -1000;
-  }
-}
-
-/* Path rocket */
-.rocket {
-  position: absolute;
-  width: 30px;
-  height: 30px;
-  z-index: 10;
-  pointer-events: none;
-  filter: drop-shadow(0 0 10px rgba(110, 231, 183, 0.8));
+  opacity: 0.4;
 }
 
 /* Level Page Styles */
 .level-page {
-  padding: 20px;
-  max-width: 800px;
+  padding: 2rem;
+  max-width: 900px;
   margin: 0 auto;
   position: relative;
   z-index: 1;
@@ -512,43 +238,49 @@ header p {
   align-items: center;
   justify-content: center;
   position: relative;
+  margin-bottom: 2rem;
 }
 
 .back-button {
   position: absolute;
   left: 0;
   color: var(--text-light);
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   text-decoration: none;
-  transition: transform 0.2s, color 0.2s;
+  transition: color 0.2s;
+  display: flex;
+  align-items: center;
 }
 
 .back-button:hover {
   color: var(--primary-color);
-  transform: translateX(-3px);
+}
+
+.back-button i {
+  margin-right: 0.5rem;
 }
 
 .lesson-list {
-  margin-top: 20px;
+  margin-top: 1.5rem;
 }
 
 .lesson-card {
   background-color: var(--card-bg);
-  border-radius: 12px;
-  padding: 20px;
-  margin-bottom: 15px;
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
   display: flex;
   align-items: center;
   cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(110, 231, 183, 0.05);
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 10px var(--shadow-color);
+  border: 1px solid var(--border-color);
 }
 
 .lesson-card:hover:not(.locked) {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3),
-              0 0 15px rgba(110, 231, 183, 0.15);
+  background-color: var(--card-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px var(--shadow-color);
 }
 
 .lesson-card.completed {
@@ -558,19 +290,20 @@ header p {
 .lesson-card.locked {
   opacity: 0.7;
   cursor: not-allowed;
-  filter: grayscale(50%);
+  filter: grayscale(30%);
 }
 
 .lesson-number {
-  width: 40px;
-  height: 40px;
-  background-color: rgba(110, 231, 183, 0.1);
+  min-width: 36px;
+  height: 36px;
+  background-color: rgba(59, 130, 246, 0.1);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 20px;
-  font-weight: bold;
+  margin-right: 1.25rem;
+  font-weight: 600;
+  color: var(--primary-color);
 }
 
 .lesson-details {
@@ -578,16 +311,19 @@ header p {
 }
 
 .lesson-details h3 {
-  margin-bottom: 5px;
+  margin-bottom: 0.25rem;
+  font-size: 1.1rem;
+  font-weight: 600;
 }
 
 .lesson-details p {
   color: var(--text-secondary);
-  font-size: 0.9rem;
+  font-size: 0.875rem;
 }
 
 .lesson-status i {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
+  margin-left: 1rem;
 }
 
 .fa-check-circle {
@@ -609,7 +345,7 @@ header p {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(0, 0, 0, 0.75);
   backdrop-filter: blur(5px);
   display: flex;
   align-items: center;
@@ -619,43 +355,47 @@ header p {
 
 .popup-content {
   background-color: var(--card-bg);
-  border-radius: 12px;
-  width: 90%;
-  max-width: 600px;
-  max-height: 80vh;
+  border-radius: 8px;
+  width: 92%;
+  max-width: 700px;
+  max-height: 85vh;
   overflow-y: auto;
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4),
-              0 0 20px rgba(110, 231, 183, 0.2);
-  border: 1px solid rgba(110, 231, 183, 0.1);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--border-color);
 }
 
 .popup-header {
-  padding: 20px;
+  padding: 1.25rem 1.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.popup-header h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
 }
 
 .close-button {
   background: none;
   border: none;
-  color: var(--text-light);
-  font-size: 1.5rem;
+  color: var(--text-secondary);
+  font-size: 1.25rem;
   cursor: pointer;
   transition: color 0.2s;
 }
 
 .close-button:hover {
-  color: var(--primary-color);
+  color: var(--text-light);
 }
 
 .popup-body {
-  padding: 20px;
+  padding: 1.5rem;
 }
 
 .popup-body p {
-  margin-bottom: 20px;
+  margin-bottom: 1.25rem;
   line-height: 1.6;
 }
 
@@ -663,237 +403,226 @@ header p {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 10px;
+  padding: 0.75rem;
   background-color: rgba(16, 185, 129, 0.1);
-  border-radius: 8px;
+  border-radius: 6px;
   color: var(--success-color);
+  margin: 1.5rem 0;
 }
 
 .completion-badge i {
-  margin-right: 10px;
+  margin-right: 0.75rem;
 }
 
 .mark-complete-button {
   width: 100%;
-  padding: 15px;
+  padding: 0.875rem;
   background-color: var(--primary-color);
-  color: var(--dark-bg);
+  color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   font-size: 1rem;
-  font-weight: bold;
+  font-weight: 500;
   cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
-  box-shadow: 0 4px 10px rgba(110, 231, 183, 0.3);
+  transition: all 0.2s ease;
 }
 
 .mark-complete-button:hover {
-  background-color: #4ade80;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 15px rgba(110, 231, 183, 0.4);
+  background-color: var(--primary-hover);
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
   header h1 {
-    font-size: 2.2rem;
+    font-size: 2rem;
   }
   
-  .world-map {
+  .learning-pathway {
     height: 700px;
   }
   
   .level-node {
-    width: 80%;
-    left: 10% !important;
+    width: 85%;
+    left: 7.5% !important;
   }
   
   .level-page header h1 {
-    font-size: 1.8rem;
+    font-size: 1.5rem;
   }
 }
 
-/* Quiz Styles */
+/* Quiz Styles - Professionelere uitstraling */
 .quiz-container {
-  margin-top: 10px;
+  margin-top: 1.5rem;
 }
 
 .quiz-container h3 {
-  margin-bottom: 20px;
+  margin-bottom: 1.5rem;
   text-align: center;
-  font-size: 1.4rem;
-  color: var(--primary-color);
+  font-size: 1.25rem;
+  color: var(--text-light);
+  font-weight: 600;
 }
 
 .quiz-question {
-  margin-bottom: 30px;
-  background-color: rgba(20, 27, 51, 0.6);
-  padding: 15px;
-  border-radius: 8px;
-  border: 1px solid rgba(110, 231, 183, 0.1);
+  margin-bottom: 1.5rem;
+  background-color: var(--card-bg);
+  padding: 1.25rem;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
 }
 
 .question-text {
-  margin-bottom: 15px;
+  margin-bottom: 1rem;
   font-weight: 500;
   color: var(--text-light);
+  font-size: 1rem;
 }
 
 .options-container {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 0.625rem;
 }
 
 .option {
-  padding: 12px 15px;
-  background-color: rgba(20, 27, 51, 0.8);
+  padding: 1rem 1.25rem;
+  background-color: rgba(30, 41, 59, 0.5);
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s ease;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-color);
   position: relative;
 }
 
 .option:hover:not(.correct):not(.incorrect) {
-  background-color: rgba(110, 231, 183, 0.1);
-  border-color: rgba(110, 231, 183, 0.3);
+  background-color: rgba(59, 130, 246, 0.1);
+  border-color: rgba(59, 130, 246, 0.3);
 }
 
 .option.selected {
-  background-color: rgba(110, 231, 183, 0.2);
+  background-color: rgba(59, 130, 246, 0.15);
   border-color: var(--primary-color);
-  box-shadow: 0 0 8px rgba(110, 231, 183, 0.3);
 }
 
 .option.correct {
-  background-color: rgba(16, 185, 129, 0.2);
+  background-color: rgba(16, 185, 129, 0.15);
   border-color: var(--success-color);
   color: var(--success-color);
 }
 
 .option.incorrect {
-  background-color: rgba(239, 68, 68, 0.2);
+  background-color: rgba(239, 68, 68, 0.15);
   border-color: #ef4444;
   color: #ef4444;
 }
 
 .check-icon, .cross-icon {
   position: absolute;
-  right: 15px;
+  right: 1.25rem;
   top: 50%;
   transform: translateY(-50%);
 }
 
 .quiz-actions {
-  margin-top: 30px;
+  margin-top: 1.5rem;
   display: flex;
   justify-content: center;
 }
 
 .submit-button, .try-again-button, .continue-button {
-  padding: 12px 24px;
+  padding: 0.75rem 1.5rem;
   border-radius: 6px;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
   border: none;
-  min-width: 150px;
+  min-width: 140px;
 }
 
 .submit-button {
   background-color: var(--primary-color);
-  color: var(--dark-bg);
-  box-shadow: 0 4px 10px rgba(110, 231, 183, 0.3);
+  color: white;
 }
 
 .submit-button:hover {
-  background-color: #4ade80;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 15px rgba(110, 231, 183, 0.4);
+  background-color: var(--primary-hover);
 }
 
 .post-submit-actions {
   display: flex;
-  gap: 15px;
+  gap: 1rem;
   justify-content: center;
 }
 
 .try-again-button {
   background-color: transparent;
   color: var(--text-light);
-  border: 1px solid rgba(110, 231, 183, 0.3);
+  border: 1px solid var(--border-color);
 }
 
 .try-again-button:hover {
-  background-color: rgba(110, 231, 183, 0.1);
-  transform: translateY(-2px);
+  background-color: rgba(255, 255, 255, 0.05);
 }
 
 .continue-button {
   background-color: var(--success-color);
-  color: var(--dark-bg);
-  box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3);
+  color: white;
 }
 
 .continue-button:hover {
-  background-color: #34d399;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 15px rgba(16, 185, 129, 0.4);
+  background-color: #0ea572;
 }
 
 .quiz-score {
-  margin-top: 5px;
+  margin-top: 0.5rem;
   font-size: 0.85rem;
   color: var(--primary-color);
   display: inline-block;
-  padding: 3px 8px;
-  background-color: rgba(110, 231, 183, 0.1);
-  border-radius: 12px;
+  padding: 0.25rem 0.625rem;
+  background-color: rgba(59, 130, 246, 0.1);
+  border-radius: 4px;
 }
 
 .start-quiz-button {
   width: 100%;
-  padding: 15px;
+  padding: 0.875rem;
   background-color: var(--primary-color);
-  color: var(--dark-bg);
+  color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   font-size: 1rem;
-  font-weight: bold;
+  font-weight: 500;
   cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
-  box-shadow: 0 4px 10px rgba(110, 231, 183, 0.3);
-  margin-top: 20px;
+  transition: all 0.2s ease;
+  margin-top: 1.5rem;
 }
 
 .start-quiz-button:hover {
-  background-color: #4ade80;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 15px rgba(110, 231, 183, 0.4);
+  background-color: var(--primary-hover);
 }
 
 .lesson-actions {
-  margin-top: 30px;
+  margin-top: 1.5rem;
   display: flex;
   justify-content: center;
 }
 
 .lesson-image-container {
-  margin: 20px 0;
+  margin: 1.5rem 0;
   text-align: center;
 }
 
 .lesson-image {
   max-width: 100%;
-  border-radius: 8px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .image-caption {
-  margin-top: 10px;
+  margin-top: 0.75rem;
   color: var(--text-secondary);
-  font-size: 0.9rem;
+  font-size: 0.875rem;
   text-align: center;
   font-style: italic;
 }
@@ -905,10 +634,10 @@ header p {
   }
   
   .quiz-question {
-    padding: 12px;
+    padding: 1rem;
   }
   
   .option {
-    padding: 10px 12px;
+    padding: 0.875rem 1rem;
   }
 }
